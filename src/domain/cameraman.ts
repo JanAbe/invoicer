@@ -1,22 +1,18 @@
 import { Rentable } from "./rentable";
 import { Period } from "./period";
+import { FullName } from "./fullName";
 import { isNullOrUndefined } from "util";
 
 // vgm is dit nu een soort value object
 // het heeft wel een aparte tabel in de database denk ik
 // maar het is onderdeel van Job
-// Dit betekent dat er meerdere entries van een zelfde apparatuurItem kunnen zijn
-// ik kan dus niet een select list geven met apparatuurItems waar uit gekozen kan worden
-// wat ik wel kan doen is misschien alle unieke namen uit de tabel halen
-// met dagprijs -> dit sturen naar de front-end. De front-end kan dit dan gebruiken
-// om suggesties te geven aan de gebruiker tijdens het typen.
-export class EquipmentItem implements Rentable {
-    private _name: string;
+export class Cameraman implements Rentable {
+    private _fullName: FullName;
     private _dayPrice: number;
     private _period: Period;
 
-    constructor(name: string, dayPrice: number, period: Period) {
-        this.setName(name);
+    constructor(fullName: FullName, dayPrice: number, period: Period) {
+        this.setFullName(fullName);
         this.setDayPrice(dayPrice);
         this.setPeriod(period);
     }
@@ -27,8 +23,8 @@ export class EquipmentItem implements Rentable {
         return -1;
     }
 
-    public get name(): string {
-        return this._name;
+    public get fullName(): FullName {
+        return this._fullName;
     }
 
     public get dayPrice(): number {
@@ -38,15 +34,15 @@ export class EquipmentItem implements Rentable {
     public get period(): Period {
         return this._period;
     }
-
-    private setName(name: string): void {
-        if (isNullOrUndefined(name)) {
-            throw new Error("Provided name is null or undefined.");
+    
+    private setFullName(fullName: FullName): void {
+        if (isNullOrUndefined(fullName)) {
+            throw new Error("Provided fullName is null or undefined.");
         }
 
-        this._name = name;
+        this._fullName = fullName;
     }
-
+    
     private setDayPrice(dayPrice: number): void {
         const MINIMUM_DAY_PRICE = 0;
 
