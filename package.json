@@ -13,7 +13,7 @@
   },
   "keywords": [],
   "author": {
-    "name": "Jan Abe",
+    "name": "Jan Abe de Waal",
     "email": "janabedewaal@protonmail.com"
   },
   "license": "MIT",
@@ -45,7 +45,9 @@
     }
   },
   "dependencies": {
-    "electron-squirrel-startup": "^1.0.0"
+    "@types/uuid": "^3.4.5",
+    "electron-squirrel-startup": "^1.0.0",
+    "uuid": "^3.3.3"
   },
   "devDependencies": {
     "@electron-forge/cli": "^6.0.0-beta.44",
