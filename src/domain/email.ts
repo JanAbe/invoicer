@@ -1,7 +1,7 @@
 import { isNullOrUndefined } from "util";
 
 export class Email {
-    private _emailAddress: string;
+    private _emailAddress!: string;
 
     constructor(emailAddress: string) {
         this.setEmailAddress(emailAddress);

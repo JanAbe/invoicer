@@ -11,9 +11,9 @@ import { isNullOrUndefined } from "util";
 // met dagprijs -> dit sturen naar de front-end. De front-end kan dit dan gebruiken
 // om suggesties te geven aan de gebruiker tijdens het typen.
 export class EquipmentItem implements Rentable {
-    private _name: string;
-    private _dayPrice: number;
-    private _period: Period;
+    private _name!: string;
+    private _dayPrice!: number;
+    private _period!: Period;
 
     constructor(name: string, dayPrice: number, period: Period) {
         this.setName(name);

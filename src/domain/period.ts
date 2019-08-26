@@ -1,8 +1,8 @@
 import { isNullOrUndefined } from "util";
 
 export class Period {
-    private _startDate: Date;
-    private _endDate: Date;
+    private _startDate!: Date;
+    private _endDate!: Date;
 
     constructor(startDate: Date, endDate: Date) {
         this.setStartDate(startDate);

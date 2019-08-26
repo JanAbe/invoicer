@@ -69,12 +69,20 @@ export class Job {
         return this._clientID;
     }
 
-    public get cameraman(): Cameraman {
-        return this._cameraman;
+    public get cameraman(): Cameraman | undefined {
+        if (this._cameraman !== undefined) {
+            return this._cameraman;
+        }
+
+        return undefined;
     }
 
     public get equipmentItems(): EquipmentItem[] {
-        return this._equipmentItems;
+        if (this._equipmentItems !== undefined) {
+            return this._equipmentItems;
+        }
+
+        return [];
     }
     
     public set id(id: JobID) {

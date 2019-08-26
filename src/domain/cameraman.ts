@@ -7,9 +7,9 @@ import { isNullOrUndefined } from "util";
 // het heeft wel een aparte tabel in de database denk ik
 // maar het is onderdeel van Job
 export class Cameraman implements Rentable {
-    private _fullName: FullName;
-    private _dayPrice: number;
-    private _period: Period;
+    private _fullName!: FullName;
+    private _dayPrice!: number;
+    private _period!: Period;
 
     constructor(fullName: FullName, dayPrice: number, period: Period) {
         this.setFullName(fullName);

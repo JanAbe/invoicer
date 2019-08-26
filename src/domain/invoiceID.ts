@@ -1,6 +1,6 @@
 import { isNullOrUndefined } from "util";
 
-export class ClientID {
+export class InvoiceID {
     private _id: string;
 
     constructor(id: string) {
@@ -13,7 +13,7 @@ export class ClientID {
 
     private setID(id: string): void {
         if (isNullOrUndefined(id)) {
-            throw new Error("Provided id can not be null or undefined.");
+            throw new Error("Provided id can not be null or undefined");
         }
 
         this._id = id;

@@ -1,7 +1,48 @@
-import { Job } from "./job";
+import { JobID } from "./jobID";
+import IBAN = require('iban');
+import { isNullOrUndefined } from "util";
 
 export class Invoice {
+    private _jobID: JobID;
+    private _iban: string;
     private _creationDate: Date;
-    private _job: Job;
-    private _iban IBAN; //IBAN value object cre"eeren denk ik
+
+    constructor(jobID: JobID, iban: string) {
+        this._jobID = jobID;
+        this._iban = iban;
+        this._creationDate = new Date();
+    }
+
+    public get jobID(): JobID {
+        return this._jobID;
+    }
+
+    public get iban(): string {
+        return this._iban;
+    }
+
+    public get creationDate(): Date {
+        return this._creationDate;
+    }
+
+    // do i want to make it possible to change the jobID of an invoice?
+    public set jobID(jobID: JobID) {
+        if (isNullOrUndefined(jobID)) {
+            throw new Error("Provided jobID is null or undefined");
+        }
+
+        this._jobID = jobID;
+    }
+
+    public set iban(iban: string) {
+        if (isNullOrUndefined(iban)) {
+            throw new Error("Provided iban is null or undefined");
+        }
+
+        if (!IBAN.isValid(iban)) {
+            throw new Error("Provided iban is invalid");
+        }
+
+        this._iban = iban;
+    }
 }

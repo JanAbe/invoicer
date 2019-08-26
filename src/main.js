@@ -1,6 +1,7 @@
 "use strict";
-exports.__esModule = true;
+Object.defineProperty(exports, "__esModule", { value: true });
 var electron_1 = require("electron");
+var db_1 = require("./db");
 // Handle creating/removing shortcuts on Windows when installing/uninstalling.
 if (require('electron-squirrel-startup')) { // eslint-disable-line global-require
     electron_1.app.quit();
@@ -12,7 +13,7 @@ var createWindow = function () {
     // Create the browser window.
     mainWindow = new electron_1.BrowserWindow({
         width: 800,
-        height: 600
+        height: 600,
     });
     // and load the index.html of the app.
     mainWindow.loadURL("file://" + __dirname + "/index.html");
@@ -25,6 +26,10 @@ var createWindow = function () {
         // when you should delete the corresponding element.
         mainWindow = null;
     });
+    var filePath = './testDB';
+    var db = new db_1.DB(filePath);
+    db.initializeDatabase();
+    console.log(filePath);
 };
 // This method will be called when Electron has finished
 // initialization and is ready to create browser windows.
