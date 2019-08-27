@@ -31,10 +31,12 @@ const createWindow = () => {
       mainWindow = null;
     });
 
-    const filePath = './testDB';
-    const db = new DB(filePath);
-    db.initializeDatabase();
-    console.log(filePath);
+    // Extract this into its own method?
+    // When / which electorn event should be used to call this code
+    const dbLocation = `${__dirname}/../db/Invoice.db`;
+    console.log(dbLocation);
+    const db = new DB(dbLocation);
+    db.createTables();
 };
 
 // This method will be called when Electron has finished

@@ -5,12 +5,15 @@
   "description": "Invoicer helps by creating and managing invoices.",
   "main": "dist/src/main.js",
   "scripts": {
-    "prestart": "cp -r ./src/ui ./dist/src",
+    "prestart": "cp -r ./src/ui ./dist/src && cp -r ./db/ ./dist/",
     "start": "electron-forge start",
     "package": "electron-forge package",
     "make": "electron-forge make",
-    "publish": "electron-forge publish",
-    "lint": "echo \"No linting configured\""
+    "publish": "electron-forge publish"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/JanAbe/invoicer.git"
   },
   "keywords": [],
   "author": {
