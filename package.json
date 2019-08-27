@@ -3,8 +3,9 @@
   "productName": "invoicer",
   "version": "0.1.0",
   "description": "Invoicer helps by creating and managing invoices.",
-  "main": "src/main.js",
+  "main": "dist/src/main.js",
   "scripts": {
+    "prestart": "cp -r ./src/ui ./dist/src",
     "start": "electron-forge start",
     "package": "electron-forge package",
     "make": "electron-forge make",
