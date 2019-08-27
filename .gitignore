@@ -87,3 +87,6 @@ typings/
 
 # Electron-Forge
 out/
+
+# Custom 
+dist/ # Location where all .js files are stored after tsc
