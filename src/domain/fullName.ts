@@ -1,8 +1,8 @@
 import { isNullOrUndefined } from "util";
 
 export class FullName {
-    private _firstName: string;
-    private _lastName: string;
+    private _firstName!: string;
+    private _lastName!: string;
 
     constructor(firstName: string, lastName: string) {
         this.setFirstName(firstName);

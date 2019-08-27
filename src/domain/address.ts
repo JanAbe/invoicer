@@ -1,10 +1,10 @@
 import { isNullOrUndefined } from "util";
 
 export class Address {
-    private _city: string;
-    private _street: string;
-    private _houseNumber: number;
-    private _zipcode: string;
+    private _city!: string;
+    private _street!: string;
+    private _houseNumber!: number;
+    private _zipcode!: string;
 
     constructor(city: string, street: string, houseNumber: number, zipcode: string) {
         this.setCity(city);

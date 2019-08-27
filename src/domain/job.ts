@@ -1,7 +1,7 @@
 import { Period } from "./period";
 import { JobID } from "./jobID";
 import { isNullOrUndefined } from "util";
-import { ClientID } from "./clientID";
+import { Client } from "./client";
 import { Cameraman } from "./cameraman";
 import { EquipmentItem } from "./equipmentItem";
 
@@ -10,7 +10,7 @@ export class Job {
     private _description: string;
     private _location: string;
     private _directedBy: string; // wat is regie in het engels?
-    private _clientID: ClientID;
+    private _client: Client;
     private _cameraman?: Cameraman;
     private _equipmentItems?: EquipmentItem[];
     // of wel een propety _period: Period toevoegen
@@ -23,14 +23,14 @@ export class Job {
                 description: string, 
                 location: string, 
                 directedBy: string, 
-                clientID: ClientID,
+                client: Client,
                 cameraman?: Cameraman,
                 equipmentItems?: EquipmentItem[]) {
         this._id = id;
         this._description = description;
         this._location = location;
         this._directedBy = directedBy;
-        this._clientID = clientID;
+        this._client = client;
         this._cameraman = cameraman;
         this._equipmentItems = equipmentItems;
     }
@@ -65,8 +65,8 @@ export class Job {
         return this._directedBy;
     }
 
-    public get clientID(): ClientID {
-        return this._clientID;
+    public get client(): Client {
+        return this._client;
     }
 
     public get cameraman(): Cameraman | undefined {
@@ -113,12 +113,12 @@ export class Job {
         this._directedBy = directedBy;
     }
     
-    public set clientID(clientID: ClientID) {
-        if (isNullOrUndefined(clientID)) {
-            throw new Error("Provided clientID is null or undefined");
+    public set client(client: Client) {
+        if (isNullOrUndefined(client)) {
+            throw new Error("Provided client is null or undefined");
         }
 
-        this._clientID = clientID;
+        this._client = client;
     }
     
     public set equipmentItems(equipmentItems: EquipmentItem[]) {
