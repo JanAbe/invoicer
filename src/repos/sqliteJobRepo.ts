@@ -5,8 +5,8 @@ import { JobID } from "../domain/jobID";
 
 export class SqliteJobRepo implements JobRepo {
 
-    public nextID(): string {
-        return uuid();
+    public nextID(): JobID {
+        return new JobID(uuid());
     }
 
     public jobOfID(jobID: JobID): Job {

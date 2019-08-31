@@ -3,24 +3,43 @@ import { InvoiceID } from "../domain/invoiceID";
 import { Invoice } from "../domain/invoice";
 import { JobRepo } from "./jobRepo";
 import uuid = require("uuid/v4");
+import { DB } from "../db";
+import { JobID } from "../domain/jobID";
 
 export class SqliteInvoiceRepo implements InvoiceRepo {
+    private _db: DB;
     private _jobRepo: JobRepo;
 
-    constructor(jobRepo: JobRepo) {
+    constructor(db: DB, jobRepo: JobRepo) {
+        this._db = db;
         this._jobRepo = jobRepo;
     }
 
-    public nextID(): string {
-        return uuid();
+    public nextID(): InvoiceID {
+        return new InvoiceID(uuid());
     }
 
     public invoices(): Invoice[] {
         return [];
     }
 
-    public invoiceOfID(invoiceOfID: InvoiceID): Invoice {
-        throw new Error();
+    public invoiceOfID(invoiceID: InvoiceID): Invoice {
+        let invoice: any;
+
+        const query = 'SELECT id, creation_date, iban, ref_job FROM Invoice WHERE id=?'; 
+        this._db.db.get(query, invoiceID.toString(), (err, row) => {
+            if (err) {
+                console.log(err);
+                invoice = null;
+            } else {
+                invoice = new Invoice(new InvoiceID(row.id), 
+                                      new JobID(row.ref_job), 
+                                      row.iban, 
+                                      row.creation_date);
+            }
+        }); 
+
+        return invoice;
     }
 
     public save(invoice: Invoice): void {

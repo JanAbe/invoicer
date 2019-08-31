@@ -1,16 +1,23 @@
 import { JobID } from "./jobID";
-import IBAN = require('iban');
+// import IBAN = require('iban');
 import { isNullOrUndefined } from "util";
+import { InvoiceID } from "./invoiceID";
 
 export class Invoice {
+    private _invoiceID: InvoiceID;
     private _jobID: JobID;
     private _iban: string;
     private _creationDate: Date;
 
-    constructor(jobID: JobID, iban: string) {
+    constructor(invoiceID: InvoiceID, jobID: JobID, iban: string, creationDate: Date = new Date()) {
+        this._invoiceID = invoiceID;
         this._jobID = jobID;
         this._iban = iban;
-        this._creationDate = new Date();
+        this._creationDate = creationDate;
+    }
+
+    public get invoiceID(): InvoiceID {
+        return this._invoiceID;
     }
 
     public get jobID(): JobID {
@@ -23,6 +30,14 @@ export class Invoice {
 
     public get creationDate(): Date {
         return this._creationDate;
+    }
+    
+    public set invoiceID(invoiceID: InvoiceID) {
+        if (isNullOrUndefined(invoiceID)) {
+            throw new Error("Provided invoiceID is null or undefined");
+        }
+
+        this._invoiceID = invoiceID;
     }
 
     // do i want to make it possible to change the jobID of an invoice?
@@ -39,9 +54,9 @@ export class Invoice {
             throw new Error("Provided iban is null or undefined");
         }
 
-        if (!IBAN.isValid(iban)) {
-            throw new Error("Provided iban is invalid");
-        }
+        // if (!IBAN.isValid(iban)) {
+        //     throw new Error("Provided iban is invalid");
+        // }
 
         this._iban = iban;
     }

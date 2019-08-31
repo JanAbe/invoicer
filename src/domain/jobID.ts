@@ -4,6 +4,7 @@ export class JobID {
     private _id: string;
 
     constructor(id: string) {
+        // needs check to see if incoming string is a UUID4
         this._id = id;
     }
 

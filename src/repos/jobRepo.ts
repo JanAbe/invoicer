@@ -3,8 +3,8 @@ import { JobID } from "../domain/jobID";
 
 export interface JobRepo {
 
-    // nextID creates a new uuid to use
-    nextID(): string;
+    // nextID creates a new JobID to use
+    nextID(): JobID;
 
     // jobOfID fetches a job based on ID
     jobOfID(jobID: JobID): Job;

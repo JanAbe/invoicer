@@ -22,8 +22,7 @@ export class FullName {
             throw new Error("Provided firstname is null or undefined.");
         }
 
-        firstName.trim();
-        this._firstName = firstName;
+        this._firstName = firstName.trim();
     }
 
     private setLastName(lastName: string): void {
@@ -31,7 +30,6 @@ export class FullName {
             throw new Error("Provided lastname is null or undefined.");
         }
 
-        lastName.trim();
-        this._lastName = lastName;
+        this._lastName = lastName.trim();
     }
 }

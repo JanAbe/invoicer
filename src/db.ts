@@ -1,5 +1,6 @@
 import sqlite3 = require("sqlite3");
 
+// TODO: make this api better or justpass sqlite3.Database to the repositories
 export class DB {
     private _db: sqlite3.Database;
 
@@ -77,6 +78,7 @@ export class DB {
         const createTableInvoice = `
             CREATE TABLE IF NOT EXISTS Invoice (
                 id TEXT PRIMARY KEY,
+                iban TEXT,
                 creation_date TEXT,
                 ref_job TEXT,
                 FOREIGN KEY(ref_job) REFERENCES Job(id)
