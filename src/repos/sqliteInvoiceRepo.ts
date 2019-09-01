@@ -23,23 +23,24 @@ export class SqliteInvoiceRepo implements InvoiceRepo {
         return [];
     }
 
-    public invoiceOfID(invoiceID: InvoiceID): Invoice {
-        let invoice: any;
+    public invoiceOfID(invoiceID: InvoiceID): Promise<Invoice> {
+        // let invoice: any;
 
         const query = 'SELECT id, creation_date, iban, ref_job FROM Invoice WHERE id=?'; 
-        this._db.db.get(query, invoiceID.toString(), (err, row) => {
-            if (err) {
-                console.log(err);
-                invoice = null;
-            } else {
-                invoice = new Invoice(new InvoiceID(row.id), 
-                                      new JobID(row.ref_job), 
-                                      row.iban, 
-                                      row.creation_date);
-            }
-        }); 
+        return this._db.get(query, [invoiceID.toString()]);
+        // this._db.db.get(query, invoiceID.toString(), (err, row) => {
+        //     if (err) {
+        //         console.log(err);
+        //         invoice = null;
+        //     } else {
+        //         invoice = new Invoice(new InvoiceID(row.id), 
+        //                               new JobID(row.ref_job), 
+        //                               row.iban, 
+        //                               row.creation_date);
+        //     }
+        // }); 
 
-        return invoice;
+        // return invoice;
     }
 
     public save(invoice: Invoice): void {

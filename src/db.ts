@@ -14,6 +14,47 @@ export class DB {
         });
     }
 
+    // for running insert, update and delete statements
+    public run(query: string, params: any = []): Promise<any> {
+        return new Promise((resolve, reject) => {
+            this.db.run(query, params, function (err) { // needs to be `function (err)` and not the arrow syntax because otherwise there won't be a 'this'
+                if (err) {
+                    console.log(`${err} running SQL query: ${query}`);
+                    reject(err);
+                } else {
+                    resolve(this.lastID); // extend this so the number of updated fields are returned if an update query is passed and succesful?
+                }
+            });
+        });
+    }
+
+    // get single result
+    public get(query: string, params: any = []): Promise<any> {
+        return new Promise((resolve, reject) => {
+            this.db.get(query, params, function (err, row) {
+                if (err) {
+                    console.log(`${err} running SQL query: ${query}`);
+                    reject(err);
+                } else {
+                    resolve(row);
+                }
+            });
+        });
+    }
+
+    public all(query: string, params: any = []): Promise<any> {
+        return new Promise((resolve, reject) => {
+            this.db.get(query, params, function (err, rows) {
+                if (err) {
+                    console.log(`${err} running SQL query: ${query}`);
+                    reject(err);
+                } else {
+                    resolve(rows);
+                }
+            });
+        });
+    }
+
     public get db(): sqlite3.Database {
         return this._db;
     }

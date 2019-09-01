@@ -13,6 +13,53 @@ var DB = /** @class */ (function () {
             }
         });
     }
+    // for running insert, update and delete statements
+    DB.prototype.run = function (query, params) {
+        var _this = this;
+        if (params === void 0) { params = []; }
+        return new Promise(function (resolve, reject) {
+            _this.db.run(query, params, function (err) {
+                if (err) {
+                    console.log(err + " running SQL query: " + query);
+                    reject(err);
+                }
+                else {
+                    resolve(this.lastID); // extend this so the number of updated fields are returned if an update query is passed and succesful?
+                }
+            });
+        });
+    };
+    // get single result
+    DB.prototype.get = function (query, params) {
+        var _this = this;
+        if (params === void 0) { params = []; }
+        return new Promise(function (resolve, reject) {
+            _this.db.get(query, params, function (err, row) {
+                if (err) {
+                    console.log(err + " running SQL query: " + query);
+                    reject(err);
+                }
+                else {
+                    resolve(row);
+                }
+            });
+        });
+    };
+    DB.prototype.all = function (query, params) {
+        var _this = this;
+        if (params === void 0) { params = []; }
+        return new Promise(function (resolve, reject) {
+            _this.db.get(query, params, function (err, rows) {
+                if (err) {
+                    console.log(err + " running SQL query: " + query);
+                    reject(err);
+                }
+                else {
+                    resolve(rows);
+                }
+            });
+        });
+    };
     Object.defineProperty(DB.prototype, "db", {
         get: function () {
             return this._db;

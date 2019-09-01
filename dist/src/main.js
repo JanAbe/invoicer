@@ -5,6 +5,12 @@ var db_1 = require("./db");
 var sqliteInvoiceRepo_1 = require("./repos/sqliteInvoiceRepo");
 var sqliteJobRepo_1 = require("./repos/sqliteJobRepo");
 var invoiceID_1 = require("./domain/invoiceID");
+var job_1 = require("./domain/job");
+var jobID_1 = require("./domain/jobID");
+var client_1 = require("./domain/client");
+var fullName_1 = require("./domain/fullName");
+var email_1 = require("./domain/email");
+var address_1 = require("./domain/address");
 // Handle creating/removing shortcuts on Windows when installing/uninstalling.
 if (require('electron-squirrel-startup')) { // eslint-disable-line global-require
     electron_1.app.quit();
@@ -36,10 +42,13 @@ var createWindow = function () {
     var db = new db_1.DB(dbLocation);
     db.createTables();
     // doesn't work yet :c
-    var sqliteJobRepo = new sqliteJobRepo_1.SqliteJobRepo();
+    var sqliteJobRepo = new sqliteJobRepo_1.SqliteJobRepo(db);
+    var job = new job_1.Job(new jobID_1.JobID('971a63e3-2654-4954-b523-05747e1a73f5'), 'test job', 'amsterdam', 'directie', new client_1.Client(new fullName_1.FullName('tom', 'hengst'), new email_1.Email('test@email.com'), new address_1.Address('amsterdam', 'streetname', 12, '1234QQ')), undefined, undefined);
+    var x = sqliteJobRepo.save(job);
+    x.then(function (value) { return console.log(value); }).catch(function (err) { return console.log(err); });
     var sqliteInvoiceRepo = new sqliteInvoiceRepo_1.SqliteInvoiceRepo(db, sqliteJobRepo);
     var invoice = sqliteInvoiceRepo.invoiceOfID(new invoiceID_1.InvoiceID("6ccc310d-4734-4c36-8390-525be0739ed7"));
-    console.log(invoice);
+    invoice.then(function (value) { return console.log(value); }).catch(function (err) { return console.log(err); });
 };
 // This method will be called when Electron has finished
 // initialization and is ready to create browser windows.

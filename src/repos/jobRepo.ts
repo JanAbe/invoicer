@@ -9,6 +9,6 @@ export interface JobRepo {
     // jobOfID fetches a job based on ID
     jobOfID(jobID: JobID): Job;
 
-    // save saves a job
-    save(job: Job): void;
+    // save saves a job (returns a promise containing the nr of rows updated or the rowID of the inserted entity)
+    save(job: Job): Promise<any>;
 }

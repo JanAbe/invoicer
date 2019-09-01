@@ -4,6 +4,12 @@ import { SqliteInvoiceRepo } from './repos/sqliteInvoiceRepo';
 import { SqliteJobRepo } from './repos/sqliteJobRepo';
 import { InvoiceID } from './domain/invoiceID';
 import { Invoice } from './domain/invoice';
+import { Job } from './domain/job';
+import { JobID } from './domain/jobID';
+import { Client } from './domain/client';
+import { FullName } from './domain/fullName';
+import { Email } from './domain/email';
+import { Address } from './domain/address';
 
 // Handle creating/removing shortcuts on Windows when installing/uninstalling.
 if (require('electron-squirrel-startup')) { // eslint-disable-line global-require
@@ -43,10 +49,16 @@ const createWindow = () => {
     db.createTables();
 
     // doesn't work yet :c
-    const sqliteJobRepo = new SqliteJobRepo();
+    const sqliteJobRepo = new SqliteJobRepo(db);
+    const job = new Job(new JobID('971a63e3-2654-4954-b523-05747e1a73f5'), 'test job', 'amsterdam', 'directie', 
+                        new Client(new FullName('tom', 'hengst'), new Email('test@email.com'), new Address('amsterdam', 'streetname', 12, '1234QQ')), 
+                        undefined, 
+                        undefined);
+    const rowID = sqliteJobRepo.save(job);
+    rowID.then(value => console.log(value)).catch(err => console.log(err));
     const sqliteInvoiceRepo = new SqliteInvoiceRepo(db, sqliteJobRepo);
     const invoice = sqliteInvoiceRepo.invoiceOfID(new InvoiceID("6ccc310d-4734-4c36-8390-525be0739ed7"));
-    console.log(invoice);
+    invoice.then(value => console.log(value)).catch(err => console.log(err));
 };
 
 // This method will be called when Electron has finished

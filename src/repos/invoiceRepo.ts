@@ -11,7 +11,7 @@ export interface InvoiceRepo {
     invoices(): Invoice[];
 
     // invoiceOfID fetches an invoice based on ID
-    invoiceOfID(invoiceID: InvoiceID): Invoice;
+    invoiceOfID(invoiceID: InvoiceID): Promise<Invoice>;
 
     // save saves an invoice
     save(invoice: Invoice): void;
