@@ -45,11 +45,12 @@ var DB = /** @class */ (function () {
             });
         });
     };
+    // get multiple results
     DB.prototype.all = function (query, params) {
         var _this = this;
         if (params === void 0) { params = []; }
         return new Promise(function (resolve, reject) {
-            _this.db.get(query, params, function (err, rows) {
+            _this.db.all(query, params, function (err, rows) {
                 if (err) {
                     console.log(err + " running SQL query: " + query);
                     reject(err);

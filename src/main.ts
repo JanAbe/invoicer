@@ -48,14 +48,23 @@ const createWindow = () => {
     const db = new DB(dbLocation);
     db.createTables();
 
-    // doesn't work yet :c
     const sqliteJobRepo = new SqliteJobRepo(db);
-    const job = new Job(new JobID('971a63e3-2654-4954-b523-05747e1a73f5'), 'test job', 'amsterdam', 'directie', 
-                        new Client(new FullName('tom', 'hengst'), new Email('test@email.com'), new Address('amsterdam', 'streetname', 12, '1234QQ')), 
-                        undefined, 
-                        undefined);
-    const rowID = sqliteJobRepo.save(job);
-    rowID.then(value => console.log(value)).catch(err => console.log(err));
+    // const job = new Job(new JobID('971a63e3-2654-4954-b523-05747e1a73f5'), 'test job', 'amsterdam', 'directie', 
+    //                     new Client(new FullName('tom', 'hengst'), new Email('test@email.com'), new Address('amsterdam', 'streetname', 12, '1234QQ')), 
+    //                     undefined, 
+    //                     undefined);
+    // const rowID = sqliteJobRepo.save(job);
+    // rowID.then(value => console.log(value)).catch(err => console.log(err));
+    const job = sqliteJobRepo.jobOfID(new JobID("4c9236a2-f7ad-41df-8ca9-674e0c76b97b"));
+    // console.log(jobDTO);
+    job
+      .then((value) => {
+        console.log(value);
+      })
+      .catch(err => console.log(err));
+
+    console.log("\n");
+
     const sqliteInvoiceRepo = new SqliteInvoiceRepo(db, sqliteJobRepo);
     const invoice = sqliteInvoiceRepo.invoiceOfID(new InvoiceID("6ccc310d-4734-4c36-8390-525be0739ed7"));
     invoice.then(value => console.log(value)).catch(err => console.log(err));

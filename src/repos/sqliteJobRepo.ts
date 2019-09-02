@@ -3,6 +3,11 @@ import uuid = require("uuid/v4");
 import { Job } from "../domain/job";
 import { JobID } from "../domain/jobID";
 import { DB } from "../db";
+import { ClientID } from "../domain/clientID";
+import { EquipmentItem } from "../domain/equipmentItem";
+import { Period } from "../domain/period";
+import { Cameraman } from "../domain/cameraman";
+import { JobDTO } from "../domain/jobDTO";
 
 export class SqliteJobRepo implements JobRepo {
     private _db: DB;
@@ -15,19 +20,66 @@ export class SqliteJobRepo implements JobRepo {
         return new JobID(uuid());
     }
 
-    public jobOfID(jobID: JobID): Job {
-        throw new Error();
+    public async jobOfID(jobID: JobID): Promise<Job> {
+        const jobDTO = new JobDTO();
+
+        const cameramanQuery = 'SELECT r.start_date, r.end_date, r.day_price, c.firstName, c.lastName FROM Rented_Entity r JOIN Cameraman c ON (r.ref_cameraman = c.id) WHERE r.ref_job = ?;';
+        await new Promise((resolve, reject) => {
+            this._db.db.get(cameramanQuery, jobID.toString(), function (err, row) {
+                if (err) {
+                    console.log(err);
+                    reject(err);
+                } else {
+                    const cameraman = new Cameraman(row.firstName + ' ' + row.lastName, row.day_price, new Period(new Date(row.start_date), new Date(row.end_date)));
+                    // jobDTO.cameraman = cameraman;
+                    jobDTO.rentedEntities.push(cameraman);
+                    resolve();
+                }
+            });
+        });
+
+        const equipmentItemQuery = 'SELECT r.start_date, r.end_date, r.day_price, e.name from Rented_Entity r JOIN Equipment_Item e ON (r.ref_equipment_item = e.id) WHERE r.ref_job = ?;';
+        await new Promise((resolve, reject) => {
+            this._db.db.all(equipmentItemQuery, jobID.toString(), function (err, rows) {
+                if (err) {
+                    console.log(err);
+                    reject(err);
+                } else {
+                    // let equipmentItems: EquipmentItem[] = [];
+                    rows.forEach((row) => {
+                        let equipmentItem = new EquipmentItem(row.name, row.day_price, new Period(new Date(row.start_date), new Date(row.end_date)));
+                        // equipmentItems.push(equipmentItem);
+                        // jobDTO.equipmentItems = equipmentItems;
+                        jobDTO.rentedEntities.push(equipmentItem);
+                    });
+                    resolve();
+                }
+            });
+        });
+
+        const jobQuery = 'SELECT id, description, location, directed_by, ref_client FROM Job WHERE id = ?;';
+        await new Promise((resolve, reject) => {
+            this._db.db.get(jobQuery, jobID.toString(), function (err, row) {
+                if (err) {
+                    console.log(err);
+                    reject(err);
+                } else {
+                    jobDTO.id = new JobID(row.id);
+                    jobDTO.directedBy = row.directed_by;
+                    jobDTO.description = row.description;
+                    jobDTO.location = row.location;
+                    jobDTO.clientID = new ClientID(row.ref_client);
+                    resolve();
+                }
+            });
+        });
+
+        return new Promise((resolve, reject) => {
+          resolve(Job.fromDTO(jobDTO));  
+        });
     }
 
     public save(job: Job): Promise<any> {
-        const query = 'INSERT INTO Client (id, firstName, lastName, email, city, street, houseNumber, zipcode) VALUES (?, ?, ?, ?, ?, ?, ?, ?);';
-        return this._db.run(query, [job.id.toString(), 
-                job.client.fullName.firstName,
-                job.client.fullName.lastName,
-                job.client.email.emailAddress,
-                job.client.address.city,
-                job.client.address.street,
-                job.client.address.houseNumber,
-                job.client.address.zipcode]);
+        throw new Error();
     }
 }

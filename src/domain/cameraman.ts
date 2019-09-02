@@ -7,12 +7,12 @@ import { isNullOrUndefined } from "util";
 // het heeft wel een aparte tabel in de database denk ik
 // maar het is onderdeel van Job
 export class Cameraman implements Rentable {
-    private _fullName!: FullName;
+    private _name!: string;
     private _dayPrice!: number;
     private _period!: Period;
 
-    constructor(fullName: FullName, dayPrice: number, period: Period) {
-        this.setFullName(fullName);
+    constructor(name: string, dayPrice: number, period: Period) {
+        this.setName(name);
         this.setDayPrice(dayPrice);
         this.setPeriod(period);
     }
@@ -23,8 +23,8 @@ export class Cameraman implements Rentable {
         return -1;
     }
 
-    public get fullName(): FullName {
-        return this._fullName;
+    public get name(): string {
+        return this._name;
     }
 
     public get dayPrice(): number {
@@ -35,12 +35,12 @@ export class Cameraman implements Rentable {
         return this._period;
     }
     
-    private setFullName(fullName: FullName): void {
-        if (isNullOrUndefined(fullName)) {
-            throw new Error("Provided fullName is null or undefined.");
+    private setName(name: string): void {
+        if (isNullOrUndefined(name)) {
+            throw new Error("Provided name is null or undefined.");
         }
 
-        this._fullName = fullName;
+        this._name = name;
     }
     
     private setDayPrice(dayPrice: number): void {

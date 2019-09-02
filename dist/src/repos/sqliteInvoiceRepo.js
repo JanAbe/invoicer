@@ -14,21 +14,9 @@ var SqliteInvoiceRepo = /** @class */ (function () {
         return [];
     };
     SqliteInvoiceRepo.prototype.invoiceOfID = function (invoiceID) {
-        // let invoice: any;
         var query = 'SELECT id, creation_date, iban, ref_job FROM Invoice WHERE id=?';
+        // how is this automatically converted to an Invoice object?
         return this._db.get(query, [invoiceID.toString()]);
-        // this._db.db.get(query, invoiceID.toString(), (err, row) => {
-        //     if (err) {
-        //         console.log(err);
-        //         invoice = null;
-        //     } else {
-        //         invoice = new Invoice(new InvoiceID(row.id), 
-        //                               new JobID(row.ref_job), 
-        //                               row.iban, 
-        //                               row.creation_date);
-        //     }
-        // }); 
-        // return invoice;
     };
     SqliteInvoiceRepo.prototype.save = function (invoice) {
         // to save an invoice, the job of the invoice must also

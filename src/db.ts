@@ -42,9 +42,10 @@ export class DB {
         });
     }
 
-    public all(query: string, params: any = []): Promise<any> {
+    // get multiple results
+    public all(query: string, params: any = []): Promise<any[]> {
         return new Promise((resolve, reject) => {
-            this.db.get(query, params, function (err, rows) {
+            this.db.all(query, params, function (err, rows) {
                 if (err) {
                     console.log(`${err} running SQL query: ${query}`);
                     reject(err);

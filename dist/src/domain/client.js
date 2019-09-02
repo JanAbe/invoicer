@@ -5,11 +5,25 @@ var util_1 = require("util");
 // is het zo dat de opdrachtgever van de klus ook 
 // degene is aan wie de rekening verzonden moet worden.
 var Client = /** @class */ (function () {
-    function Client(fullName, email, address) {
+    function Client(id, fullName, email, address) {
+        this._id = id;
         this._fullName = fullName;
         this._email = email;
         this._address = address;
     }
+    Object.defineProperty(Client.prototype, "id", {
+        get: function () {
+            return this._id;
+        },
+        set: function (id) {
+            if (util_1.isNullOrUndefined(id)) {
+                throw new Error("Provided id is null or undefined");
+            }
+            this._id = id;
+        },
+        enumerable: true,
+        configurable: true
+    });
     Object.defineProperty(Client.prototype, "fullName", {
         get: function () {
             return this._fullName;

@@ -2,19 +2,26 @@ import { FullName } from "./fullName";
 import { Email } from "./email";
 import { Address } from "./address";
 import { isNullOrUndefined } from "util";
+import { ClientID } from "./clientID";
 
 // moet rekeningnummer worden toegevoegd aan Client?
 // is het zo dat de opdrachtgever van de klus ook 
 // degene is aan wie de rekening verzonden moet worden.
 export class Client {
+    private _id: ClientID;
     private _fullName: FullName;
     private _email: Email;
     private _address: Address;
 
-    constructor(fullName: FullName, email: Email, address: Address) {
+    constructor(id: ClientID, fullName: FullName, email: Email, address: Address) {
+        this._id = id;
         this._fullName = fullName;
         this._email = email;
         this._address = address;
+    }
+
+    public get id(): ClientID {
+        return this._id;
     }
 
     public get fullName(): FullName {
@@ -27,6 +34,14 @@ export class Client {
 
     public get address(): Address {
         return this._address;
+    }
+
+    public set id(id: ClientID) {
+        if (isNullOrUndefined(id)) {
+            throw new Error("Provided id is null or undefined");
+        }
+
+        this._id = id;
     }
 
     public set fullName(fullName: FullName) {

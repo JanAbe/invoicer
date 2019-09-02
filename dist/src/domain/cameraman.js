@@ -5,8 +5,8 @@ var util_1 = require("util");
 // het heeft wel een aparte tabel in de database denk ik
 // maar het is onderdeel van Job
 var Cameraman = /** @class */ (function () {
-    function Cameraman(fullName, dayPrice, period) {
-        this.setFullName(fullName);
+    function Cameraman(name, dayPrice, period) {
+        this.setName(name);
         this.setDayPrice(dayPrice);
         this.setPeriod(period);
     }
@@ -15,9 +15,9 @@ var Cameraman = /** @class */ (function () {
         // const cost = this.dayPrice * daysWorked;
         return -1;
     };
-    Object.defineProperty(Cameraman.prototype, "fullName", {
+    Object.defineProperty(Cameraman.prototype, "name", {
         get: function () {
-            return this._fullName;
+            return this._name;
         },
         enumerable: true,
         configurable: true
@@ -36,11 +36,11 @@ var Cameraman = /** @class */ (function () {
         enumerable: true,
         configurable: true
     });
-    Cameraman.prototype.setFullName = function (fullName) {
-        if (util_1.isNullOrUndefined(fullName)) {
-            throw new Error("Provided fullName is null or undefined.");
+    Cameraman.prototype.setName = function (name) {
+        if (util_1.isNullOrUndefined(name)) {
+            throw new Error("Provided name is null or undefined.");
         }
-        this._fullName = fullName;
+        this._name = name;
     };
     Cameraman.prototype.setDayPrice = function (dayPrice) {
         var MINIMUM_DAY_PRICE = 0;
