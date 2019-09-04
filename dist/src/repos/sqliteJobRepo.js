@@ -67,7 +67,6 @@ var SqliteJobRepo = /** @class */ (function () {
                                     }
                                     else {
                                         var cameraman = new cameraman_1.Cameraman(row.firstName + ' ' + row.lastName, row.day_price, new period_1.Period(new Date(row.start_date), new Date(row.end_date)));
-                                        // jobDTO.cameraman = cameraman;
                                         jobDTO.rentedEntities.push(cameraman);
                                         resolve();
                                     }
@@ -83,11 +82,8 @@ var SqliteJobRepo = /** @class */ (function () {
                                         reject(err);
                                     }
                                     else {
-                                        // let equipmentItems: EquipmentItem[] = [];
                                         rows.forEach(function (row) {
                                             var equipmentItem = new equipmentItem_1.EquipmentItem(row.name, row.day_price, new period_1.Period(new Date(row.start_date), new Date(row.end_date)));
-                                            // equipmentItems.push(equipmentItem);
-                                            // jobDTO.equipmentItems = equipmentItems;
                                             jobDTO.rentedEntities.push(equipmentItem);
                                         });
                                         resolve();

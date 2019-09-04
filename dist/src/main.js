@@ -5,6 +5,7 @@ var db_1 = require("./db");
 var sqliteInvoiceRepo_1 = require("./repos/sqliteInvoiceRepo");
 var sqliteJobRepo_1 = require("./repos/sqliteJobRepo");
 var invoiceID_1 = require("./domain/invoiceID");
+var invoice_1 = require("./domain/invoice");
 var jobID_1 = require("./domain/jobID");
 // Handle creating/removing shortcuts on Windows when installing/uninstalling.
 if (require('electron-squirrel-startup')) { // eslint-disable-line global-require
@@ -33,7 +34,6 @@ var createWindow = function () {
     // Extract this into its own method?
     // When / which electron event should be used to call this code
     var dbLocation = __dirname + "/../db/Invoice.db";
-    console.log(dbLocation);
     var db = new db_1.DB(dbLocation);
     db.createTables();
     var sqliteJobRepo = new sqliteJobRepo_1.SqliteJobRepo(db);
@@ -54,6 +54,7 @@ var createWindow = function () {
     var sqliteInvoiceRepo = new sqliteInvoiceRepo_1.SqliteInvoiceRepo(db, sqliteJobRepo);
     var invoice = sqliteInvoiceRepo.invoiceOfID(new invoiceID_1.InvoiceID("6ccc310d-4734-4c36-8390-525be0739ed7"));
     invoice.then(function (value) { return console.log(value); }).catch(function (err) { return console.log(err); });
+    sqliteInvoiceRepo.save(new invoice_1.Invoice(sqliteInvoiceRepo.nextID(), new jobID_1.JobID('4c9236a2-f7ad-41df-8ca9-674e0c76b97b'), '34534234'));
 };
 // This method will be called when Electron has finished
 // initialization and is ready to create browser windows.

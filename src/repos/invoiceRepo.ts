@@ -1,5 +1,6 @@
 import { InvoiceID } from "../domain/invoiceID";
 import { Invoice } from "../domain/invoice";
+import { Job } from "../domain/job";
 
 export interface InvoiceRepo {
 
@@ -14,5 +15,5 @@ export interface InvoiceRepo {
     invoiceOfID(invoiceID: InvoiceID): Promise<Invoice>;
 
     // save saves an invoice
-    save(invoice: Invoice): void;
+    save(invoice: Invoice, job: Job): void;
 }

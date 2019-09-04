@@ -5,6 +5,7 @@ import { JobRepo } from "./jobRepo";
 import uuid = require("uuid/v4");
 import { DB } from "../db";
 import { JobID } from "../domain/jobID";
+import { Job } from "../domain/job";
 
 export class SqliteInvoiceRepo implements InvoiceRepo {
     private _db: DB;
@@ -23,16 +24,23 @@ export class SqliteInvoiceRepo implements InvoiceRepo {
         return [];
     }
 
-    public invoiceOfID(invoiceID: InvoiceID): Promise<Invoice> {
+    public async invoiceOfID(invoiceID: InvoiceID): Promise<Invoice> {
         const query = 'SELECT id, creation_date, iban, ref_job FROM Invoice WHERE id=?'; 
-        // how is this automatically converted to an Invoice object?
-        return this._db.get(query, [invoiceID.toString()]);
+
+        // how does this work?
+        // how is this a promise? it was suggested by vscode to change it into this
+        const row = await this._db.get(query, [invoiceID.toString()]);
+        return new Invoice(new InvoiceID(row.id), new JobID(row.ref_job), row.iban, row.creation_date);
     }
 
-    public save(invoice: Invoice): void {
-        // to save an invoice, the job of the invoice must also
-        // be saved. Therefore the JobRepo is necessary
-        throw new Error();
+    public save(invoice: Invoice, job: Job): void {
+        this._jobRepo.save(job);
+        const invoiceQuery = 'INSERT INTO Invoice (id, iban, creation_date, ref_job) VALUES (?, ?, ?, ?);';
+        this._db.run(invoiceQuery, [
+            invoice.invoiceID.toString(),
+            invoice.iban,
+            invoice.creationDate.toISOString(),
+            invoice.jobID.toString()
+        ]);
     }
-    
 }

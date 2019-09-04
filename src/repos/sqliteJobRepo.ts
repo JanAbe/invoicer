@@ -31,7 +31,6 @@ export class SqliteJobRepo implements JobRepo {
                     reject(err);
                 } else {
                     const cameraman = new Cameraman(row.firstName + ' ' + row.lastName, row.day_price, new Period(new Date(row.start_date), new Date(row.end_date)));
-                    // jobDTO.cameraman = cameraman;
                     jobDTO.rentedEntities.push(cameraman);
                     resolve();
                 }
@@ -45,11 +44,8 @@ export class SqliteJobRepo implements JobRepo {
                     console.log(err);
                     reject(err);
                 } else {
-                    // let equipmentItems: EquipmentItem[] = [];
                     rows.forEach((row) => {
                         let equipmentItem = new EquipmentItem(row.name, row.day_price, new Period(new Date(row.start_date), new Date(row.end_date)));
-                        // equipmentItems.push(equipmentItem);
-                        // jobDTO.equipmentItems = equipmentItems;
                         jobDTO.rentedEntities.push(equipmentItem);
                     });
                     resolve();

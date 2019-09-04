@@ -44,7 +44,6 @@ const createWindow = () => {
     // Extract this into its own method?
     // When / which electron event should be used to call this code
     const dbLocation = `${__dirname}/../db/Invoice.db`;
-    console.log(dbLocation);
     const db = new DB(dbLocation);
     db.createTables();
 
@@ -68,6 +67,11 @@ const createWindow = () => {
     const sqliteInvoiceRepo = new SqliteInvoiceRepo(db, sqliteJobRepo);
     const invoice = sqliteInvoiceRepo.invoiceOfID(new InvoiceID("6ccc310d-4734-4c36-8390-525be0739ed7"));
     invoice.then(value => console.log(value)).catch(err => console.log(err));
+    sqliteInvoiceRepo.save(new Invoice(
+      sqliteInvoiceRepo.nextID(),
+      new JobID('4c9236a2-f7ad-41df-8ca9-674e0c76b97b'),
+      '34534234'
+    ), new Job());
 };
 
 // This method will be called when Electron has finished
