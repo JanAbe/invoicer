@@ -1,9 +1,10 @@
 "use strict";
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
     return new (P || (P = Promise))(function (resolve, reject) {
         function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
         function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
-        function step(result) { result.done ? resolve(result.value) : new P(function (resolve) { resolve(result.value); }).then(fulfilled, rejected); }
+        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
@@ -65,11 +66,10 @@ var SqliteInvoiceRepo = /** @class */ (function () {
             });
         });
     };
-    SqliteInvoiceRepo.prototype.save = function (invoice) {
-        // to save an invoice, the job of the invoice must also
-        // be saved. Therefore the JobRepo is necessary
-        var query = 'INSERT INTO Invoice (id, iban, creation_date, ref_job) VALUES (?, ?, ?, ?);';
-        this._db.run(query, [
+    SqliteInvoiceRepo.prototype.save = function (invoice, job) {
+        this._jobRepo.save(job);
+        var invoiceQuery = 'INSERT INTO Invoice (id, iban, creation_date, ref_job) VALUES (?, ?, ?, ?);';
+        this._db.run(invoiceQuery, [
             invoice.invoiceID.toString(),
             invoice.iban,
             invoice.creationDate.toISOString(),

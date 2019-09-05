@@ -1,0 +1,20 @@
+.container {
+    width: 50%;
+    margin: 5% auto;
+}
+
+.equipment-item {
+    margin-bottom: 7%;
+}
+
+label {
+    margin-bottom: 0px;
+}
+
+h6 {
+    margin-top: 7%;
+}
+
+#equipment-item-add-btn {
+    float: right;
+}

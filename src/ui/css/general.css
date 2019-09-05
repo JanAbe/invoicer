@@ -1,0 +1,10 @@
+a {
+  text-decoration: none;
+}
+
+/* werkt niet perfect, als je er op klikt, wordt de link heel even blauw 
+is alleen zo bij firefox*/
+.nav-group > span > a:visited {
+  text-decoration: none;
+  color: #333;
+}

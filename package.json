@@ -5,7 +5,7 @@
   "description": "Invoicer helps by creating and managing invoices.",
   "main": "dist/src/main.js",
   "scripts": {
-    "prestart": "cp -r ./src/ui ./dist/src && cp -r ./db/ ./dist/",
+    "prestart": "tsc && cp -r ./src/ui ./dist/src && cp -r ./db/ ./dist/",
     "start": "electron-forge start",
     "package": "electron-forge package",
     "make": "electron-forge make",

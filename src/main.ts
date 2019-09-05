@@ -25,13 +25,19 @@ const createWindow = () => {
     mainWindow = new BrowserWindow({
       width: 800,
       height: 600,
+      frame: false,
+
+      webPreferences: {
+        nodeIntegration: true
+      }
+
     });
 
     // and load the index.html of the app.
-    mainWindow.loadURL(`file://${__dirname}/ui/index.html`);
+    mainWindow.loadURL(`file://${__dirname}/ui/home.html`);
 
     // Open the DevTools.
-    mainWindow.webContents.openDevTools();
+    // mainWindow.webContents.openDevTools();
 
     // Emitted when the window is closed.
     mainWindow.on('closed', () => {
@@ -67,11 +73,11 @@ const createWindow = () => {
     const sqliteInvoiceRepo = new SqliteInvoiceRepo(db, sqliteJobRepo);
     const invoice = sqliteInvoiceRepo.invoiceOfID(new InvoiceID("6ccc310d-4734-4c36-8390-525be0739ed7"));
     invoice.then(value => console.log(value)).catch(err => console.log(err));
-    sqliteInvoiceRepo.save(new Invoice(
-      sqliteInvoiceRepo.nextID(),
-      new JobID('4c9236a2-f7ad-41df-8ca9-674e0c76b97b'),
-      '34534234'
-    ), new Job());
+    // sqliteInvoiceRepo.save(new Invoice(
+    //   sqliteInvoiceRepo.nextID(),
+    //   new JobID('4c9236a2-f7ad-41df-8ca9-674e0c76b97b'),
+    //   '34534234'
+    // ), new Job());
 };
 
 // This method will be called when Electron has finished

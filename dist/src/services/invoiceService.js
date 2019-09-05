@@ -5,9 +5,9 @@ var InvoiceService = /** @class */ (function () {
     function InvoiceService(invoiceRepo) {
         this._invoiceRepo = invoiceRepo;
     }
-    InvoiceService.prototype.createInvoice = function (invoice) {
+    InvoiceService.prototype.createInvoice = function (invoice, job) {
         // creates an invoice and stores it in the database
-        this._invoiceRepo.save(invoice);
+        this._invoiceRepo.save(invoice, job);
         throw new Error("Not implemented yet");
     };
     InvoiceService.prototype.fetchInvoiceByID = function (invoiceID) {

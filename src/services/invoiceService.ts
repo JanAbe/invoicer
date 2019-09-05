@@ -1,6 +1,7 @@
 import { InvoiceID } from "../domain/invoiceID";
 import { Invoice } from "../domain/invoice";
 import { InvoiceRepo } from "../repos/invoiceRepo";
+import { Job } from "../domain/job";
 
 // InvoiceService contains all services a user can call regarding invoices
 export class InvoiceService {
@@ -10,9 +11,9 @@ export class InvoiceService {
         this._invoiceRepo = invoiceRepo;
     }
 
-    public createInvoice(invoice: Invoice): void {
+    public createInvoice(invoice: Invoice, job: Job): void {
         // creates an invoice and stores it in the database
-        this._invoiceRepo.save(invoice);
+        this._invoiceRepo.save(invoice, job);
         throw new Error("Not implemented yet");
     }
 
