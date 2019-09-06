@@ -50,7 +50,7 @@ const cameremanHtmlSegment = `
     <div class="two-input-fields">
         <div class="form-group">
             <label>Name</label>
-            <input type="text" class="form-control" placeholder="Name" value="Bob Baker">
+            <input id="cameraman-name-input" type="text" class="form-control" placeholder="Name">
         </div>
         
         <div class="form-group">
@@ -76,4 +76,9 @@ camermanBtn.addEventListener('click', () => {
     if (++cameremanCounter == 1) {
         cameramanSegment.insertAdjacentHTML("beforeend", cameremanHtmlSegment);
     } 
+    const cameramanNameInput = document.querySelector('#cameraman-name-input');
+    cameramanNameInput.value = localStorage.getItem('firstName') + ' ' + localStorage.getItem('lastName');
 });
+
+const iban = document.querySelector('#iban-input');
+iban.value = localStorage.getItem('iban');
