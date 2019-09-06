@@ -66,3 +66,4 @@ var EquipmentItem = /** @class */ (function () {
     return EquipmentItem;
 }());
 exports.EquipmentItem = EquipmentItem;
+//# sourceMappingURL=equipmentItem.js.map

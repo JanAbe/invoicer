@@ -61,3 +61,4 @@ var Cameraman = /** @class */ (function () {
     return Cameraman;
 }());
 exports.Cameraman = Cameraman;
+//# sourceMappingURL=cameraman.js.map

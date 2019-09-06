@@ -87,3 +87,4 @@ var JobDTO = /** @class */ (function () {
     return JobDTO;
 }());
 exports.JobDTO = JobDTO;
+//# sourceMappingURL=jobDTO.js.map

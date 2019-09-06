@@ -66,3 +66,4 @@ var Client = /** @class */ (function () {
     return Client;
 }());
 exports.Client = Client;
+//# sourceMappingURL=client.js.map

@@ -38,3 +38,4 @@ var Period = /** @class */ (function () {
     return Period;
 }());
 exports.Period = Period;
+//# sourceMappingURL=period.js.map
