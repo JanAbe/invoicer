@@ -41,6 +41,7 @@ on this page the user can specify things like:
     default iban for the cameraman
     default dayprice for the cameraman
     default dayprice for equipmentItems
+this info gets stored in the localstorage
 */
 let cameremanCounter = 0;
 const camermanBtn = document.querySelector('#cameraman-add-btn');

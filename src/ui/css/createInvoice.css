@@ -17,7 +17,7 @@ h5 {
 }
 
 .equipment-item {
-    margin-bottom: 3%;
+    margin-bottom: 2%;
 }
 
 .form-group {
@@ -145,4 +145,8 @@ h5 {
     /* there is some inline styling going on in the span parent of this element */
     float: right;
     margin-right: 45%;
+}
+
+#email-input {
+    margin-bottom: 3%;
 }
