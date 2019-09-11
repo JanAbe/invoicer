@@ -65,11 +65,6 @@ const createWindow = () => {
     }).catch((err) => console.log(err));
         
     
-    const invoiceService = new InvoiceService(sqliteInvoiceRepo, sqliteJobRepo, sqliteClientRepo);
-    const x = invoiceService.generatePDF(new InvoiceID('acbef742-7cec-48ec-aa05-129d2ca0b44c'));
-    x.catch(err => {
-      console.log(err);
-    })
     // Extract this into its own method?
     // When / which electron event should be used to call this code
     // const dbLocation = `${__dirname}/../db/Invoice.db`;
@@ -128,6 +123,22 @@ app.on('activate', () => {
 // In this file you can include the rest of your app's specific main process
 // code. You can also put them in separate files and import them here.
 
+ipcMain.on('fetch-invoice-channel', (event, args) => {
+    const invoiceKey = 'invoiceID';
+    if (!args.hasOwnProperty(invoiceKey)) {
+        event.reply('fetch-invoice-reply-channel', `${invoiceKey} key missing -> no invoiceID provided`);
+    }
+
+    const invoiceService = new InvoiceService(sqliteInvoiceRepo, sqliteJobRepo, sqliteClientRepo);
+    const invoiceHTML = invoiceService.generatePDF(new InvoiceID(args[invoiceKey]));
+    invoiceHTML
+        .then(html => {
+            event.reply('fetch-invoice-reply-channel', html);
+        })
+        .catch(err => {
+            console.log(err);
+        })
+})
 
 // listen for submitted invoices
 ipcMain.on('submit-invoice-channel', (event, args) => {
@@ -136,7 +147,7 @@ ipcMain.on('submit-invoice-channel', (event, args) => {
         const props: string[] = ['firstName', 'lastName', 'email', 'city', 'street', 'houseNumber', 'zipcode', 'description', 'location', 'directedBy'];
         props.forEach((key) => {
             if (args.hasOwnProperty(key)) {
-            event.reply('submit-invoice-reply-channel', `${key} missing. All fields should be provided of a value.`);
+                event.reply('submit-invoice-reply-channel', `${key} missing. All fields should be provided of a value.`);
             };
         });
         const jobID = sqliteJobRepo.nextID();

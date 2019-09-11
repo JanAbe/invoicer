@@ -56,11 +56,6 @@ var createWindow = function () {
     job.then(function (val) {
         // console.log(val)
     }).catch(function (err) { return console.log(err); });
-    var invoiceService = new invoiceService_1.InvoiceService(sqliteInvoiceRepo, sqliteJobRepo, sqliteClientRepo);
-    var x = invoiceService.generatePDF(new invoiceID_1.InvoiceID('acbef742-7cec-48ec-aa05-129d2ca0b44c'));
-    x.catch(function (err) {
-        console.log(err);
-    });
     // Extract this into its own method?
     // When / which electron event should be used to call this code
     // const dbLocation = `${__dirname}/../db/Invoice.db`;
@@ -111,6 +106,21 @@ electron_1.app.on('activate', function () {
 });
 // In this file you can include the rest of your app's specific main process
 // code. You can also put them in separate files and import them here.
+electron_1.ipcMain.on('fetch-invoice-channel', function (event, args) {
+    var invoiceKey = 'invoiceID';
+    if (!args.hasOwnProperty(invoiceKey)) {
+        event.reply('fetch-invoice-reply-channel', invoiceKey + " key missing -> no invoiceID provided");
+    }
+    var invoiceService = new invoiceService_1.InvoiceService(sqliteInvoiceRepo, sqliteJobRepo, sqliteClientRepo);
+    var invoiceHTML = invoiceService.generatePDF(new invoiceID_1.InvoiceID(args[invoiceKey]));
+    invoiceHTML
+        .then(function (html) {
+        event.reply('fetch-invoice-reply-channel', html);
+    })
+        .catch(function (err) {
+        console.log(err);
+    });
+});
 // listen for submitted invoices
 electron_1.ipcMain.on('submit-invoice-channel', function (event, args) {
     try {

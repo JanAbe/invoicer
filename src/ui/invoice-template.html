@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Invoice invoice-number</title>
+    
+    <link rel="stylesheet" href="./css/photon.min.css">
+    <link rel="stylesheet" href="./css/invoice.css">
+</head>
+<body>
+    {% set cameraman_costs = 0 %}
+    {% set equipment_total_costs = 0 %}
+    {% set subtotal_costs = 0 %}
+    {% set vat_costs = 0 %}
+    {% set total_costs = 0 %}
+
+    <div class="container">
+        <div id="company-name">
+            <h4><strong>Bobby Fernandez Productions</strong></h4>
+        </div>
+
+        <div id="creation-date">
+            Amsterdam, {{ creation_date }}
+        </div>
+
+        <div id="client-info">
+            <div id="client-name">{{ client_name }}</div>
+            <div id="street-house-nr">{{ street }} {{ house_number }}</div>
+            <div id="zipcode-city">{{ zipcode }}, {{ city }}</div>
+        </div>
+
+        <div id="general-info">
+            <div id="invoice-nr">Rekeningnummer: {{ invoice_nr }}</div>
+            <div id="contact-person">Contactpersoon: {{ client_name }}</div>
+            <div id="project-nr">Projectnummer: {{ project_nr }}</div>
+        </div>
+
+        <div id="job-info">
+            <div id="job-description">Klus omschrijving: {{ job_descr }}</div>
+            <div id="directed-by">Regie: {{ directed_by }}</div>
+            <div id="location">Locatie: {{ location }}</div>
+        </div>
+
+        {% if cameraman !== undefined %}
+            {% set cameraman_costs = cameraman.calculateCost() %}
+            <div id="cameraman-segment">
+                <h5>Cameraman</h5>
+                <table>
+                    <tr>
+                        <th>Naam</th>
+                        <th>Startdatum</th>
+                        <th>Einddatum</th>
+                        <th>Dagprijs ($)</th>
+                        <th>Kosten ($)</th>
+                    </tr>
+                    <tr>
+                        <td>{{ cameraman.firstName }} {{ cameraman.lastName }}</td>
+                        <td>{{ cameraman.period.startDate.toLocaleDateString() }}</td>
+                        <td>{{ cameraman.period.endDate.toLocaleDateString() }}</td>
+                        <td>{{ cameraman.dayPrice }}</td>
+                        <td>{{ cameraman_costs }}</td>
+                    </tr>
+                </table>
+
+                <div class="subtotal">
+                    Subtotal: ${{ cameraman_costs }}
+                </div>
+            </div>
+        {% endif %}
+
+        {% if equipment_items.length !== 0 %}
+            {% set equipment_costs = 0 %}
+            <div id="equipment-segment">
+                <h5>Apparatuur</h5>
+                <table>
+                    <tr>
+                        <th>Naam</th>
+                        <th>Startdatum</th>
+                        <th>Einddatum</th>
+                        <th>Dagprijs ($)</th>
+                        <th>Kosten ($)</th>
+                    </tr>
+
+                    {% for item in equipment_items %}
+                        {% set equipment_costs = item.calculateCost() %}
+                        {% set equipment_total_costs = equipment_total_costs + equipment_costs %}
+                        <tr>
+                            <td>{{ item.name }}</td>
+                            <td>{{ item.period.startDate.toLocaleDateString() }}</td>
+                            <td>{{ item.period.endDate.toLocaleDateString() }}</td>
+                            <td>{{ item.dayPrice }}</td>
+                            <td>{{ equipment_costs }}</td>
+                        </tr>
+                    {% endfor %}
+                </table>
+
+                <div class="subtotal">
+                    Subtotal: ${{ equipment_total_costs }}
+                </div>
+            </div>
+        {% endif %}
+
+        <div id="total-cost-segment">
+            {% set subtotal_costs = cameraman_costs + equipment_total_costs %}
+            {% set vat_costs = subtotal_costs * (vat_percentage / 100) %}
+            {% set total_costs = subtotal_costs + vat_costs %}
+            <h5>Totale kosten</h5>
+            <table>
+                <tr>
+                    <th>Subtotal<span style="float: right">+</span></th>
+                    <th>BTW ({{ vat_percentage }}%)<span style="float: right">=</span></th>
+                    <th>Total</th>
+                </tr>
+
+                <tr>
+                    <td>${{ subtotal_costs }}<span style="float: right">+</span></td>
+                    <td>${{ vat_costs }}<span style="float: right">=</span></td>
+                    <td><strong>${{ total_costs }}</strong></td>
+                </tr>
+            </table>
+        </div>
+
+        <div id="payment-info">
+            <p style="text-align: center">
+                Betaalwijze: Binnen 30 dagen na factuurdatum <br>
+                SEI nr: 93203090 <br>
+                t.n.v: B.K Fernandez <br>
+                IBAN: {{ iban }} <br>
+            </p>
+        </div>
+    </div> 
+</body>
+</html>
