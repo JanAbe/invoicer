@@ -20,6 +20,7 @@ export class SqliteInvoiceRepo implements InvoiceRepo {
         return new InvoiceID(uuid());
     }
 
+    // todo: implement this method
     public invoices(): Invoice[] {
         return [];
     }

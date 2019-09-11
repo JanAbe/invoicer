@@ -23,11 +23,13 @@ export class InvoiceService {
         this._invoiceRepo.save(invoice, job);
     }
 
+    // todo: implement this method / check if it works
     public fetchInvoiceByID(invoiceID: InvoiceID): Invoice {
         this._invoiceRepo.invoiceOfID(invoiceID);
         throw new Error("Not implemented yet");
     }
 
+    // todo: implement this method / check if it works
     public fetchAllInvoices(): Invoice[] {
         this._invoiceRepo.invoices();
         throw new Error("Not implemented yet");

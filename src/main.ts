@@ -108,6 +108,8 @@ ipcMain.on('fetch-invoice-channel', (event, args) => {
 })
 
 // listen for submitted invoices
+// todo: add checks to see if cameraman and equipmentitem data has been passed
+// also check if at least 1 of the 2 has been passed
 ipcMain.on('submit-invoice-channel', (event, args) => {
     try {
 

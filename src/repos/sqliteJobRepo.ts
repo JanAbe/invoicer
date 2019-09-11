@@ -21,6 +21,10 @@ export class SqliteJobRepo implements JobRepo {
         return new JobID(uuid());
     }
 
+    // todo: write code to handle missing cameraman rows and equipment-item rows
+        // as not each job needs to have both
+    // can also check to see if the queries can be rewritten so only 1 query is neccessary
+        // gotta look into different type of joins i think
     public async jobOfID(jobID: JobID): Promise<Job> {
         const jobDTO = new JobDTO();
 
