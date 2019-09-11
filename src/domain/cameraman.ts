@@ -21,9 +21,10 @@ export class Cameraman implements Rentable {
     }
 
     public calculateCost(): number {
-        // const daysWorked = this.period.getDays();
-        // const cost = this.dayPrice * daysWorked;
-        return -1;
+        const daysWorked = this.period.getDays();
+        const cost = this.dayPrice * daysWorked;
+
+        return cost;
     }
 
     // public get name(): string {

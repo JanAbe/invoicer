@@ -41,18 +41,10 @@ export class InvoiceService {
         store the pdf in the location chosen by the user
             (e.g. /home/user/Documents/invoices/)
         */
-        // $HOME doesn't work :(    
         const invoice = await this._invoiceRepo.invoiceOfID(invoiceID);
         const job = await this._jobRepo.jobOfID(invoice.jobID);
         const client = await this._clientRepo.clientOfID(job.clientID!);
         const vatPercentage = 21;
-
-        let equipmentCost = 0;
-        job.equipmentItems.forEach(item => {
-            console.log(item.period.startDate.getMonth());
-            equipmentCost += item.calculateCost();
-        });
-        console.log(equipmentCost);
 
         nunjucks.configure('src/ui', { autoescape: true });
         const html = nunjucks.render('invoice-template.html', 

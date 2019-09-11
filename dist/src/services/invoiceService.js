@@ -58,7 +58,7 @@ var InvoiceService = /** @class */ (function () {
     };
     InvoiceService.prototype.generatePDF = function (invoiceID) {
         return __awaiter(this, void 0, void 0, function () {
-            var invoice, job, client, vatPercentage, equipmentCost, html;
+            var invoice, job, client, vatPercentage, html;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0: return [4 /*yield*/, this._invoiceRepo.invoiceOfID(invoiceID)];
@@ -71,12 +71,6 @@ var InvoiceService = /** @class */ (function () {
                     case 3:
                         client = _a.sent();
                         vatPercentage = 21;
-                        equipmentCost = 0;
-                        job.equipmentItems.forEach(function (item) {
-                            console.log(item.period.startDate.getMonth());
-                            equipmentCost += item.calculateCost();
-                        });
-                        console.log(equipmentCost);
                         nunjucks.configure('src/ui', { autoescape: true });
                         html = nunjucks.render('invoice-template.html', {
                             creation_date: new Date(invoice.creationDate).toLocaleDateString(),

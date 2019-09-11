@@ -13,9 +13,9 @@ var Cameraman = /** @class */ (function () {
         this.setPeriod(period);
     }
     Cameraman.prototype.calculateCost = function () {
-        // const daysWorked = this.period.getDays();
-        // const cost = this.dayPrice * daysWorked;
-        return -1;
+        var daysWorked = this.period.getDays();
+        var cost = this.dayPrice * daysWorked;
+        return cost;
     };
     Object.defineProperty(Cameraman.prototype, "firstName", {
         // public get name(): string {
