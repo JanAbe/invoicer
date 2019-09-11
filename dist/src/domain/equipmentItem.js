@@ -16,9 +16,8 @@ var EquipmentItem = /** @class */ (function () {
         this.setPeriod(period);
     }
     EquipmentItem.prototype.calculateCost = function () {
-        // const daysWorked = this.period.getDays();
-        // const cost = this.dayPrice * daysWorked;
-        return -1;
+        var daysWorked = this.period.getDays();
+        return this.dayPrice * daysWorked;
     };
     Object.defineProperty(EquipmentItem.prototype, "name", {
         get: function () {

@@ -16,6 +16,10 @@ export class Invoice {
         this._creationDate = creationDate;
     }
 
+    public generateInvoiceNumber(): string {
+       throw new Error(); 
+    }
+
     public get invoiceID(): InvoiceID {
         return this._invoiceID;
     }

@@ -1,4 +1,5 @@
 import { isNullOrUndefined } from "util";
+import moment from 'moment';
 
 export class Period {
     private _startDate!: Date;
@@ -8,11 +9,19 @@ export class Period {
         this.setStartDate(startDate);
         this.setEndDate(endDate);
     }
+
+    // getDays return the number of days between
+    // the startDate and the endDate
+    public getDays(): number {
+        // +1 because the work days are inclusive
+        // working from 12/12/2019 till 12/12/2019 = 1 workday
+        // eventhough there is no diff in days
+        return moment.duration(moment(this.startDate).diff(moment(this.endDate))).asDays() + 1;
+    }
     
     public get startDate(): Date {
         return this._startDate;
     }
-    
     
     public get endDate(): Date {
         return this._endDate;

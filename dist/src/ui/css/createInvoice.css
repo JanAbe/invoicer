@@ -11,17 +11,31 @@ h5 {
 .container {
     display: grid;
     grid-template-columns: 23% 1fr;
-    grid-template-rows: 10% 20% 20% 20% 20% 10%;
+    grid-template-rows: 5% 5% 20% 20% 20% 20% 10%;
     grid-column-gap: 0px;
     grid-row-gap: 0%;
 }
 
 .equipment-item {
-    margin-bottom: 4%;
+    margin-bottom: 2%;
 }
 
 .form-group {
     width: 66%;
+}
+
+.two-input-fields {
+    display: flex;
+    flex-direction: row;
+    width: 66%;
+}
+
+.two-input-fields > .form-group {
+    width: 48%;
+}
+
+.two-input-fields > div:nth-child(2) {
+    margin-left: 4%;
 }
 
 #form-title {
@@ -34,11 +48,35 @@ h5 {
     border-bottom: solid medium #f5f5f4;
 }
 
-#client-segment-title {
+#bank-account-segment-title {
     grid-column-start: 1;
     grid-column-end: 2;
     grid-row-start: 2;
     grid-row-end: 3;
+
+    margin-top: 5%;
+    border-bottom: solid medium #f5f5f4;
+}
+
+#bank-account-segment {
+    grid-column-start: 2;
+    grid-column-end: 3;
+    grid-row-start: 2;
+    grid-row-end: 3;
+    
+    margin-top: 2%;
+    border-bottom: solid medium #f5f5f4;
+}
+
+#bank-account-segment > div:last-of-type {
+    margin-bottom: 2%;
+}
+
+#client-segment-title {
+    grid-column-start: 1;
+    grid-column-end: 2;
+    grid-row-start: 3;
+    grid-row-end: 4;
     
     margin-top: 5%;
     border-bottom: solid medium #f5f5f4;
@@ -47,18 +85,22 @@ h5 {
 #client-segment {
     grid-column-start: 2;
     grid-column-end: 3;
-    grid-row-start: 2;
-    grid-row-end: 3;
+    grid-row-start: 3;
+    grid-row-end: 4;
 
     margin-top: 2%;
     border-bottom: solid medium #f5f5f4;
 }
 
+#client-segment > div:last-of-type {
+    margin-bottom: 2%;
+}
+
 #job-segment-title {
     grid-column-start: 1;
     grid-column-end: 2;
-    grid-row-start: 3;
-    grid-row-end: 4;
+    grid-row-start: 4;
+    grid-row-end: 5;
 
     margin-top: 5%;
     border-bottom: solid medium #f5f5f4;
@@ -67,18 +109,46 @@ h5 {
 #job-segment {
     grid-column-start: 2;
     grid-column-end: 3;
-    grid-row-start: 3;
-    grid-row-end: 4;
+    grid-row-start: 4;
+    grid-row-end: 5;
 
     margin-top: 2%;
     border-bottom: solid medium #f5f5f4;
 }
 
+#job-segment > div:last-of-type {
+    margin-bottom: 2%;
+}
+
+#cameraman-segment-title {
+    grid-column-start: 1;
+    grid-column-end: 2;
+    grid-row-start: 5;
+    grid-row-end: 6;
+
+    margin-top: 5%;
+    border-bottom: solid medium #f5f5f4;
+}
+
+#cameraman-segment {
+    grid-column-start: 2;
+    grid-column-end: 3;
+    grid-row-start: 5;
+    grid-row-end: 6;
+
+    margin-top: 2%;
+    border-bottom: solid medium #f5f5f4;
+}
+
+#cameraman-segment > div:last-of-type {
+    margin-bottom: 2%;
+}
+
 #equipment-item-segment-title {
     grid-column-start: 1;
     grid-column-end: 2;
-    grid-row-start: 4;
-    grid-row-end: 5;
+    grid-row-start: 6;
+    grid-row-end: 7;
 
     margin-top: 5%;
     border-bottom: solid medium #f5f5f4;
@@ -87,18 +157,22 @@ h5 {
 #equipment-item-segment {
     grid-column-start: 2;
     grid-column-end: 3;
-    grid-row-start: 4;
-    grid-row-end: 5;
+    grid-row-start: 6;
+    grid-row-end: 7;
 
     margin-top: 2%;
     border-bottom: solid medium #f5f5f4;
 }
 
+#equipment-item-segment > div:last-of-type {
+    margin-bottom: 2%;
+}
+
 #button-segment {
     grid-column-start: 1;
     grid-column-end: 3;
-    grid-row-start: 5;
-    grid-row-end: 6;
+    grid-row-start: 7;
+    grid-row-end: 8;
 }
 
 #equipment-item-add-btn {
@@ -107,12 +181,16 @@ h5 {
     margin-right: 45%;
 }
 
-#name-fields {
-    display: flex;
-    justify-content: space-between;
+#cameraman-add-btn {
+    /* there is some inline styling going on in the span parent of this element */
+    float: right;
+    margin-right: 45%;
 }
 
-#name-fields > .form-group > input {
-    width: 50%;
-    align-self: stretch;
+#cameraman-rm-btn {
+    float: right;
+}
+
+#email-input {
+    margin-bottom: 3%;
 }

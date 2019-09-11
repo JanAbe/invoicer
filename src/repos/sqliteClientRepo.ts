@@ -3,6 +3,10 @@ import { DB } from "../db";
 import { ClientID } from "../domain/clientID";
 import uuid = require("uuid");
 import { Client } from "../domain/client";
+import { Invoice } from "../domain/invoice";
+import { FullName } from "../domain/fullName";
+import { Email } from "../domain/email";
+import { Address } from "../domain/address";
 
 export class SqliteClientRepo implements ClientRepo {
     private _db: DB;
@@ -15,9 +19,13 @@ export class SqliteClientRepo implements ClientRepo {
         return new ClientID(uuid());
     }
 
-    public clientOfID(clientID: ClientID): Promise<Client> {
-        const query = 'SELECT id, firstName, lastName, email, city, street, houseNumber, zipcode FROM Client;';
-        return this._db.get(query, [clientID.toString()]);
+    public async clientOfID(clientID: ClientID): Promise<Client> {
+        const query = 'SELECT id, firstName, lastName, email, city, street, houseNumber, zipcode FROM Client WHERE id = ?;';
+        const row = await this._db.get(query, [clientID.toString()]);
+        return new Client(new ClientID(row.id), 
+                          new FullName(row.firstName, row.lastName), 
+                          new Email(row.email), 
+                          new Address(row.city, row.street, row.houseNumber, row.zipcode));
     }
 
     public save(client: Client): void {

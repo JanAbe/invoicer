@@ -8,6 +8,7 @@ import { EquipmentItem } from "../domain/equipmentItem";
 import { Period } from "../domain/period";
 import { Cameraman } from "../domain/cameraman";
 import { JobDTO } from "../domain/jobDTO";
+import { isNullOrUndefined } from "util";
 
 export class SqliteJobRepo implements JobRepo {
     private _db: DB;
@@ -30,8 +31,8 @@ export class SqliteJobRepo implements JobRepo {
                     console.log(err);
                     reject(err);
                 } else {
-                    const cameraman = new Cameraman(row.firstName + ' ' + row.lastName, row.day_price, new Period(new Date(row.start_date), new Date(row.end_date)));
-                    jobDTO.rentedEntities.push(cameraman);
+                    const cameraman = new Cameraman(row.firstName, row.lastName, row.day_price, new Period(new Date(row.start_date), new Date(row.end_date)));
+                    jobDTO.cameraman = cameraman;
                     resolve();
                 }
             });
@@ -46,7 +47,7 @@ export class SqliteJobRepo implements JobRepo {
                 } else {
                     rows.forEach((row) => {
                         let equipmentItem = new EquipmentItem(row.name, row.day_price, new Period(new Date(row.start_date), new Date(row.end_date)));
-                        jobDTO.rentedEntities.push(equipmentItem);
+                        jobDTO.equipmentItems.push(equipmentItem);
                     });
                     resolve();
                 }
@@ -75,7 +76,59 @@ export class SqliteJobRepo implements JobRepo {
         });
     }
 
-    public save(job: Job): Promise<any> {
-        throw new Error();
+    public save(job: Job): void {
+        const jobQuery = 'INSERT INTO Job (id, description, location, directed_by, ref_client) VALUES (?, ?, ?, ?, ?);';
+        this._db.run(jobQuery, [
+            job.id!.toString(),
+            job.description,
+            job.location,
+            job.directedBy,
+            job.clientID!.toString()
+        ]);
+
+        const rentedEntityQuery = 'INSERT INTO Rented_Entity (id, start_date, end_date, day_price, ref_job, ref_cameraman, ref_equipment_item) VALUES (?, ?, ?, ?, ?, ?, ?);';
+        
+        if (!isNullOrUndefined(job.cameraman)) {
+            const cameramanQuery = 'INSERT INTO Cameraman (id, firstName, lastName) VALUES (?, ?, ?);';
+            const cameramanID = uuid();
+            this._db.run(cameramanQuery, [
+                cameramanID,
+                job.cameraman.firstName,
+                job.cameraman.lastName
+            ]);
+
+            const rentedEntityID = uuid();
+            this._db.run(rentedEntityQuery, [
+                rentedEntityID,
+                job.cameraman.period.startDate.toISOString(),
+                job.cameraman.period.endDate.toISOString(),
+                job.cameraman.dayPrice,
+                job.id!.toString(),
+                cameramanID,
+                null
+            ]);
+        }
+
+        const equipmentItemQuery = 'INSERT INTO Equipment_Item (id, name) VALUES (?, ?);';
+        let equipmentItemID: string;
+        let rentedEntityID: string;
+        job.equipmentItems.forEach(e => {
+            equipmentItemID = uuid();
+            this._db.run(equipmentItemQuery, [
+                equipmentItemID,
+                e.name
+            ]);
+
+            rentedEntityID = uuid();
+            this._db.run(rentedEntityQuery, [
+                rentedEntityID,
+                e.period.startDate.toISOString(),
+                e.period.endDate.toISOString(),
+                e.dayPrice,
+                job.id!.toString(),
+                null,
+                equipmentItemID
+            ]);
+        });
     }
 }

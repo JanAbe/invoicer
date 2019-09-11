@@ -187,6 +187,10 @@ h5 {
     margin-right: 45%;
 }
 
+#cameraman-rm-btn {
+    float: right;
+}
+
 #email-input {
     margin-bottom: 3%;
 }

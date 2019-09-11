@@ -1,11 +1,23 @@
 "use strict";
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 var util_1 = require("util");
+var moment_1 = __importDefault(require("moment"));
 var Period = /** @class */ (function () {
     function Period(startDate, endDate) {
         this.setStartDate(startDate);
         this.setEndDate(endDate);
     }
+    // getDays return the number of days between
+    // the startDate and the endDate
+    Period.prototype.getDays = function () {
+        // +1 because the work days are inclusive
+        // working from 12/12/2019 till 12/12/2019 = 1 workday
+        // eventhough there is no diff in days
+        return moment_1.default.duration(moment_1.default(this.startDate).diff(moment_1.default(this.endDate))).asDays() + 1;
+    };
     Object.defineProperty(Period.prototype, "startDate", {
         get: function () {
             return this._startDate;

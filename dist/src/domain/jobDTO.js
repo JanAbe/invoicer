@@ -2,27 +2,14 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 var util_1 = require("util");
 var JobDTO = /** @class */ (function () {
+    // private _rentedEntities: Rentable[] = [];
     function JobDTO() {
-        // private _cameraman?: Cameraman;
-        // private _equipmentItems?: EquipmentItem[];
-        this._rentedEntities = [];
+        this._equipmentItems = [];
     }
     Object.defineProperty(JobDTO.prototype, "id", {
         get: function () {
             return this._id;
         },
-        // public get cameraman(): Cameraman | undefined {
-        //     if (this._cameraman !== undefined) {
-        //         return this._cameraman;
-        //     }
-        //     return undefined;
-        // }
-        // public get equipmentItems(): EquipmentItem[] {
-        //     if (this._equipmentItems !== undefined) {
-        //         return this._equipmentItems;
-        //     }
-        //     return [];
-        // }
         set: function (id) {
             this._id = id;
         },
@@ -69,16 +56,42 @@ var JobDTO = /** @class */ (function () {
         enumerable: true,
         configurable: true
     });
-    Object.defineProperty(JobDTO.prototype, "rentedEntities", {
+    Object.defineProperty(JobDTO.prototype, "cameraman", {
+        // public get rentedEntities(): Rentable[] {
+        //     return this._rentedEntities;
+        // }
         get: function () {
-            return this._rentedEntities;
+            if (this._cameraman !== undefined) {
+                return this._cameraman;
+            }
+            return undefined;
         },
-        set: function (rentedEntities) {
-            if (util_1.isNullOrUndefined(rentedEntities)) {
-                this._rentedEntities = [];
+        set: function (cameraman) {
+            this._cameraman = cameraman;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(JobDTO.prototype, "equipmentItems", {
+        get: function () {
+            if (this._equipmentItems !== undefined) {
+                return this._equipmentItems;
+            }
+            return [];
+        },
+        // public set rentedEntities(rentedEntities: Rentable[]) {
+        //     if (isNullOrUndefined(rentedEntities)) {
+        //         this._rentedEntities = [];
+        //     } else {
+        //         this._rentedEntities = rentedEntities;
+        //     }
+        // }
+        set: function (equipmentItems) {
+            if (util_1.isNullOrUndefined(equipmentItems)) {
+                this._equipmentItems = [];
             }
             else {
-                this._rentedEntities = rentedEntities;
+                this._equipmentItems = equipmentItems;
             }
         },
         enumerable: true,

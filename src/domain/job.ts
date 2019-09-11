@@ -14,9 +14,9 @@ export class Job {
     private _location?: string;
     private _directedBy?: string; // wat is regie in het engels?
     private _clientID?: ClientID;
-    private _rentedEntities?: Rentable[];
-    // private _cameraman?: Cameraman;
-    // private _equipmentItems?: EquipmentItem[];
+    // private _rentedEntities?: Rentable[];
+    private _cameraman?: Cameraman;
+    private _equipmentItems?: EquipmentItem[];
     // of wel een propety _period: Period toevoegen
     // dan tijdens het toevoegen van een cameraman en apparatuurItems
     // kijken of de opgegeven periodes daarvan, binnen de periode van de klus vallen
@@ -28,17 +28,17 @@ export class Job {
                 location?: string, 
                 directedBy?: string, 
                 clientID?: ClientID,
-                // cameraman?: Cameraman,
-                // equipmentItems?: EquipmentItem[]
-                rentedEntities?: Rentable[]) {
+                cameraman?: Cameraman,
+                equipmentItems: EquipmentItem[] =[]
+                /*rentedEntities?: Rentable[]*/) {
         this._id = id;
         this._description = description;
         this._location = location;
         this._directedBy = directedBy;
         this._clientID = clientID;
-        // this._cameraman = cameraman;
-        // this._equipmentItems = equipmentItems;
-        this._rentedEntities = rentedEntities;
+        this._cameraman = cameraman;
+        this._equipmentItems = equipmentItems;
+        // this._rentedEntities = rentedEntities;
     }
 
     public static fromDTO(jobDTO: JobDTO): Job {
@@ -48,9 +48,9 @@ export class Job {
             jobDTO.location,
             jobDTO.directedBy,
             jobDTO.clientID,
-            jobDTO.rentedEntities
-            // jobDTO.cameraman,
-            // jobDTO.equipmentItems
+            // jobDTO.rentedEntities
+            jobDTO.cameraman,
+            jobDTO.equipmentItems
         );
     }
 
@@ -90,29 +90,29 @@ export class Job {
         return this._clientID;
     }
 
-    public get rentedEntities(): Rentable[] | undefined {
-        if (this._rentedEntities !== undefined) {
-            return this._rentedEntities;
+    // public get rentedEntities(): Rentable[] | undefined {
+    //     if (this._rentedEntities !== undefined) {
+    //         return this._rentedEntities;
+    //     }
+
+    //     return []
+    // }
+
+    public get cameraman(): Cameraman | undefined {
+        if (this._cameraman !== undefined) {
+            return this._cameraman;
         }
 
-        return []
+        return undefined;
     }
 
-    // public get cameraman(): Cameraman | undefined {
-    //     if (this._cameraman !== undefined) {
-    //         return this._cameraman;
-    //     }
+    public get equipmentItems(): EquipmentItem[] {
+        if (this._equipmentItems !== undefined) {
+            return this._equipmentItems;
+        }
 
-    //     return undefined;
-    // }
-
-    // public get equipmentItems(): EquipmentItem[] {
-    //     if (this._equipmentItems !== undefined) {
-    //         return this._equipmentItems;
-    //     }
-
-    //     return [];
-    // }
+        return [];
+    }
     
     public set id(id: JobID | undefined) {
         this._id = id;
@@ -150,15 +150,15 @@ export class Job {
         this._clientID = clientID;
     }
     
-    // public set equipmentItems(equipmentItems: EquipmentItem[]) {
-    //     if (isNullOrUndefined(equipmentItems)) {
-    //         this._equipmentItems = [];
-    //     }
+    public set equipmentItems(equipmentItems: EquipmentItem[]) {
+        if (isNullOrUndefined(equipmentItems)) {
+            this._equipmentItems = [];
+        } else {
+            this._equipmentItems = equipmentItems;
+        }
+    }
 
-    //     this._equipmentItems = equipmentItems;
-    // }
-
-    // public set cameraman(cameraman: Cameraman | undefined) {
-    //     this._cameraman = cameraman;
-    // }
+    public set cameraman(cameraman: Cameraman | undefined) {
+        this._cameraman = cameraman;
+    }
 }

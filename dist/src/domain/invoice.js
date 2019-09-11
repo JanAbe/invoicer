@@ -10,6 +10,9 @@ var Invoice = /** @class */ (function () {
         this._iban = iban;
         this._creationDate = creationDate;
     }
+    Invoice.prototype.generateInvoiceNumber = function () {
+        throw new Error();
+    };
     Object.defineProperty(Invoice.prototype, "invoiceID", {
         get: function () {
             return this._invoiceID;

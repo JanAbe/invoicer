@@ -44,6 +44,7 @@ var equipmentItem_1 = require("../domain/equipmentItem");
 var period_1 = require("../domain/period");
 var cameraman_1 = require("../domain/cameraman");
 var jobDTO_1 = require("../domain/jobDTO");
+var util_1 = require("util");
 var SqliteJobRepo = /** @class */ (function () {
     function SqliteJobRepo(db) {
         this._db = db;
@@ -67,8 +68,8 @@ var SqliteJobRepo = /** @class */ (function () {
                                         reject(err);
                                     }
                                     else {
-                                        var cameraman = new cameraman_1.Cameraman(row.firstName + ' ' + row.lastName, row.day_price, new period_1.Period(new Date(row.start_date), new Date(row.end_date)));
-                                        jobDTO.rentedEntities.push(cameraman);
+                                        var cameraman = new cameraman_1.Cameraman(row.firstName, row.lastName, row.day_price, new period_1.Period(new Date(row.start_date), new Date(row.end_date)));
+                                        jobDTO.cameraman = cameraman;
                                         resolve();
                                     }
                                 });
@@ -85,7 +86,7 @@ var SqliteJobRepo = /** @class */ (function () {
                                     else {
                                         rows.forEach(function (row) {
                                             var equipmentItem = new equipmentItem_1.EquipmentItem(row.name, row.day_price, new period_1.Period(new Date(row.start_date), new Date(row.end_date)));
-                                            jobDTO.rentedEntities.push(equipmentItem);
+                                            jobDTO.equipmentItems.push(equipmentItem);
                                         });
                                         resolve();
                                     }
@@ -120,7 +121,55 @@ var SqliteJobRepo = /** @class */ (function () {
         });
     };
     SqliteJobRepo.prototype.save = function (job) {
-        throw new Error();
+        var _this = this;
+        var jobQuery = 'INSERT INTO Job (id, description, location, directed_by, ref_client) VALUES (?, ?, ?, ?, ?);';
+        this._db.run(jobQuery, [
+            job.id.toString(),
+            job.description,
+            job.location,
+            job.directedBy,
+            job.clientID.toString()
+        ]);
+        var rentedEntityQuery = 'INSERT INTO Rented_Entity (id, start_date, end_date, day_price, ref_job, ref_cameraman, ref_equipment_item) VALUES (?, ?, ?, ?, ?, ?, ?);';
+        if (!util_1.isNullOrUndefined(job.cameraman)) {
+            var cameramanQuery = 'INSERT INTO Cameraman (id, firstName, lastName) VALUES (?, ?, ?);';
+            var cameramanID = uuid();
+            this._db.run(cameramanQuery, [
+                cameramanID,
+                job.cameraman.firstName,
+                job.cameraman.lastName
+            ]);
+            var rentedEntityID_1 = uuid();
+            this._db.run(rentedEntityQuery, [
+                rentedEntityID_1,
+                job.cameraman.period.startDate.toISOString(),
+                job.cameraman.period.endDate.toISOString(),
+                job.cameraman.dayPrice,
+                job.id.toString(),
+                cameramanID,
+                null
+            ]);
+        }
+        var equipmentItemQuery = 'INSERT INTO Equipment_Item (id, name) VALUES (?, ?);';
+        var equipmentItemID;
+        var rentedEntityID;
+        job.equipmentItems.forEach(function (e) {
+            equipmentItemID = uuid();
+            _this._db.run(equipmentItemQuery, [
+                equipmentItemID,
+                e.name
+            ]);
+            rentedEntityID = uuid();
+            _this._db.run(rentedEntityQuery, [
+                rentedEntityID,
+                e.period.startDate.toISOString(),
+                e.period.endDate.toISOString(),
+                e.dayPrice,
+                job.id.toString(),
+                null,
+                equipmentItemID
+            ]);
+        });
     };
     return SqliteJobRepo;
 }());

@@ -26,31 +26,36 @@
       <div class="window-content">
         <div class="pane-group">
           <div class="pane pane-sm sidebar">
-            <nav class="nav-group">
-              <h5 class="nav-group-title">Menu</h5>
-              <a href="./home.html">
-                <span class="nav-group-item">
-                  <span class="icon icon-home"></span>
-                  Home
-                </span>
-              </a>
-              <a href="./invoices.html">
-                <span class="nav-group-item">
-                  <span class="icon icon-doc-text"></span>
-                  Rekeningen
-                </span>
-              </a>
-              <span class="nav-group-item">
-                <span class="icon icon-loop"></span>
-                Workflow <!-- hierin miss laten zien hoe je de app gebruikt? -->
-              </span>
-            </nav>
-          </div>
+              <nav class="nav-group">
+                <h3 class="nav-group-title">Menu</h3>
+  
+                <a href="./home.html">
+                  <span class="nav-group-item">
+                    <span class="icon icon-home"></span>
+                    Home
+                  </span>
+                </a>
+  
+                <a href="./invoices.html">
+                  <span class="nav-group-item">
+                    <span class="icon icon-doc-text"></span>
+                    Rekeningen
+                  </span>
+                </a>
+  
+                <a href="./generalInfo.html">
+                  <span class="nav-group-item">
+                    <span class="icon icon-vcard"></span>
+                    General Info
+                  </span>
+                </a>
+              </nav>
+            </div>
 
           <div class="pane">
             <div class="container">
               <div class="greeting">
-                <h3 class="text-center">Welcome Bob Baker</h3>
+                <h3 id="welcome-message" class="text-center"></h3>
               </div>
               <div class="workflow-step-1 text-center">
                 <p>Step 1</p>
@@ -72,5 +77,12 @@
         </div>
       </div>
     </div>
+
+    <script>
+      // todo: extract to own js file
+      const welcomeMessage = document.querySelector('#welcome-message')
+      welcomeMessage.textContent = 'Welcome' + ' ' + localStorage.getItem('firstName') + ' ' + localStorage.getItem('lastName');
+    </script>
+
   </body>
 </html>
