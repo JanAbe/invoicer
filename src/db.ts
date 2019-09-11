@@ -116,7 +116,7 @@ export class DB {
                 FOREIGN KEY(ref_equipment_item) REFERENCES Equipment_Item(id)
             );
         `;
-        
+
         const createTableInvoice = `
             CREATE TABLE IF NOT EXISTS Invoice (
                 id TEXT PRIMARY KEY,

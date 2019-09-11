@@ -35,13 +35,13 @@ const sqliteInvoiceRepo = new SqliteInvoiceRepo(db, sqliteJobRepo);
 const createWindow = () => {
     // Create the browser window.
     mainWindow = new BrowserWindow({
-      width: 800,
-      height: 600,
-      frame: false,
+        width: 800,
+        height: 600,
+        frame: false,
 
-      webPreferences: {
-        nodeIntegration: true
-      }
+        webPreferences: {
+            nodeIntegration: true
+        }
 
     });
 
@@ -53,10 +53,10 @@ const createWindow = () => {
 
     // Emitted when the window is closed.
     mainWindow.on('closed', () => {
-      // Dereference the window object, usually you would store windows
-      // in an array if your app supports multi windows, this is the time
-      // when you should delete the corresponding element.
-      mainWindow = null;
+        // Dereference the window object, usually you would store windows
+        // in an array if your app supports multi windows, this is the time
+        // when you should delete the corresponding element.
+        mainWindow = null;
     });
 };
 
@@ -70,7 +70,7 @@ app.on('window-all-closed', () => {
     // On OS X it is common for applications and their menu bar
     // to stay active until the user quits explicitly with Cmd + Q
     if (process.platform !== 'darwin') {
-      app.quit();
+        app.quit();
     }
 });
 
@@ -78,7 +78,7 @@ app.on('activate', () => {
     // On OS X it's common to re-create a window in the app when the
     // dock icon is clicked and there are no other windows open.
     if (mainWindow === null) {
-      createWindow();
+        createWindow();
     }
 });
 
@@ -123,30 +123,30 @@ ipcMain.on('submit-invoice-channel', (event, args) => {
 
         // if cameraman props are in args ->
         const cameraman = new Cameraman(args['cameramanFirstName'],
-                                        args['cameramanLastName'],
-                                        Number(args['cameramanDayPrice']),
-                                        new Period(new Date(args['cameramanStartDate']), 
-                                                   new Date(args['cameramanEndDate'])));
-        const client = new Client(clientID, 
-                                    new FullName(args['firstName'], 
-                                                args['lastName']), 
-                                    new Email(args['email']), 
-                                    new Address(args['city'], 
-                                                args['street'], 
-                                                Number(args['houseNumber']), 
-                                                args['zipcode']));
-        const job = new Job(jobID, 
-                            args['description'], 
-                            args['location'],
-                            args['directedBy'], 
-                            clientID, 
-                            cameraman);
+            args['cameramanLastName'],
+            Number(args['cameramanDayPrice']),
+            new Period(new Date(args['cameramanStartDate']),
+                new Date(args['cameramanEndDate'])));
+        const client = new Client(clientID,
+            new FullName(args['firstName'],
+                args['lastName']),
+            new Email(args['email']),
+            new Address(args['city'],
+                args['street'],
+                Number(args['houseNumber']),
+                args['zipcode']));
+        const job = new Job(jobID,
+            args['description'],
+            args['location'],
+            args['directedBy'],
+            clientID,
+            cameraman);
 
         // if equipmentItems is in args and it's not empty ->
         for (let item of args['equipmentItems']) {
             job.equipmentItems.push(new EquipmentItem(item['equipmentItemName'],
-                            item['equipmentItemDayPrice'],
-                            new Period(new Date(item['equipmentItemStartDate']), new Date(item['equipmentItemEndDate']))));
+                item['equipmentItemDayPrice'],
+                new Period(new Date(item['equipmentItemStartDate']), new Date(item['equipmentItemEndDate']))));
         }
 
         // temporary, need to figur out how to store a client

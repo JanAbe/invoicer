@@ -1,10 +1,10 @@
-
 <!DOCTYPE html>
 <html>
-  <head>
+
+<head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    
+
     <title>Invoicer</title>
 
     <!-- Stylesheets -->
@@ -14,89 +14,93 @@
 
     <!-- Javascript -->
     <script src="./js/menu.js" charset="utf-8"></script>
-  </head>
-  <body>
+</head>
+
+<body>
     <div class="window">
 
-      <!-- .toolbar-header sits at the top of your app -->
-      <header class="toolbar toolbar-header">
-        <h1 class="title">Invoicer</h1>
-      </header>
+        <!-- .toolbar-header sits at the top of your app -->
+        <header class="toolbar toolbar-header">
+            <h1 class="title">Invoicer</h1>
+        </header>
 
-      <!-- Your app's content goes inside .window-content -->
-      <div class="window-content">
-        <div class="pane-group">
-            <div class="pane pane-sm sidebar">
-                <nav class="nav-group">
-                    <h3 class="nav-group-title">Menu</h3>
+        <!-- Your app's content goes inside .window-content -->
+        <div class="window-content">
+            <div class="pane-group">
+                <div class="pane pane-sm sidebar">
+                    <nav class="nav-group">
+                        <h3 class="nav-group-title">Menu</h3>
 
-                    <a href="./home.html">
-                    <span class="nav-group-item">
-                        <span class="icon icon-home"></span>
-                        Home
-                    </span>
-                    </a>
+                        <a href="./home.html">
+                            <span class="nav-group-item">
+                                <span class="icon icon-home"></span>
+                                Home
+                            </span>
+                        </a>
 
-                    <a href="./invoices.html">
-                    <span class="nav-group-item">
-                        <span class="icon icon-doc-text"></span>
-                        Rekeningen
-                    </span>
-                    </a>
+                        <a href="./invoices.html">
+                            <span class="nav-group-item">
+                                <span class="icon icon-doc-text"></span>
+                                Rekeningen
+                            </span>
+                        </a>
 
-                    <a href="./generalInfo.html">
-                    <span class="nav-group-item">
-                        <span class="icon icon-vcard"></span>
-                        General Info
-                    </span>
-                    </a>
-                </nav>
-                </div> 
-
-          <div class="pane">
-            <form>
-              <div class="container">
-                <div id="form-title">
-                  <h3>General Info</h3>
+                        <a href="./generalInfo.html">
+                            <span class="nav-group-item">
+                                <span class="icon icon-vcard"></span>
+                                General Info
+                            </span>
+                        </a>
+                    </nav>
                 </div>
 
-                <!-- uses the wrong css ids, used only to check
+                <div class="pane">
+                    <form>
+                        <div class="container">
+                            <div id="form-title">
+                                <h3>General Info</h3>
+                            </div>
+
+                            <!-- uses the wrong css ids, used only to check
                 things out -->
-                <div id="client-segment-title">
-                </div>
-                <div id="client-segment">
-                  <div class="two-input-fields">
-                    <div class="form-group">
-                        <label>FirstName</label>
-                        <input id="firstName-input" type="text" class="form-control" placeholder="FirstName">
-                    </div>
-                    <div class="form-group">
-                        <label>LastName</label>
-                        <input id="lastName-input" type="text" class="form-control" placeholder="LastName">
-                    </div>
-                  </div>
+                            <div id="client-segment-title">
+                            </div>
+                            <div id="client-segment">
+                                <div class="two-input-fields">
+                                    <div class="form-group">
+                                        <label>FirstName</label>
+                                        <input id="firstName-input" type="text" class="form-control"
+                                            placeholder="FirstName">
+                                    </div>
+                                    <div class="form-group">
+                                        <label>LastName</label>
+                                        <input id="lastName-input" type="text" class="form-control"
+                                            placeholder="LastName">
+                                    </div>
+                                </div>
 
-                  <div id="iban-segment" class="form-group">
-                    <label>IBAN</label>
-                    <input id="iban-input" type="text" class="form-control" placeholder="IBAN">
-                  </div>
-                </div>
+                                <div id="iban-segment" class="form-group">
+                                    <label>IBAN</label>
+                                    <input id="iban-input" type="text" class="form-control" placeholder="IBAN">
+                                </div>
+                            </div>
 
-                <div id="button-segment">
-                  <div class="form-group">
-                    <div class="form-actions">
-                      <button id="save-general-info-btn" type="button" class="btn btn-form btn-primary">Save</button>
-                    </div>
-                  </div>
+                            <div id="button-segment">
+                                <div class="form-group">
+                                    <div class="form-actions">
+                                        <button id="save-general-info-btn" type="button"
+                                            class="btn btn-form btn-primary">Save</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
                 </div>
-              </div>
-            </form>
-          </div>
+            </div>
         </div>
-      </div>
     </div>
-    
-    <script src="./js/generalInfo.js" charset="utf-8"></script>
-  </body>
-</html>
 
+    <script src="./js/generalInfo.js" charset="utf-8"></script>
+</body>
+
+</html>

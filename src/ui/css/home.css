@@ -1,86 +1,86 @@
 
 .container {
-  margin-bottom: 20px;
-  display: grid;
-  grid-template-columns: 1fr 1fr 1fr;
-  grid-template-rows: [row1-start] 23% [row2-start] 77% [row2-end];
-  grid-column-gap: 3%;
-  /* height: 100%; */
+    margin-bottom: 20px;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    grid-template-rows: [row1-start] 23% [row2-start] 77% [row2-end];
+    grid-column-gap: 3%;
+    /* height: 100%; */
 }
 
 .greeting {
-  grid-column-start: 1;
-  grid-column-end: 4;
-  grid-row-start: row1-start;
+    grid-column-start: 1;
+    grid-column-end: 4;
+    grid-row-start: row1-start;
 }
 
 .greeting > h3 {
-  position: relative;
-  top:50%;
-  transform: translateY(-50%);
+    position: relative;
+    top:50%;
+    transform: translateY(-50%);
 }
 
 .workflow-step-1 {
-  border-radius: 20px;
-  background-color: #f5f5f4;
-  grid-column-start: 1;
-  grid-column-end: 2;
-  grid-row-start: row2-start;
-  margin-left: 5%;
-  margin-top:30%;
-  margin-bottom: 35%;
-  height: 50%;
+    border-radius: 20px;
+    background-color: #f5f5f4;
+    grid-column-start: 1;
+    grid-column-end: 2;
+    grid-row-start: row2-start;
+    margin-left: 5%;
+    margin-top:30%;
+    margin-bottom: 35%;
+    height: 50%;
 }
 
 .workflow-step-1 > p {
-  position: relative;
-  top:5%;
-  margin-bottom: 7%;
+    position: relative;
+    top:5%;
+    margin-bottom: 7%;
 }
 
 .workflow-step-1 > a {
-  margin-top: 5%;
+    margin-top: 5%;
 }
 
 .workflow-step-2 {
-  border-radius: 20px;
-  background-color: #f5f5f4;
-  grid-column-start: 2;
-  grid-column-end: 3;
-  grid-row-start: row2-start;
-  margin-top:30%;
-  margin-bottom: 35%;
-  height: 50%;
+    border-radius: 20px;
+    background-color: #f5f5f4;
+    grid-column-start: 2;
+    grid-column-end: 3;
+    grid-row-start: row2-start;
+    margin-top:30%;
+    margin-bottom: 35%;
+    height: 50%;
 }
 
 .workflow-step-2 > p {
-  position: relative;
-  top:5%;
-  margin-bottom: 7%;
+    position: relative;
+    top:5%;
+    margin-bottom: 7%;
 }
 
 .workflow-step-2 > a {
-  margin-top: 5%;
+    margin-top: 5%;
 }
 
 .workflow-step-3 {
-  border-radius: 20px;
-  background-color: #f5f5f4;
-  grid-column-start: 3;
-  grid-column-end: 4;
-  grid-row-start: row2-start;
-  margin-right: 5%;
-  margin-top:30%;
-  margin-bottom: 35%;
-  height: 50%;
+    border-radius: 20px;
+    background-color: #f5f5f4;
+    grid-column-start: 3;
+    grid-column-end: 4;
+    grid-row-start: row2-start;
+    margin-right: 5%;
+    margin-top:30%;
+    margin-bottom: 35%;
+    height: 50%;
 }
 
 .workflow-step-3 > p {
-  position: relative;
-  top:5%;
-  margin-bottom: 7%;
+    position: relative;
+    top:5%;
+    margin-bottom: 7%;
 }
 
 .workflow-step-3 > a {
-  margin-top: 5%;
+    margin-top: 5%;
 }
