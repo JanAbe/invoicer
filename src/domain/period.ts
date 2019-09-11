@@ -16,7 +16,10 @@ export class Period {
         // +1 because the work days are inclusive
         // working from 12/12/2019 till 12/12/2019 = 1 workday
         // eventhough there is no diff in days
-        return moment.duration(moment(this.startDate).diff(moment(this.endDate))).asDays() + 1;
+        const endDate = moment(this.endDate);
+        const startDate = moment(this.startDate);
+        const daysWorked = moment.duration(endDate.diff(startDate)).asDays() + 1;
+        return daysWorked;
     }
     
     public get startDate(): Date {

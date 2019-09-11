@@ -47,6 +47,13 @@ export class InvoiceService {
         const client = await this._clientRepo.clientOfID(job.clientID!);
         const vatPercentage = 21;
 
+        let equipmentCost = 0;
+        job.equipmentItems.forEach(item => {
+            console.log(item.period.startDate.getMonth());
+            equipmentCost += item.calculateCost();
+        });
+        console.log(equipmentCost);
+
         nunjucks.configure('src/ui', { autoescape: true });
         const html = nunjucks.render('invoice-template.html', 
             { 
@@ -67,8 +74,7 @@ export class InvoiceService {
                 vat_percentage: vatPercentage,
                 iban: invoice.iban
             });
-        // const btwAmount = (btwPercentage / 100) * subtotal;
-        // const totalAmount = subtotal + btwAmount;
+
         return html;
     }
 

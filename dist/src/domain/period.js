@@ -16,7 +16,10 @@ var Period = /** @class */ (function () {
         // +1 because the work days are inclusive
         // working from 12/12/2019 till 12/12/2019 = 1 workday
         // eventhough there is no diff in days
-        return moment_1.default.duration(moment_1.default(this.startDate).diff(moment_1.default(this.endDate))).asDays() + 1;
+        var endDate = moment_1.default(this.endDate);
+        var startDate = moment_1.default(this.startDate);
+        var daysWorked = moment_1.default.duration(endDate.diff(startDate)).asDays() + 1;
+        return daysWorked;
     };
     Object.defineProperty(Period.prototype, "startDate", {
         get: function () {

@@ -24,6 +24,8 @@ export class SqliteJobRepo implements JobRepo {
     public async jobOfID(jobID: JobID): Promise<Job> {
         const jobDTO = new JobDTO();
 
+        // needs some check to see if the row is undefined
+            // aka if there is no camereman hired for this job
         const cameramanQuery = 'SELECT r.start_date, r.end_date, r.day_price, c.firstName, c.lastName FROM Rented_Entity r JOIN Cameraman c ON (r.ref_cameraman = c.id) WHERE r.ref_job = ?;';
         await new Promise((resolve, reject) => {
             this._db.db.get(cameramanQuery, jobID.toString(), function (err, row) {
@@ -38,6 +40,8 @@ export class SqliteJobRepo implements JobRepo {
             });
         });
 
+        // needs some check to see if the row is undefined
+            // aka if there is no equipment item rented for this job
         const equipmentItemQuery = 'SELECT r.start_date, r.end_date, r.day_price, e.name from Rented_Entity r JOIN Equipment_Item e ON (r.ref_equipment_item = e.id) WHERE r.ref_job = ?;';
         await new Promise((resolve, reject) => {
             this._db.db.all(equipmentItemQuery, jobID.toString(), function (err, rows) {
