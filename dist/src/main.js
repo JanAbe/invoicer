@@ -80,8 +80,6 @@ electron_1.app.on('activate', function () {
 });
 // In this file you can include the rest of your app's specific main process
 // code. You can also put them in separate files and import them here.
-// todo: test if it works
-// listen for fetchAllInvoices event
 electron_1.ipcMain.on('fetch-all-invoices-channel', function (event, _) {
     try {
         invoiceService.fetchAllInvoices()
@@ -100,10 +98,7 @@ electron_1.ipcMain.on('fetch-all-invoices-channel', function (event, _) {
 electron_1.ipcMain.on('generate-invoice-channel', function (event, args) {
     try {
         var invoiceKey = 'invoiceID';
-        if (!args.hasOwnProperty(invoiceKey)) {
-            event.reply('fetch-invoice-reply-channel', invoiceKey + " key missing -> no invoiceID provided");
-        }
-        var invoiceHTML = invoiceService.generatePDF(new invoiceID_1.InvoiceID(args[invoiceKey]));
+        var invoiceHTML = invoiceService.generateInvoice(new invoiceID_1.InvoiceID(args[invoiceKey]));
         invoiceHTML
             .then(function (html) {
             mainWindow.loadURL("file://" + __dirname + "/ui/invoice.html");

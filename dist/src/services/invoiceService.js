@@ -60,6 +60,8 @@ var InvoiceService = /** @class */ (function () {
             });
         });
     };
+    // rename to fetchAllInvoicesAndRenderHTML
+    // or split in 2 functions
     // todo: implement this method / check if it works
     // changed return type to string because i couldn't figure out
     // how to use nunjucks in the client-side scripts
@@ -129,11 +131,12 @@ var InvoiceService = /** @class */ (function () {
             });
         });
     };
+    // todo: rename to generateInvoiceHTML?
     // todo: look into used (!) exclamation marks
     // todo: look into best way to store money values
     // atm the number datatype is used.
     // 5964 + 1252.44 = 7216.4400000000005
-    InvoiceService.prototype.generatePDF = function (invoiceID) {
+    InvoiceService.prototype.generateInvoice = function (invoiceID) {
         return __awaiter(this, void 0, void 0, function () {
             var invoice, job, client, vatPercentage, html;
             return __generator(this, function (_a) {

@@ -95,8 +95,6 @@ app.on('activate', () => {
 // In this file you can include the rest of your app's specific main process
 // code. You can also put them in separate files and import them here.
 
-// todo: test if it works
-// listen for fetchAllInvoices event
 ipcMain.on('fetch-all-invoices-channel', (event, _) => {
     try {
         invoiceService.fetchAllInvoices()
@@ -115,17 +113,14 @@ ipcMain.on('fetch-all-invoices-channel', (event, _) => {
 ipcMain.on('generate-invoice-channel', (event, args) => {
     try {
         const invoiceKey = 'invoiceID';
-        if (!args.hasOwnProperty(invoiceKey)) {
-            event.reply('fetch-invoice-reply-channel', `${invoiceKey} key missing -> no invoiceID provided`);
-        }
-
         const invoiceHTML = invoiceService.generateInvoice(new InvoiceID(args[invoiceKey]));
+
         invoiceHTML
             .then(html => {
                 mainWindow.loadURL(`file://${__dirname}/ui/invoice.html`);
                 mainWindow.webContents.on('did-finish-load', () => {
                     event.reply('generate-invoice-reply-channel', html);
-                })
+                });
             })
             .catch(err => {
                 console.log(err);

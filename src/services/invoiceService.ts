@@ -29,6 +29,8 @@ export class InvoiceService {
         return await this._invoiceRepo.invoiceOfID(invoiceID);
     }
 
+    // rename to fetchAllInvoicesAndRenderHTML
+        // or split in 2 functions
     // todo: implement this method / check if it works
     // changed return type to string because i couldn't figure out
     // how to use nunjucks in the client-side scripts
@@ -69,6 +71,9 @@ export class InvoiceService {
         });
     }
 
+    // todo: fix date format of invoice
+        // it uses month/day/year atm...
+    // todo: rename to generateInvoiceHTML?
     // todo: look into used (!) exclamation marks
     // todo: look into best way to store money values
         // atm the number datatype is used.
