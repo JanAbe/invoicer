@@ -27,7 +27,7 @@ const fetchAllInvoicesHTMLAndInsert = (chan) => {
     const invoicesTable = document.querySelector('#invoices-table');
     ipcRenderer.on(chan, (_, html) => {
         invoicesTable.insertAdjacentHTML('beforeend', html);
-        bindGenerateInvoiceEventToButtons('.generate-invoice-btn', 'fetch-invoice-channel');
+        bindGenerateInvoiceEventToButtons('.generate-invoice-btn', 'generate-invoice-channel');
     });
 }
 

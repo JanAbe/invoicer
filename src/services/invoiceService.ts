@@ -73,7 +73,7 @@ export class InvoiceService {
     // todo: look into best way to store money values
         // atm the number datatype is used.
             // 5964 + 1252.44 = 7216.4400000000005
-    public async generatePDF(invoiceID: InvoiceID): Promise<string> {
+    public async generateInvoice(invoiceID: InvoiceID): Promise<string> {
         /*
         fetch invoice with id=invoiceID from database 
         create a pdf with all the necessary information 

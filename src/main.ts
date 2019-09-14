@@ -112,19 +112,19 @@ ipcMain.on('fetch-all-invoices-channel', (event, _) => {
 });
 
 // listen for fetched invoices
-ipcMain.on('fetch-invoice-channel', (event, args) => {
+ipcMain.on('generate-invoice-channel', (event, args) => {
     try {
         const invoiceKey = 'invoiceID';
         if (!args.hasOwnProperty(invoiceKey)) {
             event.reply('fetch-invoice-reply-channel', `${invoiceKey} key missing -> no invoiceID provided`);
         }
 
-        const invoiceHTML = invoiceService.generatePDF(new InvoiceID(args[invoiceKey]));
+        const invoiceHTML = invoiceService.generateInvoice(new InvoiceID(args[invoiceKey]));
         invoiceHTML
             .then(html => {
                 mainWindow.loadURL(`file://${__dirname}/ui/invoice.html`);
                 mainWindow.webContents.on('did-finish-load', () => {
-                    event.reply('fetch-invoice-reply-channel', html);
+                    event.reply('generate-invoice-reply-channel', html);
                 })
             })
             .catch(err => {

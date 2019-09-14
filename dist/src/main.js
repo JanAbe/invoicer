@@ -97,7 +97,7 @@ electron_1.ipcMain.on('fetch-all-invoices-channel', function (event, _) {
     }
 });
 // listen for fetched invoices
-electron_1.ipcMain.on('fetch-invoice-channel', function (event, args) {
+electron_1.ipcMain.on('generate-invoice-channel', function (event, args) {
     try {
         var invoiceKey = 'invoiceID';
         if (!args.hasOwnProperty(invoiceKey)) {
@@ -108,7 +108,7 @@ electron_1.ipcMain.on('fetch-invoice-channel', function (event, args) {
             .then(function (html) {
             mainWindow.loadURL("file://" + __dirname + "/ui/invoice.html");
             mainWindow.webContents.on('did-finish-load', function () {
-                event.reply('fetch-invoice-reply-channel', html);
+                event.reply('generate-invoice-reply-channel', html);
             });
         })
             .catch(function (err) {

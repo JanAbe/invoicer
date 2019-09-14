@@ -1,8 +1,6 @@
 const { ipcRenderer } = require('electron');
 
-console.log('hi');
 const body = document.querySelector('body');
-ipcRenderer.on('fetch-invoice-reply-channel', (_, html) => {
-    console.log('received');
+ipcRenderer.on('generate-invoice-reply-channel', (_, html) => {
     body.insertAdjacentHTML('afterbegin', html);
 });
