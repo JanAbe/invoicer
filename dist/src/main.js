@@ -1,7 +1,4 @@
 "use strict";
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
 Object.defineProperty(exports, "__esModule", { value: true });
 var electron_1 = require("electron");
 var db_1 = require("./db");
@@ -19,7 +16,6 @@ var period_1 = require("./domain/period");
 var sqliteClientRepo_1 = require("./repos/sqliteClientRepo");
 var equipmentItem_1 = require("./domain/equipmentItem");
 var invoiceService_1 = require("./services/invoiceService");
-var fs_1 = __importDefault(require("fs"));
 // Handle creating/removing shortcuts on Windows when installing/uninstalling.
 if (require('electron-squirrel-startup')) { // eslint-disable-line global-require
     electron_1.app.quit();
@@ -45,8 +41,6 @@ var createWindow = function () {
         }
     });
     contents = mainWindow.webContents;
-    // let contents = new WebContents();
-    // contents.printToPDF({});
     // and load the index.html of the app.
     mainWindow.loadURL("file://" + __dirname + "/ui/home.html");
     // Open the DevTools.
@@ -64,18 +58,9 @@ var createWindow = function () {
 // Some APIs can only be used after this event occurs.
 electron_1.app.on('ready', createWindow);
 electron_1.app.on('ready', function () {
+    // todo: improve this, create file with correct name and location
     electron_1.globalShortcut.register('CommandOrControl+p', function () {
-        console.log('printing..');
-        contents.printToPDF({}, function (err, data) {
-            if (err) {
-                console.log(err);
-            }
-            else {
-                fs_1.default.writeFile('/tmp/print.pdf', data, function (error) {
-                    console.log('pdf written');
-                });
-            }
-        });
+        contents.print({});
     });
 });
 // Quit when all windows are closed.
@@ -121,7 +106,10 @@ electron_1.ipcMain.on('fetch-invoice-channel', function (event, args) {
         var invoiceHTML = invoiceService.generatePDF(new invoiceID_1.InvoiceID(args[invoiceKey]));
         invoiceHTML
             .then(function (html) {
-            event.reply('fetch-invoice-reply-channel', html);
+            mainWindow.loadURL("file://" + __dirname + "/ui/invoice.html");
+            mainWindow.webContents.on('did-finish-load', function () {
+                event.reply('fetch-invoice-reply-channel', html);
+            });
         })
             .catch(function (err) {
             console.log(err);

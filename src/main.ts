@@ -1,4 +1,4 @@
-import { app, BrowserWindow, ipcMain, webContents, WebContents, globalShortcut } from 'electron';
+import { app, BrowserWindow, ipcMain, globalShortcut } from 'electron';
 import { DB } from './db';
 import { SqliteInvoiceRepo } from './repos/sqliteInvoiceRepo';
 import { SqliteJobRepo } from './repos/sqliteJobRepo';
@@ -48,8 +48,6 @@ const createWindow = () => {
     });
 
     contents = mainWindow.webContents;
-    // let contents = new WebContents();
-    // contents.printToPDF({});
 
     // and load the index.html of the app.
     mainWindow.loadURL(`file://${__dirname}/ui/home.html`);
@@ -73,16 +71,7 @@ app.on('ready', createWindow);
 app.on('ready', () => {
     // todo: improve this, create file with correct name and location
     globalShortcut.register('CommandOrControl+p', () => {
-        console.log('printing..')
-        contents.printToPDF({}, (err: any, data: any) => {
-            if (err) {
-                console.log(err);
-            } else {
-                fs.writeFile('/tmp/print.pdf', data, (error) => {
-                    console.log('pdf written');
-                });
-            }
-        });
+        contents.print({});
     })
 });
 
@@ -133,7 +122,10 @@ ipcMain.on('fetch-invoice-channel', (event, args) => {
         const invoiceHTML = invoiceService.generatePDF(new InvoiceID(args[invoiceKey]));
         invoiceHTML
             .then(html => {
-                event.reply('fetch-invoice-reply-channel', html);
+                mainWindow.loadURL(`file://${__dirname}/ui/invoice.html`);
+                mainWindow.webContents.on('did-finish-load', () => {
+                    event.reply('fetch-invoice-reply-channel', html);
+                })
             })
             .catch(err => {
                 console.log(err);

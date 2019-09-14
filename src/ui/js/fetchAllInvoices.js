@@ -6,7 +6,7 @@ const { ipcRenderer } = require('electron');
 const readyPage = () => {
     fetchAllInvoices('fetch-all-invoices-channel');
     fetchAllInvoicesHTMLAndInsert('fetch-all-invoices-reply-channel');
-    // listenForPrintEvent();
+    listenForPrintEvent();
 }
 
 /**
@@ -58,10 +58,5 @@ const listenForPrintEvent = () => {
         }
     });
 }
-
-const invoiceSection = document.querySelector('#invoice-html');
-ipcRenderer.on('fetch-invoice-reply-channel', (event, html) => {
-    invoiceSection.insertAdjacentHTML('beforeend', html);
-});
 
 readyPage();
