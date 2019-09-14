@@ -32,6 +32,9 @@ var FullName = /** @class */ (function () {
         }
         this._lastName = lastName.trim();
     };
+    FullName.prototype.toString = function () {
+        return [this.firstName, this.lastName].join(' ');
+    };
     return FullName;
 }());
 exports.FullName = FullName;

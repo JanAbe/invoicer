@@ -67,5 +67,4 @@ export class Client {
 
         this._address = address;
     }
-    
 }

@@ -1,4 +1,7 @@
 "use strict";
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 var electron_1 = require("electron");
 var db_1 = require("./db");
@@ -16,6 +19,7 @@ var period_1 = require("./domain/period");
 var sqliteClientRepo_1 = require("./repos/sqliteClientRepo");
 var equipmentItem_1 = require("./domain/equipmentItem");
 var invoiceService_1 = require("./services/invoiceService");
+var fs_1 = __importDefault(require("fs"));
 // Handle creating/removing shortcuts on Windows when installing/uninstalling.
 if (require('electron-squirrel-startup')) { // eslint-disable-line global-require
     electron_1.app.quit();
@@ -23,14 +27,15 @@ if (require('electron-squirrel-startup')) { // eslint-disable-line global-requir
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
 var mainWindow;
+var contents;
 var dbLocation = __dirname + "/../db/Invoice.db";
 var db = new db_1.DB(dbLocation);
 db.createTables();
 var sqliteJobRepo = new sqliteJobRepo_1.SqliteJobRepo(db);
 var sqliteClientRepo = new sqliteClientRepo_1.SqliteClientRepo(db);
 var sqliteInvoiceRepo = new sqliteInvoiceRepo_1.SqliteInvoiceRepo(db, sqliteJobRepo);
+var invoiceService = new invoiceService_1.InvoiceService(sqliteInvoiceRepo, sqliteJobRepo, sqliteClientRepo);
 var createWindow = function () {
-    // Create the browser window.
     mainWindow = new electron_1.BrowserWindow({
         width: 800,
         height: 600,
@@ -39,6 +44,9 @@ var createWindow = function () {
             nodeIntegration: true
         }
     });
+    contents = mainWindow.webContents;
+    // let contents = new WebContents();
+    // contents.printToPDF({});
     // and load the index.html of the app.
     mainWindow.loadURL("file://" + __dirname + "/ui/home.html");
     // Open the DevTools.
@@ -55,6 +63,21 @@ var createWindow = function () {
 // initialization and is ready to create browser windows.
 // Some APIs can only be used after this event occurs.
 electron_1.app.on('ready', createWindow);
+electron_1.app.on('ready', function () {
+    electron_1.globalShortcut.register('CommandOrControl+p', function () {
+        console.log('printing..');
+        contents.printToPDF({}, function (err, data) {
+            if (err) {
+                console.log(err);
+            }
+            else {
+                fs_1.default.writeFile('/tmp/print.pdf', data, function (error) {
+                    console.log('pdf written');
+                });
+            }
+        });
+    });
+});
 // Quit when all windows are closed.
 electron_1.app.on('window-all-closed', function () {
     // On OS X it is common for applications and their menu bar
@@ -72,6 +95,22 @@ electron_1.app.on('activate', function () {
 });
 // In this file you can include the rest of your app's specific main process
 // code. You can also put them in separate files and import them here.
+// todo: test if it works
+// listen for fetchAllInvoices event
+electron_1.ipcMain.on('fetch-all-invoices-channel', function (event, _) {
+    try {
+        invoiceService.fetchAllInvoices()
+            .then(function (html) {
+            event.reply('fetch-all-invoices-reply-channel', html);
+        })
+            .catch(function (err) {
+            console.log(err);
+        });
+    }
+    catch (e) {
+        console.log(e);
+    }
+});
 // listen for fetched invoices
 electron_1.ipcMain.on('fetch-invoice-channel', function (event, args) {
     try {
@@ -79,7 +118,6 @@ electron_1.ipcMain.on('fetch-invoice-channel', function (event, args) {
         if (!args.hasOwnProperty(invoiceKey)) {
             event.reply('fetch-invoice-reply-channel', invoiceKey + " key missing -> no invoiceID provided");
         }
-        var invoiceService = new invoiceService_1.InvoiceService(sqliteInvoiceRepo, sqliteJobRepo, sqliteClientRepo);
         var invoiceHTML = invoiceService.generatePDF(new invoiceID_1.InvoiceID(args[invoiceKey]));
         invoiceHTML
             .then(function (html) {
@@ -94,9 +132,15 @@ electron_1.ipcMain.on('fetch-invoice-channel', function (event, args) {
     }
 });
 // listen for submitted invoices
+// todo: add checks to see if cameraman and equipmentitem data has been passed
+// also check if at least 1 of the 2 has been passed
 electron_1.ipcMain.on('submit-invoice-channel', function (event, args) {
     try {
-        var props = ['firstName', 'lastName', 'email', 'city', 'street', 'houseNumber', 'zipcode', 'description', 'location', 'directedBy'];
+        var props = ['firstName', 'lastName',
+            'email', 'city',
+            'street', 'houseNumber',
+            'zipcode', 'description',
+            'location', 'directedBy'];
         props.forEach(function (key) {
             if (!args.hasOwnProperty(key)) {
                 event.reply('submit-invoice-reply-channel', key + " missing. All fields should be provided of a value.");
@@ -119,7 +163,6 @@ electron_1.ipcMain.on('submit-invoice-channel', function (event, args) {
         // via its own repo? or via the job repo?
         sqliteClientRepo.save(client);
         var invoice = new invoice_1.Invoice(invoiceID, jobID, args['iban']);
-        var invoiceService = new invoiceService_1.InvoiceService(sqliteInvoiceRepo, sqliteJobRepo, sqliteClientRepo);
         invoiceService.createInvoice(invoice, job);
     }
     catch (e) {

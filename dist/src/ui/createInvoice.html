@@ -1,10 +1,10 @@
-
 <!DOCTYPE html>
 <html>
-  <head>
+
+<head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    
+
     <title>Invoicer</title>
 
     <!-- Stylesheets -->
@@ -14,46 +14,47 @@
 
     <!-- Javascript -->
     <script src="./js/menu.js" charset="utf-8"></script>
-  </head>
-  <body>
+</head>
+
+<body>
     <div class="window">
 
-      <!-- .toolbar-header sits at the top of your app -->
-      <header class="toolbar toolbar-header">
-        <h1 class="title">Invoicer</h1>
-      </header>
+        <!-- .toolbar-header sits at the top of your app -->
+        <header class="toolbar toolbar-header">
+            <h1 class="title">Invoicer</h1>
+        </header>
 
-      <!-- Your app's content goes inside .window-content -->
-      <div class="window-content">
-        <div class="pane-group">
-          <div class="pane pane-sm sidebar">
-            <nav class="nav-group">
-              <h3 class="nav-group-title">Menu</h3>
+        <!-- Your app's content goes inside .window-content -->
+        <div class="window-content">
+            <div class="pane-group">
+                <div class="pane pane-sm sidebar">
+                    <nav class="nav-group">
+                        <h3 class="nav-group-title">Menu</h3>
 
-              <a href="./home.html">
-                <span class="nav-group-item">
-                  <span class="icon icon-home"></span>
-                  Home
-                </span>
-              </a>
+                        <a href="./home.html">
+                            <span class="nav-group-item">
+                                <span class="icon icon-home"></span>
+                                Home
+                            </span>
+                        </a>
 
-              <a href="./invoices.html">
-                <span class="nav-group-item">
-                  <span class="icon icon-doc-text"></span>
-                  Rekeningen
-                </span>
-              </a>
+                        <a href="./invoices.html">
+                            <span class="nav-group-item">
+                                <span class="icon icon-doc-text"></span>
+                                Rekeningen
+                            </span>
+                        </a>
 
-              <a href="./generalInfo.html">
-                <span class="nav-group-item">
-                  <span class="icon icon-vcard"></span>
-                  General Info
-                </span>
-              </a>
-            </nav>
-          </div>
+                        <a href="./generalInfo.html">
+                            <span class="nav-group-item">
+                                <span class="icon icon-vcard"></span>
+                                General Info
+                            </span>
+                        </a>
+                    </nav>
+                </div>
 
-          <!-- 
+                <!-- 
             een start-eind datum toevoegen aan Job-segment
             als de data van de verschillende equipment-items worden
             leeggelaten -> wordt de data van de Job gebruikt.
@@ -64,137 +65,147 @@
             gebruiker kan een .pdf bestand in de applicatie slepen
             de gebruiker kan dan de gegenereerde pdf inzien in de app
            -->
-          <div class="pane">
-            <form>
-              <div class="container">
-                <div id="form-title">
-                  <h3>Create Invoice</h3>
+                <div class="pane">
+                    <form>
+                        <div class="container">
+                            <div id="form-title">
+                                <h3>Create Invoice</h3>
+                            </div>
+
+                            <div id="bank-account-segment-title">
+                                <h5><strong>Bank Account</strong></h5>
+                            </div>
+                            <div id="bank-account-segment">
+                                <div class="form-group">
+                                    <label>IBAN</label>
+                                    <input id="iban-input" name='iban' type="text" class="form-control"
+                                        placeholder="IBAN">
+                                </div>
+                            </div>
+
+                            <div id="client-segment-title">
+                                <h5><strong>Client info</strong></h5>
+                            </div>
+                            <div id="client-segment">
+                                <div class="two-input-fields">
+                                    <div class="form-group">
+                                        <label>FirstName</label>
+                                        <input name="firstName" type="text" class="form-control"
+                                            placeholder="FirstName">
+                                    </div>
+                                    <div class="form-group">
+                                        <label>LastName</label>
+                                        <input name="lastName" type="text" class="form-control" placeholder="LastName">
+                                    </div>
+                                </div>
+
+                                <div id="email-input" class="form-group">
+                                    <label>Email</label>
+                                    <input name="email" type="email" class="form-control" placeholder="email">
+                                </div>
+
+                                <div class="two-input-fields">
+                                    <div class="form-group">
+                                        <label>City</label>
+                                        <input name="city" type="text" class="form-control" placeholder="City">
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Zipcode</label>
+                                        <input name="zipcode" type="text" class="form-control" placeholder="Zipcode">
+                                    </div>
+                                </div>
+
+                                <div class="two-input-fields">
+                                    <div class="form-group">
+                                        <label>Street</label>
+                                        <input name="street" type="text" class="form-control" placeholder="Street">
+                                    </div>
+                                    <div class="form-group">
+                                        <label>HouseNumber</label>
+                                        <input name="houseNumber" type="number" class="form-control"
+                                            placeholder="HouseNumber">
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div id="job-segment-title">
+                                <h5><strong>Job info</strong></h5>
+                            </div>
+
+                            <div id="job-segment">
+                                <div class="form-group">
+                                    <label>Description</label>
+                                    <input name="description" type="text" class="form-control"
+                                        placeholder="Description">
+                                </div>
+
+                                <div class="two-input-fields">
+                                    <div class="form-group">
+                                        <label>Location</label>
+                                        <input name="location" type="text" class="form-control" placeholder="Location">
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label>Directed By</label>
+                                        <input name="directedBy" type="text" class="form-control"
+                                            placeholder="Directed By">
+                                    </div>
+                                </div>
+
+                                <div class="two-input-fields">
+                                    <div class="form-group">
+                                        <label>Start Date</label>
+                                        <input name="jobStartDate" type="date" class="form-control"
+                                            placeholder="Start Date">
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label>End Date</label>
+                                        <input name="jobEndDate" type="date" class="form-control"
+                                            placeholder="End Date">
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div id="cameraman-segment-title">
+                                <span style="display: inherit;">
+                                    <button id="cameraman-add-btn" type="button"
+                                        class="btn btn-default">&#10133;</button>
+                                    <h5><strong>Cameraman</strong></h5>
+                                </span>
+                            </div>
+
+                            <div id="cameraman-segment">
+                            </div>
+
+                            <div id="equipment-item-segment-title">
+                                <span style="display: inherit;">
+                                    <button id="equipment-item-add-btn" type="button"
+                                        class="btn btn-default">&#10133;</button>
+                                    <h5><strong>Equipment Items</strong></h5>
+                                </span>
+                            </div>
+
+                            <div id="equipment-item-segment">
+                            </div>
+
+                            <div id="button-segment">
+                                <div class="form-group">
+                                    <div class="form-actions">
+                                        <button type="submit" class="btn btn-form btn-default">Cancel</button>
+                                        <button id="create-invoice-btn" type="button"
+                                            class="btn btn-form btn-primary">Create</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
                 </div>
-
-                <div id="bank-account-segment-title">
-                  <h5><strong>Bank Account</strong></h5>
-                </div>
-                <div id="bank-account-segment">
-                  <div class="form-group">
-                    <label>IBAN</label>
-                    <input id="iban-input" name='iban' type="text" class="form-control" placeholder="IBAN">
-                  </div>
-                </div>
-
-                <div id="client-segment-title">
-                  <h5><strong>Client info</strong></h5>
-                </div>
-                <div id="client-segment">
-                  <div class="two-input-fields">
-                    <div class="form-group">
-                        <label>FirstName</label>
-                        <input name="firstName" type="text" class="form-control" placeholder="FirstName">
-                    </div>
-                    <div class="form-group">
-                        <label>LastName</label>
-                        <input name="lastName" type="text" class="form-control" placeholder="LastName">
-                    </div>
-                  </div>
-
-                  <div id="email-input" class="form-group">
-                    <label>Email</label>
-                    <input name="email" type="email" class="form-control" placeholder="email">
-                  </div>
-
-                  <div class="two-input-fields">
-                    <div class="form-group">
-                        <label>City</label>
-                        <input name="city" type="text" class="form-control" placeholder="City">
-                    </div>
-                    <div class="form-group">
-                        <label>Zipcode</label>
-                        <input name="zipcode" type="text" class="form-control" placeholder="Zipcode">
-                    </div>
-                  </div>
-
-                  <div class="two-input-fields">
-                    <div class="form-group">
-                        <label>Street</label>
-                        <input name="street" type="text" class="form-control" placeholder="Street">
-                    </div>
-                    <div class="form-group">
-                        <label>HouseNumber</label>
-                        <input name="houseNumber" type="number" class="form-control" placeholder="HouseNumber">
-                    </div>
-                  </div>
-                </div>
-
-                <div id="job-segment-title">
-                  <h5><strong>Job info</strong></h5>
-                </div>
-
-                <div id="job-segment">
-                  <div class="form-group">
-                      <label>Description</label>
-                      <input name="description" type="text" class="form-control" placeholder="Description">
-                  </div>
-                  
-                  <div class="two-input-fields">
-                    <div class="form-group">
-                        <label>Location</label>
-                        <input name="location" type="text" class="form-control" placeholder="Location">
-                    </div>
-
-                    <div class="form-group">
-                        <label>Directed By</label>
-                        <input name="directedBy" type="text" class="form-control" placeholder="Directed By">
-                    </div>
-                  </div>
-
-                  <div class="two-input-fields">
-                    <div class="form-group">
-                      <label>Start Date</label>
-                      <input name="jobStartDate" type="date" class="form-control" placeholder="Start Date">
-                    </div>
-                    
-                    <div class="form-group">
-                      <label>End Date</label>
-                      <input name="jobEndDate" type="date" class="form-control" placeholder="End Date">
-                    </div>
-                  </div>
-                </div>
-
-                <div id="cameraman-segment-title">
-                  <span style="display: inherit;">
-                    <button id="cameraman-add-btn" type="button" class="btn btn-default">&#10133;</button>
-                    <h5><strong>Cameraman</strong></h5>
-                  </span>
-                </div>
-
-                <div id="cameraman-segment">
-                </div>
-
-                <div id="equipment-item-segment-title">
-                  <span style="display: inherit;">
-                    <button id="equipment-item-add-btn" type="button" class="btn btn-default">&#10133;</button>
-                    <h5><strong>Equipment Items</strong></h5>
-                  </span>
-                </div>
-
-                <div id="equipment-item-segment">
-                </div>
-
-                <div id="button-segment">
-                  <div class="form-group">
-                    <div class="form-actions">
-                      <button type="submit" class="btn btn-form btn-default">Cancel</button>
-                      <button id="create-invoice-btn" type="button" class="btn btn-form btn-primary">Create</button>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </form>
-          </div>
+            </div>
         </div>
-      </div>
     </div>
-    
-    <script src="./js/createInvoice.js" charset="utf-8"></script>
-  </body>
-</html>
 
+    <script src="./js/createInvoice.js" charset="utf-8"></script>
+</body>
+
+</html>

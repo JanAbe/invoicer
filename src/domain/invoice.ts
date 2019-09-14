@@ -1,5 +1,5 @@
 import { JobID } from "./jobID";
-// import IBAN = require('iban');
+import IBAN = require('iban');
 import { isNullOrUndefined } from "util";
 import { InvoiceID } from "./invoiceID";
 
@@ -57,7 +57,7 @@ export class Invoice {
         if (isNullOrUndefined(iban)) {
             throw new Error("Provided iban is null or undefined");
         }
-
+        
         // if (!IBAN.isValid(iban)) {
         //     throw new Error("Provided iban is invalid");
         // }

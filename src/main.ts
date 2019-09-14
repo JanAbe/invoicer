@@ -1,4 +1,4 @@
-import { app, BrowserWindow, ipcMain } from 'electron';
+import { app, BrowserWindow, ipcMain, webContents, WebContents, globalShortcut } from 'electron';
 import { DB } from './db';
 import { SqliteInvoiceRepo } from './repos/sqliteInvoiceRepo';
 import { SqliteJobRepo } from './repos/sqliteJobRepo';
@@ -15,6 +15,7 @@ import { Period } from './domain/period';
 import { SqliteClientRepo } from './repos/sqliteClientRepo';
 import { EquipmentItem } from './domain/equipmentItem';
 import { InvoiceService } from './services/invoiceService';
+import fs from 'fs';
 
 // Handle creating/removing shortcuts on Windows when installing/uninstalling.
 if (require('electron-squirrel-startup')) { // eslint-disable-line global-require
@@ -24,6 +25,7 @@ if (require('electron-squirrel-startup')) { // eslint-disable-line global-requir
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
 let mainWindow: any;
+let contents: any;
 const dbLocation = `${__dirname}/../db/Invoice.db`;
 const db = new DB(dbLocation);
 db.createTables();
@@ -31,9 +33,9 @@ db.createTables();
 const sqliteJobRepo = new SqliteJobRepo(db);
 const sqliteClientRepo = new SqliteClientRepo(db);
 const sqliteInvoiceRepo = new SqliteInvoiceRepo(db, sqliteJobRepo);
+const invoiceService = new InvoiceService(sqliteInvoiceRepo, sqliteJobRepo, sqliteClientRepo);
 
 const createWindow = () => {
-    // Create the browser window.
     mainWindow = new BrowserWindow({
         width: 800,
         height: 600,
@@ -44,6 +46,10 @@ const createWindow = () => {
         }
 
     });
+
+    contents = mainWindow.webContents;
+    // let contents = new WebContents();
+    // contents.printToPDF({});
 
     // and load the index.html of the app.
     mainWindow.loadURL(`file://${__dirname}/ui/home.html`);
@@ -64,6 +70,21 @@ const createWindow = () => {
 // initialization and is ready to create browser windows.
 // Some APIs can only be used after this event occurs.
 app.on('ready', createWindow);
+app.on('ready', () => {
+    // todo: improve this, create file with correct name and location
+    globalShortcut.register('CommandOrControl+p', () => {
+        console.log('printing..')
+        contents.printToPDF({}, (err: any, data: any) => {
+            if (err) {
+                console.log(err);
+            } else {
+                fs.writeFile('/tmp/print.pdf', data, (error) => {
+                    console.log('pdf written');
+                });
+            }
+        });
+    })
+});
 
 // Quit when all windows are closed.
 app.on('window-all-closed', () => {
@@ -85,6 +106,22 @@ app.on('activate', () => {
 // In this file you can include the rest of your app's specific main process
 // code. You can also put them in separate files and import them here.
 
+// todo: test if it works
+// listen for fetchAllInvoices event
+ipcMain.on('fetch-all-invoices-channel', (event, _) => {
+    try {
+        invoiceService.fetchAllInvoices()
+            .then(html => {
+                event.reply('fetch-all-invoices-reply-channel', html);
+            })
+            .catch(err => {
+                console.log(err);
+            })
+    } catch (e) {
+        console.log(e);
+    }
+});
+
 // listen for fetched invoices
 ipcMain.on('fetch-invoice-channel', (event, args) => {
     try {
@@ -93,7 +130,6 @@ ipcMain.on('fetch-invoice-channel', (event, args) => {
             event.reply('fetch-invoice-reply-channel', `${invoiceKey} key missing -> no invoiceID provided`);
         }
 
-        const invoiceService = new InvoiceService(sqliteInvoiceRepo, sqliteJobRepo, sqliteClientRepo);
         const invoiceHTML = invoiceService.generatePDF(new InvoiceID(args[invoiceKey]));
         invoiceHTML
             .then(html => {
@@ -113,7 +149,11 @@ ipcMain.on('fetch-invoice-channel', (event, args) => {
 ipcMain.on('submit-invoice-channel', (event, args) => {
     try {
 
-        const props: string[] = ['firstName', 'lastName', 'email', 'city', 'street', 'houseNumber', 'zipcode', 'description', 'location', 'directedBy'];
+        const props: string[] = ['firstName', 'lastName', 
+                                 'email', 'city', 
+                                 'street', 'houseNumber', 
+                                 'zipcode', 'description', 
+                                 'location', 'directedBy'];
         props.forEach((key) => {
             if (!args.hasOwnProperty(key)) {
                 event.reply('submit-invoice-reply-channel', `${key} missing. All fields should be provided of a value.`);
@@ -155,7 +195,6 @@ ipcMain.on('submit-invoice-channel', (event, args) => {
         // via its own repo? or via the job repo?
         sqliteClientRepo.save(client);
         const invoice = new Invoice(invoiceID, jobID, args['iban']);
-        const invoiceService = new InvoiceService(sqliteInvoiceRepo, sqliteJobRepo, sqliteClientRepo);
         invoiceService.createInvoice(invoice, job);
     } catch (e) {
         console.log(e);

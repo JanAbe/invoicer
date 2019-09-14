@@ -1,12 +1,11 @@
 import { ClientRepo } from "./clientRepo";
 import { DB } from "../db";
 import { ClientID } from "../domain/clientID";
-import uuid = require("uuid");
 import { Client } from "../domain/client";
-import { Invoice } from "../domain/invoice";
 import { FullName } from "../domain/fullName";
 import { Email } from "../domain/email";
 import { Address } from "../domain/address";
+import uuid = require("uuid");
 
 export class SqliteClientRepo implements ClientRepo {
     private _db: DB;

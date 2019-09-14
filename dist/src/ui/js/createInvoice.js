@@ -1,52 +1,52 @@
-// const { ipcRenderer } = require('electron');
+const { ipcRenderer } = require('electron');
 
-// ipcRenderer.on('submit-invoice-reply-channel', (event, args) => {
-//     console.log(args);
-// });
+ipcRenderer.on('submit-invoice-reply-channel', (event, args) => {
+    console.log(args);
+});
 
-// // fetch submitted form data and send to the main process
-// const createInvoiceBtn = document.querySelector('#create-invoice-btn');
-// createInvoiceBtn.addEventListener('click', () => {
-//     let vals = {};
-//     let equipmentItems = [];
-//     const bankSegment = document.querySelector('#bank-account-segment');
-//     const clientSegment = document.querySelector('#client-segment');
-//     const jobSegment = document.querySelector('#job-segment');
-//     const cameramanSegment = document.querySelector('#cameraman-segment');
-//     const equipmentItemSegments = document.querySelectorAll('.equipment-item');
+// fetch submitted form data and send to the main process
+const createInvoiceBtn = document.querySelector('#create-invoice-btn');
+createInvoiceBtn.addEventListener('click', () => {
+    let vals = {};
+    let equipmentItems = [];
+    const bankSegment = document.querySelector('#bank-account-segment');
+    const clientSegment = document.querySelector('#client-segment');
+    const jobSegment = document.querySelector('#job-segment');
+    const cameramanSegment = document.querySelector('#cameraman-segment');
+    const equipmentItemSegments = document.querySelectorAll('.equipment-item');
 
-//     const bankInputs = bankSegment.querySelectorAll('input');
-//     for (input of bankInputs) {
-//         vals[input.name] = input.value;
-//     }
+    const bankInputs = bankSegment.querySelectorAll('input');
+    for (input of bankInputs) {
+        vals[input.name] = input.value;
+    }
 
-//     const clientInputs = clientSegment.querySelectorAll('input');
-//     for (input of clientInputs) {
-//         vals[input.name] = input.value;
-//     }
+    const clientInputs = clientSegment.querySelectorAll('input');
+    for (input of clientInputs) {
+        vals[input.name] = input.value;
+    }
 
-//     const jobInputs = jobSegment.querySelectorAll('input');
-//     for (input of jobInputs) {
-//         vals[input.name] = input.value;
-//     }
+    const jobInputs = jobSegment.querySelectorAll('input');
+    for (input of jobInputs) {
+        vals[input.name] = input.value;
+    }
 
-//     const cameraInputs = cameramanSegment.querySelectorAll('input');
-//     for (input of cameraInputs) {
-//         vals[input.name] = input.value;
-//     }
+    const cameraInputs = cameramanSegment.querySelectorAll('input');
+    for (input of cameraInputs) {
+        vals[input.name] = input.value;
+    }
 
-//     for (item of equipmentItemSegments) {
-//         let equipmentItem = {}
-//         inputFields = item.querySelectorAll('input');
-//         for (input of inputFields) {
-//             equipmentItem[input.name] = input.value;
-//         }
-//         equipmentItems.push(equipmentItem);
-//     }
-//     vals['equipmentItems'] = equipmentItems;
+    for (item of equipmentItemSegments) {
+        let equipmentItem = {}
+        inputFields = item.querySelectorAll('input');
+        for (input of inputFields) {
+            equipmentItem[input.name] = input.value;
+        }
+        equipmentItems.push(equipmentItem);
+    }
+    vals['equipmentItems'] = equipmentItems;
 
-//     ipcRenderer.send('submit-invoice-channel', vals);
-// });
+    ipcRenderer.send('submit-invoice-channel', vals);
+});
 
 // to add extra equipmentItem input fields
 const extraEquipmentItemBtn = document.querySelector('#equipment-item-add-btn');

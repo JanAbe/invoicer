@@ -6,6 +6,7 @@ import uuid = require("uuid/v4");
 import { DB } from "../db";
 import { JobID } from "../domain/jobID";
 import { Job } from "../domain/job";
+import { resolve } from "url";
 
 export class SqliteInvoiceRepo implements InvoiceRepo {
     private _db: DB;
@@ -21,8 +22,55 @@ export class SqliteInvoiceRepo implements InvoiceRepo {
     }
 
     // todo: implement this method
-    public invoices(): Invoice[] {
-        return [];
+    public async invoices(): Promise<Invoice[]> {
+        const query: string = 'SELECT id from Invoice;';
+        let invoices: Invoice[] = [];
+        let invoicdeIDs: InvoiceID[] = [];
+
+        /* 
+            why doesn't this work?
+            await this._db.all(query)
+            .then(rows => {
+                rows.forEach(row => {
+                    this.invoiceOfID(new InvoiceID(row.id))
+                    .then(invoice => {
+                        invoices.push(invoice);
+                        console.log(invoices);
+                    })
+                    .catch(err => {
+                        console.log(err);
+                    })
+                });
+            })
+            .catch(err => {
+                console.log(err);
+            });
+
+            const rows = await this._db.all(query);
+            rows.forEach(row => {
+                invoicdeIDs.push(new InvoiceID(row.id));
+            });
+
+            why doesn't this work?
+            invoicdeIDs.forEach(async id => {
+                const invoice = await this.invoiceOfID(id);
+                invoices.push(invoice);
+            }); 
+        */
+
+        const rows = await this._db.all(query);
+        rows.forEach(row => {
+            invoicdeIDs.push(new InvoiceID(row.id));
+        });
+
+        for (let id of invoicdeIDs) {
+            const invoice = await this.invoiceOfID(id);
+            invoices.push(invoice);
+        }
+
+        return new Promise((resolve, reject) => {
+            resolve(invoices);
+        });
     }
 
     public async invoiceOfID(invoiceID: InvoiceID): Promise<Invoice> {

@@ -48,8 +48,41 @@ var SqliteInvoiceRepo = /** @class */ (function () {
     SqliteInvoiceRepo.prototype.nextID = function () {
         return new invoiceID_1.InvoiceID(uuid());
     };
+    // todo: implement this method
     SqliteInvoiceRepo.prototype.invoices = function () {
-        return [];
+        return __awaiter(this, void 0, void 0, function () {
+            var query, invoices, invoicdeIDs, rows, _i, invoicdeIDs_1, id, invoice;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        query = 'SELECT id from Invoice;';
+                        invoices = [];
+                        invoicdeIDs = [];
+                        return [4 /*yield*/, this._db.all(query)];
+                    case 1:
+                        rows = _a.sent();
+                        rows.forEach(function (row) {
+                            invoicdeIDs.push(new invoiceID_1.InvoiceID(row.id));
+                        });
+                        _i = 0, invoicdeIDs_1 = invoicdeIDs;
+                        _a.label = 2;
+                    case 2:
+                        if (!(_i < invoicdeIDs_1.length)) return [3 /*break*/, 5];
+                        id = invoicdeIDs_1[_i];
+                        return [4 /*yield*/, this.invoiceOfID(id)];
+                    case 3:
+                        invoice = _a.sent();
+                        invoices.push(invoice);
+                        _a.label = 4;
+                    case 4:
+                        _i++;
+                        return [3 /*break*/, 2];
+                    case 5: return [2 /*return*/, new Promise(function (resolve, reject) {
+                            resolve(invoices);
+                        })];
+                }
+            });
+        });
     };
     SqliteInvoiceRepo.prototype.invoiceOfID = function (invoiceID) {
         return __awaiter(this, void 0, void 0, function () {

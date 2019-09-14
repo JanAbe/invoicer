@@ -9,7 +9,7 @@ export interface InvoiceRepo {
 
     // TODO: think about a way that is better for performance than to fetch 'em all.
     // invoices fetches all invoices in the database
-    invoices(): Invoice[];
+    invoices(): Promise<Invoice[]>;
 
     // invoiceOfID fetches an invoice based on ID
     invoiceOfID(invoiceID: InvoiceID): Promise<Invoice>;

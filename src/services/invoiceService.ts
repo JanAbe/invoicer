@@ -5,6 +5,7 @@ import { Job } from "../domain/job";
 import { JobRepo } from "../repos/jobRepo";
 import { ClientRepo } from "../repos/clientRepo";
 import nunjucks = require('nunjucks');
+import { InvoiceDTO } from "../domain/InvoiceDTO";
 
 // InvoiceService contains all services a user can call regarding invoices
 export class InvoiceService {
@@ -24,17 +25,54 @@ export class InvoiceService {
     }
 
     // todo: implement this method / check if it works
-    public fetchInvoiceByID(invoiceID: InvoiceID): Invoice {
-        this._invoiceRepo.invoiceOfID(invoiceID);
-        throw new Error("Not implemented yet");
+    public async fetchInvoiceByID(invoiceID: InvoiceID): Promise<Invoice> {
+        return await this._invoiceRepo.invoiceOfID(invoiceID);
     }
 
     // todo: implement this method / check if it works
-    public fetchAllInvoices(): Invoice[] {
-        this._invoiceRepo.invoices();
-        throw new Error("Not implemented yet");
+    // changed return type to string because i couldn't figure out
+    // how to use nunjucks in the client-side scripts
+    public async fetchAllInvoices(): Promise<string> {
+        const invoiceDTOs: InvoiceDTO[] = [];
+        const invoices = await this._invoiceRepo.invoices();
+
+        for (const invoice of invoices) {
+            const invoiceDTO = new InvoiceDTO();
+            invoiceDTO.id = invoice.invoiceID.toString();
+            invoiceDTO.invoiceNumber = 'some number';
+            invoiceDTO.creationDate = new Date(invoice.creationDate); // todo: look at fix for the need to make a new date obj from invoice.creationDate.
+            await this._jobRepo.jobOfID(invoice.jobID)
+                .then(job => {
+                    invoiceDTO.jobDescription = job.description;
+                    return job.clientID;
+                })
+                .then(clientID => {
+                    return this._clientRepo.clientOfID(clientID!);
+                })
+                .then(client => {
+                    invoiceDTO.clientName = client.fullName.toString();
+                })
+                .catch(err => {
+                    console.log(err);
+                });
+
+            invoiceDTOs.push(invoiceDTO);
+        }
+
+        nunjucks.configure('src/ui', { autoescape: true });
+
+        return new Promise((resolve, reject) => {
+            const html = nunjucks.render('invoice-row-template.html', {
+                invoiceDTOs: invoiceDTOs
+            });
+            resolve(html);
+        });
     }
 
+    // todo: look into used (!) exclamation marks
+    // todo: look into best way to store money values
+        // atm the number datatype is used.
+            // 5964 + 1252.44 = 7216.4400000000005
     public async generatePDF(invoiceID: InvoiceID): Promise<string> {
         /*
         fetch invoice with id=invoiceID from database 

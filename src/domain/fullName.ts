@@ -32,4 +32,8 @@ export class FullName {
 
         this._lastName = lastName.trim();
     }
+
+    public toString(): string {
+        return [this.firstName, this.lastName].join(' ');
+    }
 }

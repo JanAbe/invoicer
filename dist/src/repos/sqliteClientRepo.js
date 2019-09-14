@@ -37,11 +37,11 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 var clientID_1 = require("../domain/clientID");
-var uuid = require("uuid");
 var client_1 = require("../domain/client");
 var fullName_1 = require("../domain/fullName");
 var email_1 = require("../domain/email");
 var address_1 = require("../domain/address");
+var uuid = require("uuid");
 var SqliteClientRepo = /** @class */ (function () {
     function SqliteClientRepo(db) {
         this._db = db;

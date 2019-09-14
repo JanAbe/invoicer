@@ -1,6 +1,5 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-// import IBAN = require('iban');
 var util_1 = require("util");
 var Invoice = /** @class */ (function () {
     function Invoice(invoiceID, jobID, iban, creationDate) {

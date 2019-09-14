@@ -1,0 +1,20 @@
+
+{% macro button(value) %}
+    <button  class="btn btn-default generate-invoice-btn" type="button" value="{{ value }}" >
+        Genereer
+    </button>
+{% endmacro %}
+
+{% for invoiceDTO in invoiceDTOs %}
+    <tr>
+        <td>{{ invoiceDTO.invoiceNumber }}</td>
+        <td>{{ invoiceDTO.jobDescription }}</td>
+        <td>{{ invoiceDTO.clientName }}</td>
+        <td>{{ invoiceDTO.creationDate.toLocaleDateString() }}</td>
+        <td>
+            <span>
+                {{ button(value=invoiceDTO.id) }}
+            </span>
+        </td>
+    </tr>
+{% endfor %}

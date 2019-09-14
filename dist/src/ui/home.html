@@ -1,9 +1,10 @@
 <!DOCTYPE html>
 <html>
-  <head>
+
+<head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    
+
     <title>Invoicer</title>
 
     <!-- Stylesheets -->
@@ -13,76 +14,79 @@
 
     <!-- Javascript -->
     <script src="./js/menu.js" charset="utf-8"></script>
-  </head>
-  <body>
+</head>
+
+<body>
     <div class="window">
 
-      <!-- .toolbar-header sits at the top of your app -->
-      <header class="toolbar toolbar-header">
-        <h1 class="title">Invoicer</h1>
-      </header>
+        <!-- .toolbar-header sits at the top of your app -->
+        <header class="toolbar toolbar-header">
+            <h1 class="title">Invoicer</h1>
+        </header>
 
-      <!-- Your app's content goes inside .window-content -->
-      <div class="window-content">
-        <div class="pane-group">
-          <div class="pane pane-sm sidebar">
-              <nav class="nav-group">
-                <h3 class="nav-group-title">Menu</h3>
-  
-                <a href="./home.html">
-                  <span class="nav-group-item">
-                    <span class="icon icon-home"></span>
-                    Home
-                  </span>
-                </a>
-  
-                <a href="./invoices.html">
-                  <span class="nav-group-item">
-                    <span class="icon icon-doc-text"></span>
-                    Rekeningen
-                  </span>
-                </a>
-  
-                <a href="./generalInfo.html">
-                  <span class="nav-group-item">
-                    <span class="icon icon-vcard"></span>
-                    General Info
-                  </span>
-                </a>
-              </nav>
-            </div>
+        <!-- Your app's content goes inside .window-content -->
+        <div class="window-content">
+            <div class="pane-group">
+                <div class="pane pane-sm sidebar">
+                    <nav class="nav-group">
+                        <h3 class="nav-group-title">Menu</h3>
 
-          <div class="pane">
-            <div class="container">
-              <div class="greeting">
-                <h3 id="welcome-message" class="text-center"></h3>
-              </div>
-              <div class="workflow-step-1 text-center">
-                <p>Step 1</p>
-                <h4>Create Invoice Data</h4>
-                <a class="btn btn-large btn-default" href="./createInvoice.html">Create an Invoice</a>
-              </div>
-              <div class="workflow-step-2 text-center">
-                <p>Step 2</p>
-                <h4>Browse Created Invoices</h4>
-                <a class="btn btn-large btn-default" href="./invoices.html">Browse Invoices</a>
-              </div>
-              <div class="workflow-step-3 text-center">
-                <p>Step 3</p>
-                <h4>Generate a PDF version of an Invoice</h4>
-                <a class="btn btn-large btn-default" href="./invoices.html">Select Invoice to Generate PDF</a>
-              </div>
+                        <a href="./home.html">
+                            <span class="nav-group-item">
+                                <span class="icon icon-home"></span>
+                                Home
+                            </span>
+                        </a>
+
+                        <a href="./invoices.html">
+                            <span class="nav-group-item">
+                                <span class="icon icon-doc-text"></span>
+                                Rekeningen
+                            </span>
+                        </a>
+
+                        <a href="./generalInfo.html">
+                            <span class="nav-group-item">
+                                <span class="icon icon-vcard"></span>
+                                General Info
+                            </span>
+                        </a>
+                    </nav>
+                </div>
+
+                <div class="pane">
+                    <div class="container">
+                        <div class="greeting">
+                            <h3 id="welcome-message" class="text-center"></h3>
+                        </div>
+                        <div class="workflow-step-1 text-center">
+                            <p>Step 1</p>
+                            <h4>Create Invoice Data</h4>
+                            <a class="btn btn-large btn-default" href="./createInvoice.html">Create an Invoice</a>
+                        </div>
+                        <div class="workflow-step-2 text-center">
+                            <p>Step 2</p>
+                            <h4>Browse Created Invoices</h4>
+                            <a class="btn btn-large btn-default" href="./invoices.html">Browse Invoices</a>
+                        </div>
+                        <div class="workflow-step-3 text-center">
+                            <p>Step 3</p>
+                            <h4>Generate a PDF version of an Invoice</h4>
+                            <a class="btn btn-large btn-default" href="./invoices.html">Select Invoice to Generate
+                                PDF</a>
+                        </div>
+                    </div>
+                </div>
             </div>
-          </div>
         </div>
-      </div>
     </div>
 
     <script>
-      // todo: extract to own js file
-      const welcomeMessage = document.querySelector('#welcome-message')
-      welcomeMessage.textContent = 'Welcome' + ' ' + localStorage.getItem('firstName') + ' ' + localStorage.getItem('lastName');
+        // todo: extract to own js file
+        const welcomeMessage = document.querySelector('#welcome-message')
+        welcomeMessage.textContent = 'Welcome' + ' ' + localStorage.getItem('firstName') + ' ' + localStorage.getItem('lastName');
     </script>
 
-  </body>
+</body>
+
 </html>
