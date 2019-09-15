@@ -6,7 +6,6 @@ const { ipcRenderer } = require('electron');
 const readyPage = () => {
     fetchAllInvoices('fetch-all-invoices-channel');
     fetchAllInvoicesHTMLAndInsert('fetch-all-invoices-reply-channel');
-    listenForPrintEvent();
 }
 
 /**
@@ -45,18 +44,6 @@ const bindGenerateInvoiceEventToButtons = (class_, chan) => {
             ipcRenderer.send(chan, {'invoiceID': invoiceID});
         });
     }
-}
-
-/**
- * listenForPrintEvent listens for the user to
- * fire the print command by typing ctrl+p or command+p
- */
-const listenForPrintEvent = () => {
-    document.addEventListener('keydown', (event) => {
-        if ((event.ctrlKey || event.metaKey) && event.key === 'p') {
-            window.print();
-        }
-    });
 }
 
 readyPage();

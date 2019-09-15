@@ -131,6 +131,8 @@ var InvoiceService = /** @class */ (function () {
             });
         });
     };
+    // todo: fix date format of invoice
+    // it uses month/day/year atm...
     // todo: rename to generateInvoiceHTML?
     // todo: look into used (!) exclamation marks
     // todo: look into best way to store money values

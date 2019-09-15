@@ -1,16 +1,59 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+
     <title>Invoice</title>
-    
+
     <link rel="stylesheet" href="./css/photon.min.css">
     <link rel="stylesheet" href="./css/invoice.css">
+    <link rel="stylesheet" href="./css/general.css">
 </head>
+
 <body>
-    
+    <div class="window">
+
+        <header class="toolbar toolbar-header">
+            <h1 class="title">Invoicer</h1>
+        </header>
+
+        <div class="window-content">
+            <div class="pane-group">
+                <div class="pane pane-sm sidebar">
+                    <nav class="nav-group">
+                        <h3 class="nav-group-title">Menu</h3>
+
+                        <a href="./home.html">
+                            <span class="nav-group-item">
+                                <span class="icon icon-home"></span>
+                                Home
+                            </span>
+                        </a>
+
+                        <a href="./invoices.html">
+                            <span class="nav-group-item">
+                                <span class="icon icon-doc-text"></span>
+                                Rekeningen
+                            </span>
+                        </a>
+
+                        <a href="./generalInfo.html">
+                            <span class="nav-group-item">
+                                <span class="icon icon-vcard"></span>
+                                General Info
+                            </span>
+                        </a>
+                    </nav>
+                </div>
+
+                <div id="invoice-section" class="pane">
+                </div>
+            </div>
+        </div>
+    </div>
     <script src="./js/invoice.js"></script>
 </body>
+
 </html>

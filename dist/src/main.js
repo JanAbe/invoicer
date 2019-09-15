@@ -23,7 +23,6 @@ if (require('electron-squirrel-startup')) { // eslint-disable-line global-requir
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
 var mainWindow;
-var contents;
 var dbLocation = __dirname + "/../db/Invoice.db";
 var db = new db_1.DB(dbLocation);
 db.createTables();
@@ -40,7 +39,6 @@ var createWindow = function () {
             nodeIntegration: true
         }
     });
-    contents = mainWindow.webContents;
     // and load the index.html of the app.
     mainWindow.loadURL("file://" + __dirname + "/ui/home.html");
     // Open the DevTools.
@@ -57,12 +55,6 @@ var createWindow = function () {
 // initialization and is ready to create browser windows.
 // Some APIs can only be used after this event occurs.
 electron_1.app.on('ready', createWindow);
-electron_1.app.on('ready', function () {
-    // todo: improve this, create file with correct name and location
-    electron_1.globalShortcut.register('CommandOrControl+p', function () {
-        contents.print({});
-    });
-});
 // Quit when all windows are closed.
 electron_1.app.on('window-all-closed', function () {
     // On OS X it is common for applications and their menu bar

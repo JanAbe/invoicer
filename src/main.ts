@@ -1,4 +1,4 @@
-import { app, BrowserWindow, ipcMain, globalShortcut } from 'electron';
+import { app, BrowserWindow, ipcMain } from 'electron';
 import { DB } from './db';
 import { SqliteInvoiceRepo } from './repos/sqliteInvoiceRepo';
 import { SqliteJobRepo } from './repos/sqliteJobRepo';
@@ -15,7 +15,6 @@ import { Period } from './domain/period';
 import { SqliteClientRepo } from './repos/sqliteClientRepo';
 import { EquipmentItem } from './domain/equipmentItem';
 import { InvoiceService } from './services/invoiceService';
-import fs from 'fs';
 
 // Handle creating/removing shortcuts on Windows when installing/uninstalling.
 if (require('electron-squirrel-startup')) { // eslint-disable-line global-require
@@ -25,7 +24,6 @@ if (require('electron-squirrel-startup')) { // eslint-disable-line global-requir
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
 let mainWindow: any;
-let contents: any;
 const dbLocation = `${__dirname}/../db/Invoice.db`;
 const db = new DB(dbLocation);
 db.createTables();
@@ -47,8 +45,6 @@ const createWindow = () => {
 
     });
 
-    contents = mainWindow.webContents;
-
     // and load the index.html of the app.
     mainWindow.loadURL(`file://${__dirname}/ui/home.html`);
 
@@ -68,12 +64,6 @@ const createWindow = () => {
 // initialization and is ready to create browser windows.
 // Some APIs can only be used after this event occurs.
 app.on('ready', createWindow);
-app.on('ready', () => {
-    // todo: improve this, create file with correct name and location
-    globalShortcut.register('CommandOrControl+p', () => {
-        contents.print({});
-    })
-});
 
 // Quit when all windows are closed.
 app.on('window-all-closed', () => {
