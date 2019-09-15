@@ -21,7 +21,6 @@ export class SqliteInvoiceRepo implements InvoiceRepo {
         return new InvoiceID(uuid());
     }
 
-    // todo: implement this method
     public async invoices(): Promise<Invoice[]> {
         const query: string = 'SELECT id from Invoice;';
         let invoices: Invoice[] = [];

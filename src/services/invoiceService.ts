@@ -31,7 +31,6 @@ export class InvoiceService {
 
     // rename to fetchAllInvoicesAndRenderHTML
         // or split in 2 functions
-    // todo: implement this method / check if it works
     // changed return type to string because i couldn't figure out
     // how to use nunjucks in the client-side scripts
     public async fetchAllInvoices(): Promise<string> {
@@ -42,7 +41,7 @@ export class InvoiceService {
             const invoiceDTO = new InvoiceDTO();
             invoiceDTO.id = invoice.invoiceID.toString();
             invoiceDTO.invoiceNumber = 'some number';
-            invoiceDTO.creationDate = invoice.creationDate; // todo: look at fix for the need to make a new date obj from invoice.creationDate.
+            invoiceDTO.creationDate = invoice.creationDate;
             await this._jobRepo.jobOfID(invoice.jobID)
                 .then(job => {
                     invoiceDTO.jobDescription = job.description;
@@ -71,8 +70,6 @@ export class InvoiceService {
         });
     }
 
-    // todo: fix date format of invoice
-        // it uses month/day/year atm...
     // todo: remove hardcoded values and write code to support this
     // todo: rename to generateInvoiceHTML?
     // todo: look into used (!) exclamation marks
