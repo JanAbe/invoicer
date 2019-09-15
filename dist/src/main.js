@@ -128,14 +128,14 @@ electron_1.ipcMain.on('submit-invoice-channel', function (event, args) {
         var invoiceID = sqliteInvoiceRepo.nextID();
         var clientID = sqliteClientRepo.nextID();
         var cameraman = undefined;
-        // if cameraman props are in args ->
         if (args.hasOwnProperty('cameraman')) {
+            // todo: add check to see if properties aren't empty
             cameraman = new cameraman_1.Cameraman(args['cameramanFirstName'], args['cameramanLastName'], Number(args['cameramanDayPrice']), new period_1.Period(new Date(args['cameramanStartDate']), new Date(args['cameramanEndDate'])));
         }
         var client = new client_1.Client(clientID, new fullName_1.FullName(args['firstName'], args['lastName']), new email_1.Email(args['email']), new address_1.Address(args['city'], args['street'], Number(args['houseNumber']), args['zipcode']));
         var job = new job_1.Job(jobID, args['description'], args['location'], args['directedBy'], clientID, cameraman);
-        // if equipmentItems is in args and it's not empty ->
         if (args.hasOwnProperty('equipmentItems')) {
+            // todo: add check to see if properties aren't empty
             for (var _i = 0, _a = args['equipmentItems']; _i < _a.length; _i++) {
                 var item = _a[_i];
                 job.equipmentItems.push(new equipmentItem_1.EquipmentItem(item['equipmentItemName'], item['equipmentItemDayPrice'], new period_1.Period(new Date(item['equipmentItemStartDate']), new Date(item['equipmentItemEndDate']))));

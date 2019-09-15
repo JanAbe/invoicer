@@ -126,7 +126,6 @@ ipcMain.on('generate-invoice-channel', (event, args) => {
 // also check if at least 1 of the 2 has been passed
 ipcMain.on('submit-invoice-channel', (event, args) => {
     try {
-
         const requiredKeys: string[] = ['firstName', 'lastName', 
                                         'email', 'city', 
                                         'street', 'houseNumber', 
@@ -144,8 +143,9 @@ ipcMain.on('submit-invoice-channel', (event, args) => {
         const invoiceID = sqliteInvoiceRepo.nextID();
         const clientID = sqliteClientRepo.nextID();
         let cameraman: any = undefined;
-        // if cameraman props are in args ->
+
         if (args.hasOwnProperty('cameraman')) {
+            // todo: add check to see if properties aren't empty
             cameraman = new Cameraman(args['cameramanFirstName'],
                 args['cameramanLastName'],
                 Number(args['cameramanDayPrice']),
@@ -169,8 +169,8 @@ ipcMain.on('submit-invoice-channel', (event, args) => {
             clientID,
             cameraman);
 
-        // if equipmentItems is in args and it's not empty ->
         if (args.hasOwnProperty('equipmentItems')) {
+            // todo: add check to see if properties aren't empty
             for (let item of args['equipmentItems']) {
                 job.equipmentItems.push(new EquipmentItem(item['equipmentItemName'],
                     item['equipmentItemDayPrice'],

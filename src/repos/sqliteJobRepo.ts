@@ -37,8 +37,10 @@ export class SqliteJobRepo implements JobRepo {
                     console.log(err);
                     reject(err);
                 } else {
-                    const cameraman = new Cameraman(row.firstName, row.lastName, row.day_price, new Period(new Date(row.start_date), new Date(row.end_date)));
-                    jobDTO.cameraman = cameraman;
+                    if (row !== undefined) {
+                        const cameraman = new Cameraman(row.firstName, row.lastName, row.day_price, new Period(new Date(row.start_date), new Date(row.end_date)));
+                        jobDTO.cameraman = cameraman;
+                    }
                     resolve();
                 }
             });
@@ -53,10 +55,12 @@ export class SqliteJobRepo implements JobRepo {
                     console.log(err);
                     reject(err);
                 } else {
-                    rows.forEach((row) => {
-                        let equipmentItem = new EquipmentItem(row.name, row.day_price, new Period(new Date(row.start_date), new Date(row.end_date)));
-                        jobDTO.equipmentItems.push(equipmentItem);
-                    });
+                    if (rows !== undefined) {
+                        rows.forEach((row) => {
+                            let equipmentItem = new EquipmentItem(row.name, row.day_price, new Period(new Date(row.start_date), new Date(row.end_date)));
+                            jobDTO.equipmentItems.push(equipmentItem);
+                        });
+                    }
                     resolve();
                 }
             });

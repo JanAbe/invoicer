@@ -72,8 +72,10 @@ var SqliteJobRepo = /** @class */ (function () {
                                         reject(err);
                                     }
                                     else {
-                                        var cameraman = new cameraman_1.Cameraman(row.firstName, row.lastName, row.day_price, new period_1.Period(new Date(row.start_date), new Date(row.end_date)));
-                                        jobDTO.cameraman = cameraman;
+                                        if (row !== undefined) {
+                                            var cameraman = new cameraman_1.Cameraman(row.firstName, row.lastName, row.day_price, new period_1.Period(new Date(row.start_date), new Date(row.end_date)));
+                                            jobDTO.cameraman = cameraman;
+                                        }
                                         resolve();
                                     }
                                 });
@@ -88,10 +90,12 @@ var SqliteJobRepo = /** @class */ (function () {
                                         reject(err);
                                     }
                                     else {
-                                        rows.forEach(function (row) {
-                                            var equipmentItem = new equipmentItem_1.EquipmentItem(row.name, row.day_price, new period_1.Period(new Date(row.start_date), new Date(row.end_date)));
-                                            jobDTO.equipmentItems.push(equipmentItem);
-                                        });
+                                        if (rows !== undefined) {
+                                            rows.forEach(function (row) {
+                                                var equipmentItem = new equipmentItem_1.EquipmentItem(row.name, row.day_price, new period_1.Period(new Date(row.start_date), new Date(row.end_date)));
+                                                jobDTO.equipmentItems.push(equipmentItem);
+                                            });
+                                        }
                                         resolve();
                                     }
                                 });
