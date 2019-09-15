@@ -9,7 +9,7 @@ body {
         size: A4;
     }
 
-    html, body {
+    html, body, #invoice-section {
         margin-left: 5mm;
         margin-right: 15mm;
     }

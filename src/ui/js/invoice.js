@@ -5,49 +5,62 @@ ipcRenderer.on('generate-invoice-reply-channel', (_, html) => {
     while (invoiceSection.hasChildNodes()) {
         invoiceSection.removeChild(invoiceSection.lastChild);
     }
-    invoiceSection.insertAdjacentHTML('beforeend', html);
+    invoiceSection.insertAdjacentHTML('afterbegin', html);
 });
 
-const hideElement = (class_) => {
-    const element = document.querySelector(class_);
+const hideElement = (identifier) => {
+    const element = document.querySelector(identifier);
     element.style.display = 'none';
 }
 
-const showElement = (class_) => {
-    const element = document.querySelector(class_);
+const showElement = (identifier) => {
+    const element = document.querySelector(identifier);
     element.style.display = 'block';
 }
 
-const hideElements = (classes) => {
-    for (const class_ of classes) {
-        hideElement(class_);
+const hideElements = (identifiers) => {
+    for (const identifier of identifiers) {
+        hideElement(identifier);
     }
 }
 
-const showElements = (classes) => {
-    for (const class_ of classes) {
-        showElement(class_);
+const showElements = (identifiers) => {
+    for (const identifier of identifiers) {
+        showElement(identifier);
     }
 }
 
 /**
  * listenForPrintEvent listens for the user to
  * fire the print command by typing ctrl+p or command+p
+ * or by pressing the print-button
  */
 // this only works if someone presses ctrl+p
     // and saves the document
     // if cancel is pressed ctrl+p doesn't work anymore
     // and the sidebar doesn't get shown again
 const listenForPrintEvent = () => {
+    listenForPrintButtonPressed('#print-btn', ['#print-btn', '.sidebar', '.toolbar']);
+    listenForCtrlPKeysPressed(['#print-btn', '.sidebar', '.toolbar']);
+}
+
+const listenForCtrlPKeysPressed = (identifiers) => {
     document.addEventListener('keydown', (event) => {
         if ((event.ctrlKey || event.metaKey) && event.key === 'p') {
-            hideElements(['.sidebar', '.toolbar']);
+            hideElements(identifiers);
             window.print();
         }
-        showElements(['.sidebar', '.toolbar']);
+        showElements(identifiers);
     });
 }
 
-// todo: add button to print page to pdf as alternative to ctrl+p
+const listenForPrintButtonPressed = (btnID, identifiers) => {
+    const printBtn = document.querySelector(btnID);
+    printBtn.addEventListener('click', () => {
+        hideElements(identifiers);
+        window.print();
+        showElements(identifiers);
+    });
+}
 
 listenForPrintEvent();
