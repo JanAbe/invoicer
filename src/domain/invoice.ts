@@ -9,6 +9,9 @@ export class Invoice {
     private _iban: string;
     private _creationDate: Date;
 
+    // todo: add comment attribute
+        // user can write some text in there
+    // todo: add invoiceNumber attribute
     constructor(invoiceID: InvoiceID, jobID: JobID, iban: string, creationDate: Date = new Date()) {
         this._invoiceID = invoiceID;
         this._jobID = jobID;
@@ -17,7 +20,13 @@ export class Invoice {
     }
 
     public generateInvoiceNumber(): string {
-       throw new Error(); 
+        // two ideas atm:
+            // create static variable invoiceNumber
+            // or create attribute invoiceNumber
+            // than retrieve previously created invoice
+            // based on creationDate. Use this one's invoiceNumber
+            // to determine the invoiceNumber of the current invoice
+        throw new Error(); 
     }
 
     public get invoiceID(): InvoiceID {

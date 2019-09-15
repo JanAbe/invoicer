@@ -2,6 +2,9 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 var util_1 = require("util");
 var Invoice = /** @class */ (function () {
+    // todo: add comment attribute
+    // user can write some text in there
+    // todo: add invoiceNumber attribute
     function Invoice(invoiceID, jobID, iban, creationDate) {
         if (creationDate === void 0) { creationDate = new Date(); }
         this._invoiceID = invoiceID;
@@ -10,6 +13,12 @@ var Invoice = /** @class */ (function () {
         this._creationDate = creationDate;
     }
     Invoice.prototype.generateInvoiceNumber = function () {
+        // two ideas atm:
+        // create static variable invoiceNumber
+        // or create attribute invoiceNumber
+        // than retrieve previously created invoice
+        // based on creationDate. Use this one's invoiceNumber
+        // to determine the invoiceNumber of the current invoice
         throw new Error();
     };
     Object.defineProperty(Invoice.prototype, "invoiceID", {

@@ -85,6 +85,7 @@ app.on('activate', () => {
 // In this file you can include the rest of your app's specific main process
 // code. You can also put them in separate files and import them here.
 
+// todo: extract ipcMain code to other file(s) to clean up main.ts
 ipcMain.on('fetch-all-invoices-channel', (event, _) => {
     try {
         invoiceService.fetchAllInvoices()
@@ -126,26 +127,32 @@ ipcMain.on('generate-invoice-channel', (event, args) => {
 ipcMain.on('submit-invoice-channel', (event, args) => {
     try {
 
-        const props: string[] = ['firstName', 'lastName', 
-                                 'email', 'city', 
-                                 'street', 'houseNumber', 
-                                 'zipcode', 'description', 
-                                 'location', 'directedBy'];
-        props.forEach((key) => {
-            if (!args.hasOwnProperty(key)) {
-                event.reply('submit-invoice-reply-channel', `${key} missing. All fields should be provided of a value.`);
-            };
+        const requiredKeys: string[] = ['firstName', 'lastName', 
+                                        'email', 'city', 
+                                        'street', 'houseNumber', 
+                                        'zipcode', 'description', 
+                                        'location', 'directedBy'];
+        requiredKeys.forEach((key) => {
+            if (args[key] === '') {
+                const errorMsg = `${key} missing. This field should be provided of a value.`;
+                event.reply('submit-invoice-error-channel', errorMsg);
+                throw new Error(errorMsg);
+            }
         });
+
         const jobID = sqliteJobRepo.nextID();
         const invoiceID = sqliteInvoiceRepo.nextID();
         const clientID = sqliteClientRepo.nextID();
-
+        let cameraman: any = undefined;
         // if cameraman props are in args ->
-        const cameraman = new Cameraman(args['cameramanFirstName'],
-            args['cameramanLastName'],
-            Number(args['cameramanDayPrice']),
-            new Period(new Date(args['cameramanStartDate']),
-                new Date(args['cameramanEndDate'])));
+        if (args.hasOwnProperty('cameraman')) {
+            cameraman = new Cameraman(args['cameramanFirstName'],
+                args['cameramanLastName'],
+                Number(args['cameramanDayPrice']),
+                new Period(new Date(args['cameramanStartDate']),
+                    new Date(args['cameramanEndDate'])));
+        }
+
         const client = new Client(clientID,
             new FullName(args['firstName'],
                 args['lastName']),
@@ -154,6 +161,7 @@ ipcMain.on('submit-invoice-channel', (event, args) => {
                 args['street'],
                 Number(args['houseNumber']),
                 args['zipcode']));
+
         const job = new Job(jobID,
             args['description'],
             args['location'],
@@ -162,10 +170,12 @@ ipcMain.on('submit-invoice-channel', (event, args) => {
             cameraman);
 
         // if equipmentItems is in args and it's not empty ->
-        for (let item of args['equipmentItems']) {
-            job.equipmentItems.push(new EquipmentItem(item['equipmentItemName'],
-                item['equipmentItemDayPrice'],
-                new Period(new Date(item['equipmentItemStartDate']), new Date(item['equipmentItemEndDate']))));
+        if (args.hasOwnProperty('equipmentItems')) {
+            for (let item of args['equipmentItems']) {
+                job.equipmentItems.push(new EquipmentItem(item['equipmentItemName'],
+                    item['equipmentItemDayPrice'],
+                    new Period(new Date(item['equipmentItemStartDate']), new Date(item['equipmentItemEndDate']))));
+            }
         }
 
         // temporary, need to figur out how to store a client

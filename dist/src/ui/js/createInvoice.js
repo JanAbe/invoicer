@@ -1,6 +1,6 @@
 const { ipcRenderer } = require('electron');
 
-ipcRenderer.on('submit-invoice-reply-channel', (event, args) => {
+ipcRenderer.on('submit-invoice-error-channel', (event, args) => {
     console.log(args);
 });
 
@@ -9,6 +9,7 @@ const createInvoiceBtn = document.querySelector('#create-invoice-btn');
 createInvoiceBtn.addEventListener('click', () => {
     let vals = {};
     let equipmentItems = [];
+    let cameraman = {};
     const bankSegment = document.querySelector('#bank-account-segment');
     const clientSegment = document.querySelector('#client-segment');
     const jobSegment = document.querySelector('#job-segment');
@@ -32,7 +33,7 @@ createInvoiceBtn.addEventListener('click', () => {
 
     const cameraInputs = cameramanSegment.querySelectorAll('input');
     for (input of cameraInputs) {
-        vals[input.name] = input.value;
+        cameraman[input.name] = input.value;
     }
 
     for (item of equipmentItemSegments) {
@@ -43,7 +44,14 @@ createInvoiceBtn.addEventListener('click', () => {
         }
         equipmentItems.push(equipmentItem);
     }
-    vals['equipmentItems'] = equipmentItems;
+
+    if (Object.keys(cameraman).length !== 0) {
+        vals['cameraman'] = cameraman;
+    }
+
+    if (Object.keys(equipmentItems).length !== 0) {
+        vals['equipmentItems'] = equipmentItems;
+    }
 
     ipcRenderer.send('submit-invoice-channel', vals);
 });

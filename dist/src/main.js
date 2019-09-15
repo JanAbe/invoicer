@@ -72,6 +72,7 @@ electron_1.app.on('activate', function () {
 });
 // In this file you can include the rest of your app's specific main process
 // code. You can also put them in separate files and import them here.
+// todo: extract ipcMain code to other file(s) to clean up main.ts
 electron_1.ipcMain.on('fetch-all-invoices-channel', function (event, _) {
     try {
         invoiceService.fetchAllInvoices()
@@ -111,28 +112,34 @@ electron_1.ipcMain.on('generate-invoice-channel', function (event, args) {
 // also check if at least 1 of the 2 has been passed
 electron_1.ipcMain.on('submit-invoice-channel', function (event, args) {
     try {
-        var props = ['firstName', 'lastName',
+        var requiredKeys = ['firstName', 'lastName',
             'email', 'city',
             'street', 'houseNumber',
             'zipcode', 'description',
             'location', 'directedBy'];
-        props.forEach(function (key) {
-            if (!args.hasOwnProperty(key)) {
-                event.reply('submit-invoice-reply-channel', key + " missing. All fields should be provided of a value.");
+        requiredKeys.forEach(function (key) {
+            if (args[key] === '') {
+                var errorMsg = key + " missing. This field should be provided of a value.";
+                event.reply('submit-invoice-error-channel', errorMsg);
+                throw new Error(errorMsg);
             }
-            ;
         });
         var jobID = sqliteJobRepo.nextID();
         var invoiceID = sqliteInvoiceRepo.nextID();
         var clientID = sqliteClientRepo.nextID();
+        var cameraman = undefined;
         // if cameraman props are in args ->
-        var cameraman = new cameraman_1.Cameraman(args['cameramanFirstName'], args['cameramanLastName'], Number(args['cameramanDayPrice']), new period_1.Period(new Date(args['cameramanStartDate']), new Date(args['cameramanEndDate'])));
+        if (args.hasOwnProperty('cameraman')) {
+            cameraman = new cameraman_1.Cameraman(args['cameramanFirstName'], args['cameramanLastName'], Number(args['cameramanDayPrice']), new period_1.Period(new Date(args['cameramanStartDate']), new Date(args['cameramanEndDate'])));
+        }
         var client = new client_1.Client(clientID, new fullName_1.FullName(args['firstName'], args['lastName']), new email_1.Email(args['email']), new address_1.Address(args['city'], args['street'], Number(args['houseNumber']), args['zipcode']));
         var job = new job_1.Job(jobID, args['description'], args['location'], args['directedBy'], clientID, cameraman);
         // if equipmentItems is in args and it's not empty ->
-        for (var _i = 0, _a = args['equipmentItems']; _i < _a.length; _i++) {
-            var item = _a[_i];
-            job.equipmentItems.push(new equipmentItem_1.EquipmentItem(item['equipmentItemName'], item['equipmentItemDayPrice'], new period_1.Period(new Date(item['equipmentItemStartDate']), new Date(item['equipmentItemEndDate']))));
+        if (args.hasOwnProperty('equipmentItems')) {
+            for (var _i = 0, _a = args['equipmentItems']; _i < _a.length; _i++) {
+                var item = _a[_i];
+                job.equipmentItems.push(new equipmentItem_1.EquipmentItem(item['equipmentItemName'], item['equipmentItemDayPrice'], new period_1.Period(new Date(item['equipmentItemStartDate']), new Date(item['equipmentItemEndDate']))));
+            }
         }
         // temporary, need to figur out how to store a client
         // via its own repo? or via the job repo?
