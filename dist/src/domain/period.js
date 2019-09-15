@@ -18,8 +18,9 @@ var Period = /** @class */ (function () {
         // eventhough there is no diff in days
         var endDate = moment_1.default(this.endDate);
         var startDate = moment_1.default(this.startDate);
-        var daysWorked = moment_1.default.duration(endDate.diff(startDate)).asDays() + 1;
-        return daysWorked;
+        var daysInBetween = moment_1.default.duration(endDate.diff(startDate)).asDays() + 1;
+        console.log(daysInBetween);
+        return daysInBetween;
     };
     Object.defineProperty(Period.prototype, "startDate", {
         get: function () {

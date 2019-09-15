@@ -36,8 +36,8 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 Object.defineProperty(exports, "__esModule", { value: true });
+var InvoiceDTO_1 = require("../domain/dto/InvoiceDTO");
 var nunjucks = require("nunjucks");
-var InvoiceDTO_1 = require("../domain/InvoiceDTO");
 // InvoiceService contains all services a user can call regarding invoices
 var InvoiceService = /** @class */ (function () {
     function InvoiceService(invoiceRepo, jobRepo, clientRepo) {
@@ -46,10 +46,10 @@ var InvoiceService = /** @class */ (function () {
         this._clientRepo = clientRepo;
     }
     InvoiceService.prototype.createInvoice = function (invoice, job) {
-        // creates an invoice and stores it in the database
         this._invoiceRepo.save(invoice, job);
     };
     // todo: implement this method / check if it works
+    // can be used to support pre-filling an invoice form with the data of an old one
     InvoiceService.prototype.fetchInvoiceByID = function (invoiceID) {
         return __awaiter(this, void 0, void 0, function () {
             return __generator(this, function (_a) {
@@ -84,7 +84,7 @@ var InvoiceService = /** @class */ (function () {
                                         invoiceDTO = new InvoiceDTO_1.InvoiceDTO();
                                         invoiceDTO.id = invoice.invoiceID.toString();
                                         invoiceDTO.invoiceNumber = 'some number';
-                                        invoiceDTO.creationDate = new Date(invoice.creationDate); // todo: look at fix for the need to make a new date obj from invoice.creationDate.
+                                        invoiceDTO.creationDate = invoice.creationDate; // todo: look at fix for the need to make a new date obj from invoice.creationDate.
                                         return [4 /*yield*/, this_1._jobRepo.jobOfID(invoice.jobID)
                                                 .then(function (job) {
                                                 invoiceDTO.jobDescription = job.description;
@@ -133,6 +133,7 @@ var InvoiceService = /** @class */ (function () {
     };
     // todo: fix date format of invoice
     // it uses month/day/year atm...
+    // todo: remove hardcoded values and write code to support this
     // todo: rename to generateInvoiceHTML?
     // todo: look into used (!) exclamation marks
     // todo: look into best way to store money values
@@ -155,7 +156,7 @@ var InvoiceService = /** @class */ (function () {
                         vatPercentage = 21;
                         nunjucks.configure('src/ui', { autoescape: true });
                         html = nunjucks.render('invoice-template.html', {
-                            creation_date: new Date(invoice.creationDate).toLocaleDateString(),
+                            creation_date: invoice.creationDate,
                             client_name: client.fullName.firstName + ' ' + client.fullName.lastName,
                             street: client.address.street,
                             house_number: client.address.houseNumber,

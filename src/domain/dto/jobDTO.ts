@@ -1,9 +1,9 @@
-import { JobID } from "./jobID";
-import { ClientID } from "./clientID";
-import { Cameraman } from "./cameraman";
-import { EquipmentItem } from "./equipmentItem";
+import { JobID } from "../jobID";
+import { ClientID } from "../clientID";
+import { Cameraman } from "../cameraman";
+import { EquipmentItem } from "../equipmentItem";
 import { isNullOrUndefined } from "util";
-import { Rentable } from "./rentable";
+import { Rentable } from "../rentable";
 
 export class JobDTO {
     private _id?: JobID;

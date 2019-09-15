@@ -1,7 +1,7 @@
 import { app, BrowserWindow, ipcMain } from 'electron';
 import { DB } from './db';
-import { SqliteInvoiceRepo } from './repos/sqliteInvoiceRepo';
-import { SqliteJobRepo } from './repos/sqliteJobRepo';
+import { SqliteInvoiceRepo } from './repos/sqlite/sqliteInvoiceRepo';
+import { SqliteJobRepo } from './repos/sqlite/sqliteJobRepo';
 import { InvoiceID } from './domain/invoiceID';
 import { Invoice } from './domain/invoice';
 import { Job } from './domain/job';
@@ -12,9 +12,10 @@ import { Email } from './domain/email';
 import { Address } from './domain/address';
 import { Cameraman } from './domain/cameraman';
 import { Period } from './domain/period';
-import { SqliteClientRepo } from './repos/sqliteClientRepo';
+import { SqliteClientRepo } from './repos/sqlite/sqliteClientRepo';
 import { EquipmentItem } from './domain/equipmentItem';
 import { InvoiceService } from './services/invoiceService';
+import moment = require('moment');
 
 // Handle creating/removing shortcuts on Windows when installing/uninstalling.
 if (require('electron-squirrel-startup')) { // eslint-disable-line global-require
@@ -45,38 +46,22 @@ const createWindow = () => {
 
     });
 
-    // and load the index.html of the app.
     mainWindow.loadURL(`file://${__dirname}/ui/home.html`);
 
-    // Open the DevTools.
-    // mainWindow.webContents.openDevTools();
-
-    // Emitted when the window is closed.
     mainWindow.on('closed', () => {
-        // Dereference the window object, usually you would store windows
-        // in an array if your app supports multi windows, this is the time
-        // when you should delete the corresponding element.
         mainWindow = null;
     });
 };
 
-// This method will be called when Electron has finished
-// initialization and is ready to create browser windows.
-// Some APIs can only be used after this event occurs.
 app.on('ready', createWindow);
 
-// Quit when all windows are closed.
 app.on('window-all-closed', () => {
-    // On OS X it is common for applications and their menu bar
-    // to stay active until the user quits explicitly with Cmd + Q
     if (process.platform !== 'darwin') {
         app.quit();
     }
 });
 
 app.on('activate', () => {
-    // On OS X it's common to re-create a window in the app when the
-    // dock icon is clicked and there are no other windows open.
     if (mainWindow === null) {
         createWindow();
     }
@@ -85,6 +70,9 @@ app.on('activate', () => {
 // In this file you can include the rest of your app's specific main process
 // code. You can also put them in separate files and import them here.
 
+// todo: use nunjucks to render html. create templates and extend from other templates
+    // this will reduce code (html) duplication. Atm each file has the same navbar html
+    // which is just duplication and more error prone
 // todo: extract ipcMain code to other file(s) to clean up main.ts
 ipcMain.on('fetch-all-invoices-channel', (event, _) => {
     try {
@@ -146,11 +134,11 @@ ipcMain.on('submit-invoice-channel', (event, args) => {
 
         if (args.hasOwnProperty('cameraman')) {
             // todo: add check to see if properties aren't empty
-            cameraman = new Cameraman(args['cameramanFirstName'],
-                args['cameramanLastName'],
-                Number(args['cameramanDayPrice']),
-                new Period(new Date(args['cameramanStartDate']),
-                    new Date(args['cameramanEndDate'])));
+            cameraman = new Cameraman(args['cameraman']['firstName'],
+                args['cameraman']['lastName'],
+                Number(args['cameraman']['dayPrice']),
+                new Period(new Date(args['cameraman']['startDate']),
+                    new Date(args['cameraman']['endDate'])));
         }
 
         const client = new Client(clientID,

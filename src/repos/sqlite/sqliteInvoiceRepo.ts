@@ -1,12 +1,12 @@
-import { InvoiceRepo } from "./invoiceRepo";
-import { InvoiceID } from "../domain/invoiceID";
-import { Invoice } from "../domain/invoice";
-import { JobRepo } from "./jobRepo";
+import { InvoiceRepo } from "../invoiceRepo";
+import { InvoiceID } from "../../domain/invoiceID";
+import { Invoice } from "../../domain/invoice";
+import { JobRepo } from "../jobRepo";
+import { DB } from "../../db";
+import { JobID } from "../../domain/jobID";
+import { Job } from "../../domain/job";
 import uuid = require("uuid/v4");
-import { DB } from "../db";
-import { JobID } from "../domain/jobID";
-import { Job } from "../domain/job";
-import { resolve } from "url";
+import moment from "moment";
 
 export class SqliteInvoiceRepo implements InvoiceRepo {
     private _db: DB;
@@ -79,7 +79,7 @@ export class SqliteInvoiceRepo implements InvoiceRepo {
         // how does this work?
         // how is this a promise? it was suggested by vscode to change it into this
         const row = await this._db.get(query, [invoiceID.toString()]);
-        return new Invoice(new InvoiceID(row.id), new JobID(row.ref_job), row.iban, row.creation_date);
+        return new Invoice(new InvoiceID(row.id), new JobID(row.ref_job), row.iban, moment(row.creation_date, 'DD/MM/YYYY').toDate());
     }
 
     public save(invoice: Invoice, job: Job): void {
@@ -88,7 +88,7 @@ export class SqliteInvoiceRepo implements InvoiceRepo {
         this._db.run(invoiceQuery, [
             invoice.invoiceID.toString(),
             invoice.iban,
-            invoice.creationDate.toISOString(),
+            invoice.creationDate.toLocaleDateString('nl'),
             invoice.jobID.toString()
         ]);
     }

@@ -1,7 +1,7 @@
 import { JobID } from "./jobID";
-import IBAN = require('iban');
 import { isNullOrUndefined } from "util";
 import { InvoiceID } from "./invoiceID";
+import IBAN = require('iban');
 
 export class Invoice {
     private _invoiceID: InvoiceID;

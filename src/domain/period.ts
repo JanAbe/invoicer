@@ -18,8 +18,9 @@ export class Period {
         // eventhough there is no diff in days
         const endDate = moment(this.endDate);
         const startDate = moment(this.startDate);
-        const daysWorked = moment.duration(endDate.diff(startDate)).asDays() + 1;
-        return daysWorked;
+        const daysInBetween = moment.duration(endDate.diff(startDate)).asDays() + 1;
+        console.log(daysInBetween);
+        return daysInBetween;
     }
     
     public get startDate(): Date {

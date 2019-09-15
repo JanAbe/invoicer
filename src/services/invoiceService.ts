@@ -4,8 +4,8 @@ import { InvoiceRepo } from "../repos/invoiceRepo";
 import { Job } from "../domain/job";
 import { JobRepo } from "../repos/jobRepo";
 import { ClientRepo } from "../repos/clientRepo";
+import { InvoiceDTO } from "../domain/dto/InvoiceDTO";
 import nunjucks = require('nunjucks');
-import { InvoiceDTO } from "../domain/InvoiceDTO";
 
 // InvoiceService contains all services a user can call regarding invoices
 export class InvoiceService {
@@ -20,11 +20,11 @@ export class InvoiceService {
     }
 
     public createInvoice(invoice: Invoice, job: Job): void {
-        // creates an invoice and stores it in the database
         this._invoiceRepo.save(invoice, job);
     }
 
     // todo: implement this method / check if it works
+    // can be used to support pre-filling an invoice form with the data of an old one
     public async fetchInvoiceByID(invoiceID: InvoiceID): Promise<Invoice> {
         return await this._invoiceRepo.invoiceOfID(invoiceID);
     }
@@ -42,7 +42,7 @@ export class InvoiceService {
             const invoiceDTO = new InvoiceDTO();
             invoiceDTO.id = invoice.invoiceID.toString();
             invoiceDTO.invoiceNumber = 'some number';
-            invoiceDTO.creationDate = new Date(invoice.creationDate); // todo: look at fix for the need to make a new date obj from invoice.creationDate.
+            invoiceDTO.creationDate = invoice.creationDate; // todo: look at fix for the need to make a new date obj from invoice.creationDate.
             await this._jobRepo.jobOfID(invoice.jobID)
                 .then(job => {
                     invoiceDTO.jobDescription = job.description;
@@ -73,19 +73,13 @@ export class InvoiceService {
 
     // todo: fix date format of invoice
         // it uses month/day/year atm...
+    // todo: remove hardcoded values and write code to support this
     // todo: rename to generateInvoiceHTML?
     // todo: look into used (!) exclamation marks
     // todo: look into best way to store money values
         // atm the number datatype is used.
             // 5964 + 1252.44 = 7216.4400000000005
     public async generateInvoice(invoiceID: InvoiceID): Promise<string> {
-        /*
-        fetch invoice with id=invoiceID from database 
-        create a pdf with all the necessary information 
-            (gotten from the fetched invoice)
-        store the pdf in the location chosen by the user
-            (e.g. /home/user/Documents/invoices/)
-        */
         const invoice = await this._invoiceRepo.invoiceOfID(invoiceID);
         const job = await this._jobRepo.jobOfID(invoice.jobID);
         const client = await this._clientRepo.clientOfID(job.clientID!);
@@ -94,7 +88,7 @@ export class InvoiceService {
         nunjucks.configure('src/ui', { autoescape: true });
         const html = nunjucks.render('invoice-template.html', 
             { 
-                creation_date: new Date(invoice.creationDate).toLocaleDateString(),
+                creation_date: invoice.creationDate,
                 client_name: client.fullName.firstName + ' ' + client.fullName.lastName,
                 street: client.address.street,
                 house_number: client.address.houseNumber,

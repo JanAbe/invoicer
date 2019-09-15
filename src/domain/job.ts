@@ -6,7 +6,7 @@ import { Cameraman } from "./cameraman";
 import { EquipmentItem } from "./equipmentItem";
 import { ClientID } from "./clientID";
 import { Rentable } from "./rentable";
-import { JobDTO } from "./jobDTO";
+import { JobDTO } from "./dto/jobDTO";
 
 export class Job {
     private _id?: JobID;

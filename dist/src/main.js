@@ -2,8 +2,8 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 var electron_1 = require("electron");
 var db_1 = require("./db");
-var sqliteInvoiceRepo_1 = require("./repos/sqliteInvoiceRepo");
-var sqliteJobRepo_1 = require("./repos/sqliteJobRepo");
+var sqliteInvoiceRepo_1 = require("./repos/sqlite/sqliteInvoiceRepo");
+var sqliteJobRepo_1 = require("./repos/sqlite/sqliteJobRepo");
 var invoiceID_1 = require("./domain/invoiceID");
 var invoice_1 = require("./domain/invoice");
 var job_1 = require("./domain/job");
@@ -13,7 +13,7 @@ var email_1 = require("./domain/email");
 var address_1 = require("./domain/address");
 var cameraman_1 = require("./domain/cameraman");
 var period_1 = require("./domain/period");
-var sqliteClientRepo_1 = require("./repos/sqliteClientRepo");
+var sqliteClientRepo_1 = require("./repos/sqlite/sqliteClientRepo");
 var equipmentItem_1 = require("./domain/equipmentItem");
 var invoiceService_1 = require("./services/invoiceService");
 // Handle creating/removing shortcuts on Windows when installing/uninstalling.
@@ -39,39 +39,27 @@ var createWindow = function () {
             nodeIntegration: true
         }
     });
-    // and load the index.html of the app.
     mainWindow.loadURL("file://" + __dirname + "/ui/home.html");
-    // Open the DevTools.
-    // mainWindow.webContents.openDevTools();
-    // Emitted when the window is closed.
     mainWindow.on('closed', function () {
-        // Dereference the window object, usually you would store windows
-        // in an array if your app supports multi windows, this is the time
-        // when you should delete the corresponding element.
         mainWindow = null;
     });
 };
-// This method will be called when Electron has finished
-// initialization and is ready to create browser windows.
-// Some APIs can only be used after this event occurs.
 electron_1.app.on('ready', createWindow);
-// Quit when all windows are closed.
 electron_1.app.on('window-all-closed', function () {
-    // On OS X it is common for applications and their menu bar
-    // to stay active until the user quits explicitly with Cmd + Q
     if (process.platform !== 'darwin') {
         electron_1.app.quit();
     }
 });
 electron_1.app.on('activate', function () {
-    // On OS X it's common to re-create a window in the app when the
-    // dock icon is clicked and there are no other windows open.
     if (mainWindow === null) {
         createWindow();
     }
 });
 // In this file you can include the rest of your app's specific main process
 // code. You can also put them in separate files and import them here.
+// todo: use nunjucks to render html. create templates and extend from other templates
+// this will reduce code (html) duplication. Atm each file has the same navbar html
+// which is just duplication and more error prone
 // todo: extract ipcMain code to other file(s) to clean up main.ts
 electron_1.ipcMain.on('fetch-all-invoices-channel', function (event, _) {
     try {
@@ -130,7 +118,7 @@ electron_1.ipcMain.on('submit-invoice-channel', function (event, args) {
         var cameraman = undefined;
         if (args.hasOwnProperty('cameraman')) {
             // todo: add check to see if properties aren't empty
-            cameraman = new cameraman_1.Cameraman(args['cameramanFirstName'], args['cameramanLastName'], Number(args['cameramanDayPrice']), new period_1.Period(new Date(args['cameramanStartDate']), new Date(args['cameramanEndDate'])));
+            cameraman = new cameraman_1.Cameraman(args['cameraman']['firstName'], args['cameraman']['lastName'], Number(args['cameraman']['dayPrice']), new period_1.Period(new Date(args['cameraman']['startDate']), new Date(args['cameraman']['endDate'])));
         }
         var client = new client_1.Client(clientID, new fullName_1.FullName(args['firstName'], args['lastName']), new email_1.Email(args['email']), new address_1.Address(args['city'], args['street'], Number(args['houseNumber']), args['zipcode']));
         var job = new job_1.Job(jobID, args['description'], args['location'], args['directedBy'], clientID, cameraman);

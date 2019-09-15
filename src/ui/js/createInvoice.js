@@ -101,12 +101,12 @@ const cameremanHtmlSegment = `
     <div class="two-input-fields">
         <div class="form-group">
             <label>FirstName</label>
-            <input id="cameraman-firstName-input" name="cameramanFirstName" type="text" class="form-control" placeholder="Name">
+            <input id="cameraman-firstName-input" name="firstName" type="text" class="form-control" placeholder="Name">
         </div>
-        
+
         <div class="form-group">
             <label>LastName</label>
-            <input id="cameraman-lastName-input" name="cameramanLastName" type="text" class="form-control" placeholder="LastName">
+            <input id="cameraman-lastName-input" name="lastName" type="text" class="form-control" placeholder="LastName">
         </div>
     </div>
 
@@ -115,18 +115,18 @@ const cameremanHtmlSegment = `
             <button id="cameraman-rm-btn" type="button" class="btn btn-default">&#8722;</button>
             <label>Day Price</label>
         </span>
-        <input name="cameramanDayPrice" type="number" class="form-control" placeholder="Day Price">
+        <input name="dayPrice" type="number" class="form-control" placeholder="Day Price">
     </div>
 
     <div class="two-input-fields">
         <div class="form-group">
             <label>Start Date</label>
-            <input name="cameramanStartDate" type="date" class="form-control" placeholder="Start Date">
+            <input name="startDate" type="date" class="form-control" placeholder="Start Date">
         </div>
-        
+
         <div class="form-group">
             <label>End Date</label>
-            <input name="cameramanEndDate" type="date" class="form-control" placeholder="End Date">
+            <input name="endDate" type="date" class="form-control" placeholder="End Date">
         </div>
     </div>
 `;

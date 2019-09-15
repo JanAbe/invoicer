@@ -10,7 +10,7 @@
         <td>{{ invoiceDTO.invoiceNumber }}</td>
         <td>{{ invoiceDTO.jobDescription }}</td>
         <td>{{ invoiceDTO.clientName }}</td>
-        <td>{{ invoiceDTO.creationDate.toLocaleDateString() }}</td>
+        <td>{{ invoiceDTO.creationDate.toLocaleDateString('nl') }}</td>
         <td>
             <span>
                 {{ button(value=invoiceDTO.id) }}

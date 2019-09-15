@@ -1,14 +1,15 @@
-import { JobRepo } from "./jobRepo";
+import { JobRepo } from "../jobRepo";
 import uuid = require("uuid/v4");
-import { Job } from "../domain/job";
-import { JobID } from "../domain/jobID";
-import { DB } from "../db";
-import { ClientID } from "../domain/clientID";
-import { EquipmentItem } from "../domain/equipmentItem";
-import { Period } from "../domain/period";
-import { Cameraman } from "../domain/cameraman";
-import { JobDTO } from "../domain/jobDTO";
+import { Job } from "../../domain/job";
+import { JobID } from "../../domain/jobID";
+import { DB } from "../../db";
+import { ClientID } from "../../domain/clientID";
+import { EquipmentItem } from "../../domain/equipmentItem";
+import { Period } from "../../domain/period";
+import { Cameraman } from "../../domain/cameraman";
+import { JobDTO } from "../../domain/dto/jobDTO";
 import { isNullOrUndefined } from "util";
+import moment = require("moment");
 
 export class SqliteJobRepo implements JobRepo {
     private _db: DB;
@@ -21,15 +22,11 @@ export class SqliteJobRepo implements JobRepo {
         return new JobID(uuid());
     }
 
-    // todo: write code to handle missing cameraman rows and equipment-item rows
-        // as not each job needs to have both
     // can also check to see if the queries can be rewritten so only 1 query is neccessary
         // gotta look into different type of joins i think
     public async jobOfID(jobID: JobID): Promise<Job> {
         const jobDTO = new JobDTO();
 
-        // needs some check to see if the row is undefined
-            // aka if there is no camereman hired for this job
         const cameramanQuery = 'SELECT r.start_date, r.end_date, r.day_price, c.firstName, c.lastName FROM Rented_Entity r JOIN Cameraman c ON (r.ref_cameraman = c.id) WHERE r.ref_job = ?;';
         await new Promise((resolve, reject) => {
             this._db.db.get(cameramanQuery, jobID.toString(), function (err, row) {
@@ -38,7 +35,7 @@ export class SqliteJobRepo implements JobRepo {
                     reject(err);
                 } else {
                     if (row !== undefined) {
-                        const cameraman = new Cameraman(row.firstName, row.lastName, row.day_price, new Period(new Date(row.start_date), new Date(row.end_date)));
+                        const cameraman = new Cameraman(row.firstName, row.lastName, row.day_price, new Period(moment(row.start_date, 'DD/MM/YYYY').toDate(), moment(row.end_date, 'DD/MM/YYYY').toDate()));
                         jobDTO.cameraman = cameraman;
                     }
                     resolve();
@@ -46,8 +43,6 @@ export class SqliteJobRepo implements JobRepo {
             });
         });
 
-        // needs some check to see if the row is undefined
-            // aka if there is no equipment item rented for this job
         const equipmentItemQuery = 'SELECT r.start_date, r.end_date, r.day_price, e.name from Rented_Entity r JOIN Equipment_Item e ON (r.ref_equipment_item = e.id) WHERE r.ref_job = ?;';
         await new Promise((resolve, reject) => {
             this._db.db.all(equipmentItemQuery, jobID.toString(), function (err, rows) {
@@ -57,7 +52,7 @@ export class SqliteJobRepo implements JobRepo {
                 } else {
                     if (rows !== undefined) {
                         rows.forEach((row) => {
-                            let equipmentItem = new EquipmentItem(row.name, row.day_price, new Period(new Date(row.start_date), new Date(row.end_date)));
+                            let equipmentItem = new EquipmentItem(row.name, row.day_price, new Period(moment(row.start_date, 'DD/MM/YYYY').toDate(), moment(row.end_date, 'DD/MM/YYYY').toDate()));
                             jobDTO.equipmentItems.push(equipmentItem);
                         });
                     }
@@ -112,8 +107,8 @@ export class SqliteJobRepo implements JobRepo {
             const rentedEntityID = uuid();
             this._db.run(rentedEntityQuery, [
                 rentedEntityID,
-                job.cameraman.period.startDate.toISOString(),
-                job.cameraman.period.endDate.toISOString(),
+                job.cameraman.period.startDate.toLocaleDateString('nl'),
+                job.cameraman.period.endDate.toLocaleDateString('nl'),
                 job.cameraman.dayPrice,
                 job.id!.toString(),
                 cameramanID,
@@ -134,8 +129,8 @@ export class SqliteJobRepo implements JobRepo {
             rentedEntityID = uuid();
             this._db.run(rentedEntityQuery, [
                 rentedEntityID,
-                e.period.startDate.toISOString(),
-                e.period.endDate.toISOString(),
+                e.period.startDate.toLocaleDateString('nl'),
+                e.period.endDate.toLocaleDateString('nl'),
                 e.dayPrice,
                 job.id!.toString(),
                 null,
