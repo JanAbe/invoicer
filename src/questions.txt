@@ -1,0 +1,11 @@
+have the idea that a lot of time is spent of transforming incoming
+data into rich domain objects, only to transform them back into data to persist 'em
+
+should client and equipmentItem be an entity if i want to give the user the option
+to create, delete, update, read these objects, or are they value objects
+
+why does an aggregate hold the id of another entity?
+in my experience when you ask for the aggregate, you also want the data from it's entities.
+You don't have these because you only got the ID pointing to the entity, which means you have to
+make another call to the database to retrieve these. This sounds inefficient.
+
