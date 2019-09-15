@@ -27,37 +27,6 @@ export class SqliteInvoiceRepo implements InvoiceRepo {
         let invoices: Invoice[] = [];
         let invoicdeIDs: InvoiceID[] = [];
 
-        /* 
-            why doesn't this work?
-            await this._db.all(query)
-            .then(rows => {
-                rows.forEach(row => {
-                    this.invoiceOfID(new InvoiceID(row.id))
-                    .then(invoice => {
-                        invoices.push(invoice);
-                        console.log(invoices);
-                    })
-                    .catch(err => {
-                        console.log(err);
-                    })
-                });
-            })
-            .catch(err => {
-                console.log(err);
-            });
-
-            const rows = await this._db.all(query);
-            rows.forEach(row => {
-                invoicdeIDs.push(new InvoiceID(row.id));
-            });
-
-            why doesn't this work?
-            invoicdeIDs.forEach(async id => {
-                const invoice = await this.invoiceOfID(id);
-                invoices.push(invoice);
-            }); 
-        */
-
         const rows = await this._db.all(query);
         rows.forEach(row => {
             invoicdeIDs.push(new InvoiceID(row.id));

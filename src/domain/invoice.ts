@@ -9,6 +9,7 @@ export class Invoice {
     private _iban: string;
     private _creationDate: Date;
 
+    // todo: create tests (for everything lol :c)
     // todo: add comment attribute
         // user can write some text in there
     // todo: add invoiceNumber attribute
