@@ -16,12 +16,41 @@ const hideElement = (identifier) => {
     const element = document.querySelector(identifier);
     element.style.display = 'none';
     invoiceSection.style.margin = 0;
+    
+    const creationDateSection = document.querySelector('#creation-date');
+    creationDateSection.style.gridColumnStart = 4;
+    creationDateSection.style.gridColumnEnd = 5;
+    creationDateSection.style.textAlign = 'left';
+    
+    const generalInfoSection = document.querySelector('#general-info');
+    generalInfoSection.style.gridColumnStart = 4;
+    generalInfoSection.style.gridColumnEnd = 5;
+    generalInfoSection.style.textAlign = 'left';
+
+    const paymentInfoSection = document.querySelector('#payment-info');
+    paymentInfoSection.style.gridColumnStart = 2;
+    paymentInfoSection.style.gridColumnEnd = 4;
 }
 
 const showElement = (identifier) => {
     const element = document.querySelector(identifier);
     element.style.display = 'block';
+
     invoiceSection.style.margin = '20px 10% 20px 10%';
+    
+    const creationDateSection = document.querySelector('#creation-date');
+    creationDateSection.style.gridColumnStart = 2;
+    creationDateSection.style.gridColumnEnd = 3;
+    creationDateSection.style.textAlign = 'right';
+    
+    const generalInfoSection = document.querySelector('#general-info');
+    generalInfoSection.style.gridColumnStart = 2;
+    generalInfoSection.style.gridColumnEnd = 3;
+    generalInfoSection.style.textAlign = 'right';
+    
+    const paymentInfoSection = document.querySelector('#payment-info');
+    paymentInfoSection.style.gridColumnStart = 1;
+    paymentInfoSection.style.gridColumnEnd = 3;
 }
 
 const hideElements = (identifiers) => {

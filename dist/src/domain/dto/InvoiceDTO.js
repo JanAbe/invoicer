@@ -1,9 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-var InvoiceDTO = /** @class */ (function () {
-    function InvoiceDTO() {
-    }
-    return InvoiceDTO;
-}());
+class InvoiceDTO {
+    constructor() { }
+}
 exports.InvoiceDTO = InvoiceDTO;
 //# sourceMappingURL=InvoiceDTO.js.map

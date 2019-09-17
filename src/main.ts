@@ -109,6 +109,9 @@ ipcMain.on('generate-invoice-channel', (event, args) => {
     }
 })
 
+// todo: add user table to db containing all general info data
+    // like iban, name, etc.
+
 // listen for submitted invoices
 // todo: add checks to see if cameraman and equipmentitem data has been passed
 // also check if at least 1 of the 2 has been passed

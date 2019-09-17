@@ -1,10 +1,10 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-var sqlite3 = require("sqlite3");
+const sqlite3 = require("sqlite3");
 // TODO: make this api better or justpass sqlite3.Database to the repositories
-var DB = /** @class */ (function () {
-    function DB(dbFilepath) {
-        this._db = new sqlite3.Database(dbFilepath, function (err) {
+class DB {
+    constructor(dbFilepath) {
+        this._db = new sqlite3.Database(dbFilepath, (err) => {
             if (err) {
                 console.log("Could not connect to the database", err);
             }
@@ -14,13 +14,11 @@ var DB = /** @class */ (function () {
         });
     }
     // for running insert, update and delete statements
-    DB.prototype.run = function (query, params) {
-        var _this = this;
-        if (params === void 0) { params = []; }
-        return new Promise(function (resolve, reject) {
-            _this.db.run(query, params, function (err) {
+    run(query, params = []) {
+        return new Promise((resolve, reject) => {
+            this.db.run(query, params, function (err) {
                 if (err) {
-                    console.log(err + " running SQL query: " + query);
+                    console.log(`${err} running SQL query: ${query}`);
                     reject(err);
                 }
                 else {
@@ -28,15 +26,13 @@ var DB = /** @class */ (function () {
                 }
             });
         });
-    };
+    }
     // get single result
-    DB.prototype.get = function (query, params) {
-        var _this = this;
-        if (params === void 0) { params = []; }
-        return new Promise(function (resolve, reject) {
-            _this.db.get(query, params, function (err, row) {
+    get(query, params = []) {
+        return new Promise((resolve, reject) => {
+            this.db.get(query, params, function (err, row) {
                 if (err) {
-                    console.log(err + " running SQL query: " + query);
+                    console.log(`${err} running SQL query: ${query}`);
                     reject(err);
                 }
                 else {
@@ -44,15 +40,13 @@ var DB = /** @class */ (function () {
                 }
             });
         });
-    };
+    }
     // get multiple results
-    DB.prototype.all = function (query, params) {
-        var _this = this;
-        if (params === void 0) { params = []; }
-        return new Promise(function (resolve, reject) {
-            _this.db.all(query, params, function (err, rows) {
+    all(query, params = []) {
+        return new Promise((resolve, reject) => {
+            this.db.all(query, params, function (err, rows) {
                 if (err) {
-                    console.log(err + " running SQL query: " + query);
+                    console.log(`${err} running SQL query: ${query}`);
                     reject(err);
                 }
                 else {
@@ -60,31 +54,78 @@ var DB = /** @class */ (function () {
                 }
             });
         });
-    };
-    Object.defineProperty(DB.prototype, "db", {
-        get: function () {
-            return this._db;
-        },
-        enumerable: true,
-        configurable: true
-    });
-    DB.prototype.createTables = function () {
+    }
+    get db() {
+        return this._db;
+    }
+    createTables() {
         // Sqlite3 apparently doesn't support creating multiple tables at once
         // Because of this, a query for each table has been made.
-        var createTableCameraman = "\n            CREATE TABLE IF NOT EXISTS Cameraman (\n                id TEXT PRIMARY KEY,\n                firstName TEXT,\n                lastName TEXT\n            );\n        ";
-        var createTableEquipmentItem = "\n            CREATE TABLE IF NOT EXISTS Equipment_Item (\n                id TEXT PRIMARY KEY,\n                name TEXT\n            );\n        ";
-        var createTableClient = "\n            CREATE TABLE IF NOT EXISTS Client (\n                id TEXT PRIMARY KEY,\n                firstName TEXT,\n                lastName TEXT,\n                email TEXT,\n                city TEXT,\n                street TEXT,\n                houseNumber INTEGER,\n                zipcode TEXT\n            );\n        ";
-        var createTableJob = "\n            CREATE TABLE IF NOT EXISTS Job (\n                id TEXT PRIMARY KEY,\n                description TEXT,\n                location TEXT,\n                directed_by TEXT,\n                ref_client TEXT,\n                FOREIGN KEY(ref_client) REFERENCES Client(id)\n            );\n        ";
-        var createTableRentedEntity = "\n            CREATE TABLE IF NOT EXISTS Rented_Entity (\n                id TEXT PRIMARY KEY,\n                start_date TEXT,\n                end_date TEXT,\n                day_price REAL,\n                ref_job TEXT,\n                ref_cameraman TEXT,\n                ref_equipment_item TEXT,\n                FOREIGN KEY(ref_job) REFERENCES Job(id),\n                FOREIGN KEY(ref_cameraman) REFERENCES Cameraman(id),\n                FOREIGN KEY(ref_equipment_item) REFERENCES Equipment_Item(id)\n            );\n        ";
-        var createTableInvoice = "\n            CREATE TABLE IF NOT EXISTS Invoice (\n                id TEXT PRIMARY KEY,\n                iban TEXT,\n                creation_date TEXT,\n                ref_job TEXT,\n                FOREIGN KEY(ref_job) REFERENCES Job(id)\n            );\n        ";
+        const createTableCameraman = `
+            CREATE TABLE IF NOT EXISTS Cameraman (
+                id TEXT PRIMARY KEY,
+                firstName TEXT,
+                lastName TEXT
+            );
+        `;
+        const createTableEquipmentItem = `
+            CREATE TABLE IF NOT EXISTS Equipment_Item (
+                id TEXT PRIMARY KEY,
+                name TEXT
+            );
+        `;
+        const createTableClient = `
+            CREATE TABLE IF NOT EXISTS Client (
+                id TEXT PRIMARY KEY,
+                firstName TEXT,
+                lastName TEXT,
+                email TEXT,
+                city TEXT,
+                street TEXT,
+                houseNumber INTEGER,
+                zipcode TEXT
+            );
+        `;
+        const createTableJob = `
+            CREATE TABLE IF NOT EXISTS Job (
+                id TEXT PRIMARY KEY,
+                description TEXT,
+                location TEXT,
+                directed_by TEXT,
+                ref_client TEXT,
+                FOREIGN KEY(ref_client) REFERENCES Client(id)
+            );
+        `;
+        const createTableRentedEntity = `
+            CREATE TABLE IF NOT EXISTS Rented_Entity (
+                id TEXT PRIMARY KEY,
+                start_date TEXT,
+                end_date TEXT,
+                day_price REAL,
+                ref_job TEXT,
+                ref_cameraman TEXT,
+                ref_equipment_item TEXT,
+                FOREIGN KEY(ref_job) REFERENCES Job(id),
+                FOREIGN KEY(ref_cameraman) REFERENCES Cameraman(id),
+                FOREIGN KEY(ref_equipment_item) REFERENCES Equipment_Item(id)
+            );
+        `;
+        const createTableInvoice = `
+            CREATE TABLE IF NOT EXISTS Invoice (
+                id TEXT PRIMARY KEY,
+                iban TEXT,
+                creation_date TEXT,
+                ref_job TEXT,
+                FOREIGN KEY(ref_job) REFERENCES Job(id)
+            );
+        `;
         this.db.run(createTableCameraman);
         this.db.run(createTableEquipmentItem);
         this.db.run(createTableClient);
         this.db.run(createTableJob);
         this.db.run(createTableRentedEntity);
         this.db.run(createTableInvoice);
-    };
-    return DB;
-}());
+    }
+}
 exports.DB = DB;
 //# sourceMappingURL=db.js.map

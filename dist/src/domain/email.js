@@ -1,18 +1,14 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-var util_1 = require("util");
-var Email = /** @class */ (function () {
-    function Email(emailAddress) {
+const util_1 = require("util");
+class Email {
+    constructor(emailAddress) {
         this.setEmailAddress(emailAddress);
     }
-    Object.defineProperty(Email.prototype, "emailAddress", {
-        get: function () {
-            return this._emailAddress;
-        },
-        enumerable: true,
-        configurable: true
-    });
-    Email.prototype.setEmailAddress = function (emailAddress) {
+    get emailAddress() {
+        return this._emailAddress;
+    }
+    setEmailAddress(emailAddress) {
         if (util_1.isNullOrUndefined(emailAddress)) {
             throw new Error("Provided emailAddress is null or undefined.");
         }
@@ -20,16 +16,15 @@ var Email = /** @class */ (function () {
             throw new Error("Provided emailAddress is invalid.");
         }
         this._emailAddress = emailAddress;
-    };
+    }
     // TODO: add more checks
     // isValid checks if the provided emailAddress is valid 
-    Email.prototype.isValid = function (emailAddress) {
+    isValid(emailAddress) {
         if (emailAddress.includes("@")) {
             return true;
         }
         return false;
-    };
-    return Email;
-}());
+    }
+}
 exports.Email = Email;
 //# sourceMappingURL=email.js.map

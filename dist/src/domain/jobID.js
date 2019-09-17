@@ -1,21 +1,20 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-var util_1 = require("util");
-var JobID = /** @class */ (function () {
-    function JobID(id) {
+const util_1 = require("util");
+class JobID {
+    constructor(id) {
         // needs check to see if incoming string is a UUID4
         this._id = id;
     }
-    JobID.prototype.toString = function () {
+    toString() {
         return this._id;
-    };
-    JobID.prototype.setID = function (id) {
+    }
+    setID(id) {
         if (util_1.isNullOrUndefined(id)) {
             throw new Error("Provided id can not be null or undefined");
         }
         this._id = id;
-    };
-    return JobID;
-}());
+    }
+}
 exports.JobID = JobID;
 //# sourceMappingURL=jobID.js.map
