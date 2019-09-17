@@ -10,8 +10,8 @@ export class Period {
         this.setEndDate(endDate);
     }
 
-    // getDays return the number of days between
-    // the startDate and the endDate
+    /** getDays return the number of days between
+    the startDate and the endDate */ 
     public getDays(): number {
         // +1 because the work days are inclusive
         // working from 12/12/2019 till 12/12/2019 = 1 workday
@@ -19,14 +19,13 @@ export class Period {
         const endDate = moment(this.endDate);
         const startDate = moment(this.startDate);
         const daysInBetween = moment.duration(endDate.diff(startDate)).asDays() + 1;
-        console.log(daysInBetween);
         return daysInBetween;
     }
-    
+
     public get startDate(): Date {
         return this._startDate;
     }
-    
+
     public get endDate(): Date {
         return this._endDate;
     }

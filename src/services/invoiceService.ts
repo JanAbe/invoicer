@@ -23,8 +23,6 @@ export class InvoiceService {
         this._invoiceRepo.save(invoice, job);
     }
 
-    // todo: implement this method / check if it works
-    // can be used to support pre-filling an invoice form with the data of an old one
     public async fetchInvoiceByID(invoiceID: InvoiceID): Promise<Invoice> {
         return await this._invoiceRepo.invoiceOfID(invoiceID);
     }

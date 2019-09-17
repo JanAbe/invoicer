@@ -2,6 +2,7 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 var util_1 = require("util");
 var Invoice = /** @class */ (function () {
+    // todo: create tests (for everything lol :c)
     // todo: add comment attribute
     // user can write some text in there
     // todo: add invoiceNumber attribute

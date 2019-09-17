@@ -52,7 +52,6 @@ var SqliteInvoiceRepo = /** @class */ (function () {
     SqliteInvoiceRepo.prototype.nextID = function () {
         return new invoiceID_1.InvoiceID(uuid());
     };
-    // todo: implement this method
     SqliteInvoiceRepo.prototype.invoices = function () {
         return __awaiter(this, void 0, void 0, function () {
             var query, invoices, invoicdeIDs, rows, _i, invoicdeIDs_1, id, invoice;
@@ -98,7 +97,6 @@ var SqliteInvoiceRepo = /** @class */ (function () {
                         return [4 /*yield*/, this._db.get(query, [invoiceID.toString()])];
                     case 1:
                         row = _a.sent();
-                        // how to create new Date object from a dutch local date string
                         return [2 /*return*/, new invoice_1.Invoice(new invoiceID_1.InvoiceID(row.id), new jobID_1.JobID(row.ref_job), row.iban, moment_1.default(row.creation_date, 'DD/MM/YYYY').toDate())];
                 }
             });

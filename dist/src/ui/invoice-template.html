@@ -40,20 +40,22 @@
                         <th>Naam</th>
                         <th>Startdatum</th>
                         <th>Einddatum</th>
-                        <th>Dagprijs ($)</th>
-                        <th>Kosten ($)</th>
+                        <th>Gewerkte dagen</th>
+                        <th>Dagprijs</th>
+                        <th>Kosten</th>
                     </tr>
                     <tr>
                         <td>{{ cameraman.firstName }} {{ cameraman.lastName }}</td>
-                        <td>{{ cameraman.period.startDate.toLocaleDateString() }}</td>
-                        <td>{{ cameraman.period.endDate.toLocaleDateString() }}</td>
-                        <td>{{ cameraman.dayPrice }}</td>
-                        <td>{{ cameraman_costs }}</td>
+                        <td>{{ cameraman.period.startDate.toLocaleDateString('nl') }}</td>
+                        <td>{{ cameraman.period.endDate.toLocaleDateString('nl') }}</td>
+                        <td>{{ cameraman.period.getDays() }}</td>
+                        <td>€{{ cameraman.dayPrice }}</td>
+                        <td>€{{ cameraman_costs }}</td>
                     </tr>
                 </table>
 
                 <div class="subtotal">
-                    Subtotal: ${{ cameraman_costs }}
+                    Subtotaal: €{{ cameraman_costs }}
                 </div>
             </div>
         {% endif %}
@@ -67,8 +69,9 @@
                         <th>Naam</th>
                         <th>Startdatum</th>
                         <th>Einddatum</th>
-                        <th>Dagprijs ($)</th>
-                        <th>Kosten ($)</th>
+                        <th>Gewerkte dagen</th>
+                        <th>Dagprijs</th>
+                        <th>Kosten</th>
                     </tr>
 
                     {% for item in equipment_items %}
@@ -76,16 +79,17 @@
                         {% set equipment_total_costs = equipment_total_costs + equipment_costs %}
                         <tr>
                             <td>{{ item.name }}</td>
-                            <td>{{ item.period.startDate.toLocaleDateString() }}</td>
-                            <td>{{ item.period.endDate.toLocaleDateString() }}</td>
-                            <td>{{ item.dayPrice }}</td>
-                            <td>{{ equipment_costs }}</td>
+                            <td>{{ item.period.startDate.toLocaleDateString('nl') }}</td>
+                            <td>{{ item.period.endDate.toLocaleDateString('nl') }}</td>
+                            <td>{{ item.period.getDays() }}</td>
+                            <td>€{{ item.dayPrice }}</td>
+                            <td>€{{ equipment_costs }}</td>
                         </tr>
                     {% endfor %}
                 </table>
 
                 <div class="subtotal">
-                    Subtotal: ${{ equipment_total_costs }}
+                    Subtotaal: €{{ equipment_total_costs }}
                 </div>
             </div>
         {% endif %}
@@ -97,15 +101,15 @@
             <h5>Totale kosten</h5>
             <table>
                 <tr>
-                    <th>Subtotal<span style="float: right">+</span></th>
-                    <th>BTW ({{ vat_percentage }}%)<span style="float: right">=</span></th>
-                    <th>Total</th>
+                    <th>Totaal</th>
+                    <th>BTW ({{ vat_percentage }}%)</th>
+                    <th>Te betalen bedrag</th>
                 </tr>
 
                 <tr>
-                    <td>${{ subtotal_costs }}<span style="float: right">+</span></td>
-                    <td>${{ vat_costs }}<span style="float: right">=</span></td>
-                    <td><strong>${{ total_costs }}</strong></td>
+                    <td>€{{ subtotal_costs }}</td>
+                    <td>€{{ vat_costs }}</td>
+                    <td><strong>€{{ total_costs }}</strong></td>
                 </tr>
             </table>
         </div>

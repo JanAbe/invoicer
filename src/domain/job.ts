@@ -1,36 +1,31 @@
-import { Period } from "./period";
 import { JobID } from "./jobID";
 import { isNullOrUndefined } from "util";
-import { Client } from "./client";
 import { Cameraman } from "./cameraman";
 import { EquipmentItem } from "./equipmentItem";
 import { ClientID } from "./clientID";
-import { Rentable } from "./rentable";
 import { JobDTO } from "./dto/jobDTO";
 
 export class Job {
     private _id?: JobID;
     private _description?: string;
     private _location?: string;
-    private _directedBy?: string; // wat is regie in het engels?
+    private _directedBy?: string;
     private _clientID?: ClientID;
-    // private _rentedEntities?: Rentable[];
     private _cameraman?: Cameraman;
     private _equipmentItems?: EquipmentItem[];
+    private _comment?: string; // todo: add code for comment in this class and others
     // of wel een propety _period: Period toevoegen
     // dan tijdens het toevoegen van een cameraman en apparatuurItems
     // kijken of de opgegeven periodes daarvan, binnen de periode van de klus vallen
 
-    // ergens moet een check komen dat er altijd OF een cameraman of
-    // een apparatuurItem aanwezig moet zijn. Tenminste 1 van de twee.
     constructor(id?: JobID,
                 description?: string, 
                 location?: string, 
                 directedBy?: string, 
                 clientID?: ClientID,
                 cameraman?: Cameraman,
-                equipmentItems: EquipmentItem[] =[]
-                /*rentedEntities?: Rentable[]*/) {
+                equipmentItems: EquipmentItem[] =[],
+                comment?: string) {
         this._id = id;
         this._description = description;
         this._location = location;
@@ -38,7 +33,7 @@ export class Job {
         this._clientID = clientID;
         this._cameraman = cameraman;
         this._equipmentItems = equipmentItems;
-        // this._rentedEntities = rentedEntities;
+        this._comment = comment;
     }
 
     public static fromDTO(jobDTO: JobDTO): Job {
@@ -48,7 +43,6 @@ export class Job {
             jobDTO.location,
             jobDTO.directedBy,
             jobDTO.clientID,
-            // jobDTO.rentedEntities
             jobDTO.cameraman,
             jobDTO.equipmentItems
         );
@@ -57,15 +51,13 @@ export class Job {
     public calculateCost(): number {
         let cost: number = 0;
 
-        // if (!isNullOrUndefined(this.cameraman)) {
-        //     cost += this.cameraman.calculateCost();
-        // }
+        if (!isNullOrUndefined(this.cameraman)) {
+            cost += this.cameraman.calculateCost();
+        }
 
-        // if (!isNullOrUndefined(this.equipmentItems) && this.equipmentItems.length !== 0) {
-        //     this.equipmentItems.forEach(item => cost += item.calculateCost());
-        // }
-
-        // this.rentedEntities.forEach(e => cost += e.calculateCost());
+        if (!isNullOrUndefined(this.equipmentItems) && this.equipmentItems.length !== 0) {
+            this.equipmentItems.forEach(item => cost += item.calculateCost());
+        }
 
         return cost;
     }
@@ -90,14 +82,6 @@ export class Job {
         return this._clientID;
     }
 
-    // public get rentedEntities(): Rentable[] | undefined {
-    //     if (this._rentedEntities !== undefined) {
-    //         return this._rentedEntities;
-    //     }
-
-    //     return []
-    // }
-
     public get cameraman(): Cameraman | undefined {
         if (this._cameraman !== undefined) {
             return this._cameraman;
@@ -112,6 +96,10 @@ export class Job {
         }
 
         return [];
+    }
+
+    public get comment(): string | undefined {
+        return this._comment;
     }
     
     public set id(id: JobID | undefined) {
@@ -160,5 +148,13 @@ export class Job {
 
     public set cameraman(cameraman: Cameraman | undefined) {
         this._cameraman = cameraman;
+    }
+
+    public set comment(comment: string | undefined) {
+        if (isNullOrUndefined(comment)) {
+            throw new Error("Provided comment is null or undefined");
+        }
+
+        this._comment = comment;
     }
 }

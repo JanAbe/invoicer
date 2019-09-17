@@ -5,10 +5,7 @@ var Job = /** @class */ (function () {
     // of wel een propety _period: Period toevoegen
     // dan tijdens het toevoegen van een cameraman en apparatuurItems
     // kijken of de opgegeven periodes daarvan, binnen de periode van de klus vallen
-    // ergens moet een check komen dat er altijd OF een cameraman of
-    // een apparatuurItem aanwezig moet zijn. Tenminste 1 van de twee.
-    function Job(id, description, location, directedBy, clientID, cameraman, equipmentItems
-    /*rentedEntities?: Rentable[]*/ ) {
+    function Job(id, description, location, directedBy, clientID, cameraman, equipmentItems, comment) {
         if (equipmentItems === void 0) { equipmentItems = []; }
         this._id = id;
         this._description = description;
@@ -17,22 +14,19 @@ var Job = /** @class */ (function () {
         this._clientID = clientID;
         this._cameraman = cameraman;
         this._equipmentItems = equipmentItems;
-        // this._rentedEntities = rentedEntities;
+        this._comment = comment;
     }
     Job.fromDTO = function (jobDTO) {
-        return new Job(jobDTO.id, jobDTO.description, jobDTO.location, jobDTO.directedBy, jobDTO.clientID, 
-        // jobDTO.rentedEntities
-        jobDTO.cameraman, jobDTO.equipmentItems);
+        return new Job(jobDTO.id, jobDTO.description, jobDTO.location, jobDTO.directedBy, jobDTO.clientID, jobDTO.cameraman, jobDTO.equipmentItems);
     };
     Job.prototype.calculateCost = function () {
         var cost = 0;
-        // if (!isNullOrUndefined(this.cameraman)) {
-        //     cost += this.cameraman.calculateCost();
-        // }
-        // if (!isNullOrUndefined(this.equipmentItems) && this.equipmentItems.length !== 0) {
-        //     this.equipmentItems.forEach(item => cost += item.calculateCost());
-        // }
-        // this.rentedEntities.forEach(e => cost += e.calculateCost());
+        if (!util_1.isNullOrUndefined(this.cameraman)) {
+            cost += this.cameraman.calculateCost();
+        }
+        if (!util_1.isNullOrUndefined(this.equipmentItems) && this.equipmentItems.length !== 0) {
+            this.equipmentItems.forEach(function (item) { return cost += item.calculateCost(); });
+        }
         return cost;
     };
     Object.defineProperty(Job.prototype, "id", {
@@ -98,12 +92,6 @@ var Job = /** @class */ (function () {
         configurable: true
     });
     Object.defineProperty(Job.prototype, "cameraman", {
-        // public get rentedEntities(): Rentable[] | undefined {
-        //     if (this._rentedEntities !== undefined) {
-        //         return this._rentedEntities;
-        //     }
-        //     return []
-        // }
         get: function () {
             if (this._cameraman !== undefined) {
                 return this._cameraman;
@@ -130,6 +118,19 @@ var Job = /** @class */ (function () {
             else {
                 this._equipmentItems = equipmentItems;
             }
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(Job.prototype, "comment", {
+        get: function () {
+            return this._comment;
+        },
+        set: function (comment) {
+            if (util_1.isNullOrUndefined(comment)) {
+                throw new Error("Provided comment is null or undefined");
+            }
+            this._comment = comment;
         },
         enumerable: true,
         configurable: true

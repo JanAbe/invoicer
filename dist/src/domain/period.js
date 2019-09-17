@@ -10,8 +10,8 @@ var Period = /** @class */ (function () {
         this.setStartDate(startDate);
         this.setEndDate(endDate);
     }
-    // getDays return the number of days between
-    // the startDate and the endDate
+    /** getDays return the number of days between
+    the startDate and the endDate */
     Period.prototype.getDays = function () {
         // +1 because the work days are inclusive
         // working from 12/12/2019 till 12/12/2019 = 1 workday
@@ -19,7 +19,6 @@ var Period = /** @class */ (function () {
         var endDate = moment_1.default(this.endDate);
         var startDate = moment_1.default(this.startDate);
         var daysInBetween = moment_1.default.duration(endDate.diff(startDate)).asDays() + 1;
-        console.log(daysInBetween);
         return daysInBetween;
     };
     Object.defineProperty(Period.prototype, "startDate", {

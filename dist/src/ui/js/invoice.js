@@ -15,11 +15,13 @@ ipcRenderer.on('generate-invoice-reply-channel', (_, html) => {
 const hideElement = (identifier) => {
     const element = document.querySelector(identifier);
     element.style.display = 'none';
+    invoiceSection.style.margin = 0;
 }
 
 const showElement = (identifier) => {
     const element = document.querySelector(identifier);
     element.style.display = 'block';
+    invoiceSection.style.margin = '20px 10% 20px 10%';
 }
 
 const hideElements = (identifiers) => {
