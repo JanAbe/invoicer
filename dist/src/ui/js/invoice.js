@@ -7,8 +7,12 @@ const { ipcRenderer } = require('electron');
 const invoiceSection = document.querySelector('#invoice-section');
 ipcRenderer.on('generate-invoice-reply-channel', (_, html) => {
     while (invoiceSection.hasChildNodes()) {
-        invoiceSection.removeChild(invoiceSection.lastChild);
+        if (invoiceSection.firstChild.id === 'print-btn-wrapper') {
+            break;
+        }
+        invoiceSection.removeChild(invoiceSection.firstChild);
     }
+
     invoiceSection.insertAdjacentHTML('afterbegin', html);
 });
 
