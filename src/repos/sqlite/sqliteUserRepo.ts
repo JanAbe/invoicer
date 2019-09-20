@@ -11,7 +11,7 @@ export class SqliteUserRepo implements UserRepo {
     }
 
     public async userOfID(userID: string): Promise<UserDTO> {
-        const query = 'SELECT id, first_name, last_name, iban, company_name, job_title, bank_account_number, phone_number, mobile_number, email, chamber_of_commerce_nr, vat_id_nr, var_nr, city, zipcode, street, house_nr FROM User WHERE id=?;';
+        const query = 'SELECT id, first_name, last_name, iban, company_name, job_title, bank_account_nr, phone_number, mobile_number, email, chamber_of_commerce_nr, vat_id_nr, var_nr, city, zipcode, street, house_number FROM User WHERE id=?;';
         const row = await this._db.get(query, userID); 
         return new UserDTO(
             row.id,
@@ -33,7 +33,7 @@ export class SqliteUserRepo implements UserRepo {
             row.house_nr
         );
     }
-    
+
     public async saveOrdUpdate(user: UserDTO): Promise<string> {
         const existsQuery = `SELECT id FROM User where id=?;`;
         let id: string = "";

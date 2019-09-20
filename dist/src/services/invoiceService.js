@@ -13,10 +13,11 @@ const InvoiceDTO_1 = require("../domain/dto/InvoiceDTO");
 const nunjucks = require("nunjucks");
 // InvoiceService contains all services a user can call regarding invoices
 class InvoiceService {
-    constructor(invoiceRepo, jobRepo, clientRepo) {
+    constructor(invoiceRepo, jobRepo, clientRepo, userRepo) {
         this._invoiceRepo = invoiceRepo;
         this._jobRepo = jobRepo;
         this._clientRepo = clientRepo;
+        this._userRepo = userRepo;
     }
     createInvoice(invoice, job) {
         this._invoiceRepo.save(invoice, job);
@@ -70,11 +71,12 @@ class InvoiceService {
     // todo: look into best way to store money values
     // atm the number datatype is used.
     // 5964 + 1252.44 = 7216.4400000000005
-    generateInvoice(invoiceID) {
+    generateInvoice(invoiceID, userID) {
         return __awaiter(this, void 0, void 0, function* () {
             const invoice = yield this._invoiceRepo.invoiceOfID(invoiceID);
             const job = yield this._jobRepo.jobOfID(invoice.jobID);
             const client = yield this._clientRepo.clientOfID(job.clientID);
+            const user = yield this._userRepo.userOfID(userID);
             const vatPercentage = 21;
             nunjucks.configure('src/ui', { autoescape: true });
             const html = nunjucks.render('invoice-template.html', {
@@ -93,7 +95,23 @@ class InvoiceService {
                 cameraman: job.cameraman,
                 equipment_items: job.equipmentItems,
                 vat_percentage: vatPercentage,
-                iban: invoice.iban
+                iban: invoice.iban,
+                user_first_name: user.firstName,
+                user_last_name: user.lastName,
+                user_iban: user.iban,
+                user_company_name: user.companyName,
+                user_job_title: user.jobTitle,
+                user_bank_account_nr: user.bankAccountNr,
+                user_phone_nr: user.phoneNr,
+                user_mobile_nr: user.mobileNr,
+                user_email: user.email,
+                user_chamber_of_commerce_nr: user.chamberOfCommerceNr,
+                user_vat_nr: user.vatNr,
+                user_var_nr: user.varNr,
+                user_city: user.city,
+                user_zipcode: user.zipcode,
+                user_street: user.street,
+                user_house_nr: user.houseNr
             });
             return html;
         });

@@ -41,7 +41,7 @@ const sqliteUserRepo = new sqliteUserRepo_1.SqliteUserRepo(db);
 const sqliteJobRepo = new sqliteJobRepo_1.SqliteJobRepo(db);
 const sqliteClientRepo = new sqliteClientRepo_1.SqliteClientRepo(db);
 const sqliteInvoiceRepo = new sqliteInvoiceRepo_1.SqliteInvoiceRepo(db, sqliteJobRepo);
-const invoiceService = new invoiceService_1.InvoiceService(sqliteInvoiceRepo, sqliteJobRepo, sqliteClientRepo);
+const invoiceService = new invoiceService_1.InvoiceService(sqliteInvoiceRepo, sqliteJobRepo, sqliteClientRepo, sqliteUserRepo);
 const createWindow = () => {
     mainWindow = new electron_1.BrowserWindow({
         width: 800,
@@ -91,7 +91,8 @@ electron_1.ipcMain.on('fetch-all-invoices-channel', (event, _) => {
 electron_1.ipcMain.on('generate-invoice-channel', (event, args) => {
     try {
         const invoiceKey = 'invoiceID';
-        const invoiceHTML = invoiceService.generateInvoice(new invoiceID_1.InvoiceID(args[invoiceKey]));
+        const userKey = 'userID';
+        const invoiceHTML = invoiceService.generateInvoice(new invoiceID_1.InvoiceID(args[invoiceKey]), args[userKey]);
         invoiceHTML
             .then(html => {
             mainWindow.loadURL(`file://${__dirname}/ui/invoice.html`);

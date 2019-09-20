@@ -34,7 +34,7 @@ const sqliteUserRepo = new SqliteUserRepo(db);
 const sqliteJobRepo = new SqliteJobRepo(db);
 const sqliteClientRepo = new SqliteClientRepo(db);
 const sqliteInvoiceRepo = new SqliteInvoiceRepo(db, sqliteJobRepo);
-const invoiceService = new InvoiceService(sqliteInvoiceRepo, sqliteJobRepo, sqliteClientRepo);
+const invoiceService = new InvoiceService(sqliteInvoiceRepo, sqliteJobRepo, sqliteClientRepo, sqliteUserRepo);
 
 const createWindow = () => {
     mainWindow = new BrowserWindow({
@@ -94,7 +94,8 @@ ipcMain.on('fetch-all-invoices-channel', (event, _) => {
 ipcMain.on('generate-invoice-channel', (event, args) => {
     try {
         const invoiceKey = 'invoiceID';
-        const invoiceHTML = invoiceService.generateInvoice(new InvoiceID(args[invoiceKey]));
+        const userKey = 'userID';
+        const invoiceHTML = invoiceService.generateInvoice(new InvoiceID(args[invoiceKey]), args[userKey]);
 
         invoiceHTML
             .then(html => {

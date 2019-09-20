@@ -6,17 +6,20 @@ import { JobRepo } from "../repos/jobRepo";
 import { ClientRepo } from "../repos/clientRepo";
 import { InvoiceDTO } from "../domain/dto/InvoiceDTO";
 import nunjucks = require('nunjucks');
+import { UserRepo } from "../repos/userRepo";
 
 // InvoiceService contains all services a user can call regarding invoices
 export class InvoiceService {
     private _invoiceRepo: InvoiceRepo;
     private _jobRepo: JobRepo;
     private _clientRepo: ClientRepo;
+    private _userRepo: UserRepo;
 
-    constructor(invoiceRepo: InvoiceRepo, jobRepo: JobRepo, clientRepo: ClientRepo) {
+    constructor(invoiceRepo: InvoiceRepo, jobRepo: JobRepo, clientRepo: ClientRepo, userRepo: UserRepo) {
         this._invoiceRepo = invoiceRepo;
         this._jobRepo = jobRepo;
         this._clientRepo = clientRepo;
+        this._userRepo = userRepo;
     }
 
     public createInvoice(invoice: Invoice, job: Job): void {
@@ -74,10 +77,11 @@ export class InvoiceService {
     // todo: look into best way to store money values
         // atm the number datatype is used.
             // 5964 + 1252.44 = 7216.4400000000005
-    public async generateInvoice(invoiceID: InvoiceID): Promise<string> {
+    public async generateInvoice(invoiceID: InvoiceID, userID: string): Promise<string> {
         const invoice = await this._invoiceRepo.invoiceOfID(invoiceID);
         const job = await this._jobRepo.jobOfID(invoice.jobID);
         const client = await this._clientRepo.clientOfID(job.clientID!);
+        const user = await this._userRepo.userOfID(userID);
         const vatPercentage = 21;
 
         nunjucks.configure('src/ui', { autoescape: true });
@@ -98,7 +102,24 @@ export class InvoiceService {
                 cameraman: job.cameraman,
                 equipment_items: job.equipmentItems,
                 vat_percentage: vatPercentage,
-                iban: invoice.iban
+                iban: invoice.iban,
+
+                user_first_name: user.firstName,
+                user_last_name: user.lastName,
+                user_iban: user.iban,
+                user_company_name: user.companyName,
+                user_job_title: user.jobTitle,
+                user_bank_account_nr: user.bankAccountNr,
+                user_phone_nr: user.phoneNr,
+                user_mobile_nr: user.mobileNr,
+                user_email: user.email,
+                user_chamber_of_commerce_nr: user.chamberOfCommerceNr,
+                user_vat_nr: user.vatNr,
+                user_var_nr: user.varNr,
+                user_city: user.city,
+                user_zipcode: user.zipcode,
+                user_street: user.street,
+                user_house_nr: user.houseNr
             });
 
         return html;

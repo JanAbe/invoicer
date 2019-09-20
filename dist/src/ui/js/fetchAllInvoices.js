@@ -41,7 +41,8 @@ const bindGenerateInvoiceEventToButtons = (class_, chan) => {
     for (const btn of generateInvoiceButtons) {
         btn.addEventListener('click', () => {
             const invoiceID = btn.value;
-            ipcRenderer.send(chan, {'invoiceID': invoiceID});
+            const userID = localStorage.getItem('id');
+            ipcRenderer.send(chan, {'invoiceID': invoiceID, 'userID': userID});
         });
     }
 }

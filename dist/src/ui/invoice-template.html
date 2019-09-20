@@ -118,9 +118,25 @@
         <div id="payment-info">
             <p style="text-align: center">
                 Betaalwijze: Binnen 30 dagen na factuurdatum <br>
-                SEI nr: 93203090 <br>
-                t.n.v: B.K Fernandez <br>
+                SEI nr: {{ user_bank_account_nr }} <br>
+                t.n.v: {{ user_first_name }} {{ user_last_name }} <br>
                 IBAN: {{ iban }} <br>
             </p>
+        </div>
+
+        <div>
+            <ul>
+                <li>{{ user_first_name }} {{ user_last_name }}</li>
+                <li>{{ user_job_title }}</li>
+                <li>{{ user_street }} {{ user_house_nr }}</li>
+                <li>{{ user_zipcode}}</li>
+                <li>{{ user_city}}</li>
+                <li>{{ user_phone_nr }}</li>
+                <li>{{ user_mobile_nr }}</li>
+                <li>{{ user_email }}</li>
+                <li>{{ user_vat_nr }}</li>
+                <li>{{ user_chamber_of_commerce_nr }}</li>
+                <li>{{ user_var_nr }}</li>
+            </ul>
         </div>
     <!-- </div>  -->
