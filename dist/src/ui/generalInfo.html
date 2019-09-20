@@ -68,28 +68,105 @@
                             <div id="client-segment">
                                 <div class="two-input-fields">
                                     <div class="form-group">
-                                        <label>FirstName</label>
-                                        <input id="firstName-input" type="text" class="form-control"
-                                            placeholder="FirstName">
+                                        <label>Voornaam</label>
+                                        <input id="first-name-input" name="firstName" type="text" class="form-control"
+                                            placeholder="Voornaam">
                                     </div>
                                     <div class="form-group">
-                                        <label>LastName</label>
-                                        <input id="lastName-input" type="text" class="form-control"
-                                            placeholder="LastName">
+                                        <label>Achternaam</label>
+                                        <input id="last-name-input" name="lastName" type="text" class="form-control"
+                                            placeholder="Achternaam">
                                     </div>
                                 </div>
 
                                 <div id="iban-segment" class="form-group">
                                     <label>IBAN</label>
-                                    <input id="iban-input" type="text" class="form-control" placeholder="IBAN">
+                                    <input id="iban-input" name="iban" type="text" class="form-control" placeholder="IBAN">
                                 </div>
-                            </div>
 
-                            <div id="button-segment">
+                                <div class="two-input-fields">
+                                    <div class="form-group">
+                                        <label>Bedrijfsnaam</label>
+                                        <input id="company-name-input" name="companyName" type="text" class="form-control" placeholder="Bedrijfsnaam">
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label>Beroepstitel</label>
+                                        <input id="job-title-input" name="jobTitle" type="text" class="form-control" placeholder="Beroepstitel">
+                                    </div>
+                                </div>
+
                                 <div class="form-group">
-                                    <div class="form-actions">
-                                        <button id="save-general-info-btn" type="button"
-                                            class="btn btn-form btn-primary">Save</button>
+                                    <label>Bankrekeningnummer</label>
+                                    <input id="bank-account-nr-input" name="bankAccountNr" type="text" class="form-control" placeholder="Bankrekeningnummer">
+                                </div>
+
+                                <div class="two-input-fields">
+                                    <div class="form-group">
+                                        <label>Telefoonnummer</label>
+                                        <input id="phone-nr-input" name="phoneNr" type="text" class="form-control" placeholder="Telefoonnummer">
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label>Mobielenummer</label>
+                                        <input id="mobile-nr-input" name="mobileNr" type="text" class="form-control" placeholder="Mobielenummer">
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label>Emailaddres</label>
+                                    <input id="email-input" name="email" type="text" class="form-control" placeholder="Emailaddres">
+                                </div>
+
+                                <div class="two-input-fields">
+                                    <div class="form-group">
+                                        <label>K.v.K</label>
+                                        <input id="coc-input" name="coc" type="text" class="form-control" placeholder="K.v.K">
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label>Btwnummer</label>
+                                        <input id="vat-id-nr-input" name="vatNr" type="text" class="form-control" placeholder="Btwnummer">
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label>VARnummer</label>
+                                    <input id="var-nr-input" name="varNr" type="text" class="form-control" placeholder="VARnummer">
+                                </div>
+
+                                <div class="two-input-fields">
+                                    <div class="form-group">
+                                        <label>Stad</label>
+                                        <input id="city-input" name="city" type="text" class="form-control" placeholder="Stad">
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label>Postcode</label>
+                                        <input id="zipcode-input" name="zipcode" type="text" class="form-control" placeholder="Postcode">
+                                    </div>
+                                </div>
+
+                                <div class="two-input-fields">
+                                    <div class="form-group">
+                                        <label>Straatnaam</label>
+                                        <input id="street-input" name="street" type="text" class="form-control" placeholder="Straatnaam">
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label>Huisnummer</label>
+                                        <input id="house-nr-input" name="houseNr" type="text" class="form-control" placeholder="Huisnummer">
+                                    </div>
+                                </div>
+
+                                <input id="user-id" type="text" name="id" hidden>
+
+                                <div id="button-segment">
+                                    <div class="form-group">
+                                        <div id="btn-wrapper" class="form-actions">
+                                            <a href="./generalInfo.html" id="save-btn"
+                                                class="btn btn-form btn-primary">Save</a>
+                                        </div>
                                     </div>
                                 </div>
                             </div>

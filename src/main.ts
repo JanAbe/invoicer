@@ -15,7 +15,8 @@ import { Period } from './domain/period';
 import { SqliteClientRepo } from './repos/sqlite/sqliteClientRepo';
 import { EquipmentItem } from './domain/equipmentItem';
 import { InvoiceService } from './services/invoiceService';
-import moment = require('moment');
+import { UserDTO } from './domain/dto/userDTO';
+import { SqliteUserRepo } from './repos/sqlite/sqliteUserRepo';
 
 // Handle creating/removing shortcuts on Windows when installing/uninstalling.
 if (require('electron-squirrel-startup')) { // eslint-disable-line global-require
@@ -29,6 +30,7 @@ const dbLocation = `${__dirname}/../db/Invoice.db`;
 const db = new DB(dbLocation);
 db.createTables();
 
+const sqliteUserRepo = new SqliteUserRepo(db);
 const sqliteJobRepo = new SqliteJobRepo(db);
 const sqliteClientRepo = new SqliteClientRepo(db);
 const sqliteInvoiceRepo = new SqliteInvoiceRepo(db, sqliteJobRepo);
@@ -111,6 +113,35 @@ ipcMain.on('generate-invoice-channel', (event, args) => {
 
 // todo: add user table to db containing all general info data
     // like iban, name, etc.
+ipcMain.on('submit-user-channel', async (event, user) => {
+    try {
+        const userDTO = new UserDTO(
+            user['id'],
+            user['firstName'],
+            user['lastName'],
+            user['iban'],
+            user['companyName'],
+            user['jobTitle'],
+            user['bankAccountNr'],
+            user['phoneNr'],
+            user['mobileNr'],
+            user['email'],
+            user['coc'],
+            user['vatNr'],
+            user['varNr'],
+            user['city'],
+            user['zipcode'],
+            user['street'],
+            user['houseNr']
+        );
+        const id = await sqliteUserRepo.saveOrdUpdate(userDTO);
+        if (id !== "") {
+            event.reply('submit-user-reply-channel', id);
+        }
+    } catch (e) {
+        console.log(e);
+    }
+});
 
 // listen for submitted invoices
 // todo: add checks to see if cameraman and equipmentitem data has been passed

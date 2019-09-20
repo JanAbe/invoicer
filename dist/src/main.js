@@ -1,4 +1,13 @@
 "use strict";
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 const electron_1 = require("electron");
 const db_1 = require("./db");
@@ -16,6 +25,8 @@ const period_1 = require("./domain/period");
 const sqliteClientRepo_1 = require("./repos/sqlite/sqliteClientRepo");
 const equipmentItem_1 = require("./domain/equipmentItem");
 const invoiceService_1 = require("./services/invoiceService");
+const userDTO_1 = require("./domain/dto/userDTO");
+const sqliteUserRepo_1 = require("./repos/sqlite/sqliteUserRepo");
 // Handle creating/removing shortcuts on Windows when installing/uninstalling.
 if (require('electron-squirrel-startup')) { // eslint-disable-line global-require
     electron_1.app.quit();
@@ -26,6 +37,7 @@ let mainWindow;
 const dbLocation = `${__dirname}/../db/Invoice.db`;
 const db = new db_1.DB(dbLocation);
 db.createTables();
+const sqliteUserRepo = new sqliteUserRepo_1.SqliteUserRepo(db);
 const sqliteJobRepo = new sqliteJobRepo_1.SqliteJobRepo(db);
 const sqliteClientRepo = new sqliteClientRepo_1.SqliteClientRepo(db);
 const sqliteInvoiceRepo = new sqliteInvoiceRepo_1.SqliteInvoiceRepo(db, sqliteJobRepo);
@@ -97,6 +109,18 @@ electron_1.ipcMain.on('generate-invoice-channel', (event, args) => {
 });
 // todo: add user table to db containing all general info data
 // like iban, name, etc.
+electron_1.ipcMain.on('submit-user-channel', (event, user) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const userDTO = new userDTO_1.UserDTO(user['id'], user['firstName'], user['lastName'], user['iban'], user['companyName'], user['jobTitle'], user['bankAccountNr'], user['phoneNr'], user['mobileNr'], user['email'], user['coc'], user['vatNr'], user['varNr'], user['city'], user['zipcode'], user['street'], user['houseNr']);
+        const id = yield sqliteUserRepo.saveOrdUpdate(userDTO);
+        if (id !== "") {
+            event.reply('submit-user-reply-channel', id);
+        }
+    }
+    catch (e) {
+        console.log(e);
+    }
+}));
 // listen for submitted invoices
 // todo: add checks to see if cameraman and equipmentitem data has been passed
 // also check if at least 1 of the 2 has been passed

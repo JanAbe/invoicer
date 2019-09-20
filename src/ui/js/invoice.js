@@ -21,6 +21,9 @@ const hideElement = (identifier) => {
     element.style.display = 'none';
     invoiceSection.style.margin = 0;
     
+    // todo: look for a cleaner and better way to do this
+    // maybe give all these elements another class something like 'printable'
+    // hide and show + restyle all elements with this class
     const creationDateSection = document.querySelector('#creation-date');
     creationDateSection.style.gridColumnStart = 4;
     creationDateSection.style.gridColumnEnd = 5;

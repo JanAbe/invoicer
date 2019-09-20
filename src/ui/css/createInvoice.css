@@ -36,6 +36,11 @@ h5 {
     margin-left: 4%;
 }
 
+.checkbox, .form-group, .radio {
+    margin-bottom: 20px;
+}
+
+
 #form-title {
     grid-column-start: 1;
     grid-column-end: 3;
@@ -191,4 +196,29 @@ h5 {
 
 #email-input {
     margin-bottom: 3%;
+}
+
+#btn-wrapper {
+    grid-row-start: 8;
+    grid-column-start: 1;
+    grid-column-end: 3;
+    
+    display: flex;
+    align-content: center;
+    justify-content: center;
+}
+
+#create-invoice-btn {
+    margin-top: 5%;
+}
+
+#save-btn {
+    margin-top: 5%;
+}
+
+#cancel-btn {
+    height: 10%;
+    margin-top: 5%;
+    margin-left: 20%;
+    margin-right: 80px;
 }

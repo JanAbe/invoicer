@@ -63,6 +63,43 @@ export class DB {
     public createTables(): void {
         // Sqlite3 apparently doesn't support creating multiple tables at once
         // Because of this, a query for each table has been made.
+
+        const createTableAddress = `
+            CREATE TABLE IF NOT EXISTS Address (
+                city TEXT,
+                street TEXT,
+                house_number INTEGER,
+                zipcode TEXT
+            );
+        `;
+
+        // going to add iban here aswell, this value can be used to prefill
+        // the iban value when creating an invoice. Invoice also keeps an iban
+        // column so it's value doesn't get overwridden when looking it up at a later date
+        // and the iban of the user has changed
+        // what is a VAR/ number
+        const createTableUser = `
+            CREATE TABLE IF NOT EXISTS User (
+                id TEXT PRIMARY KEY,
+                first_name TEXT,
+                last_name TEXT,
+                iban TEXT,
+                company_name TEXT,
+                job_title TEXT,
+                bank_account_nr INTEGER,
+                phone_number TEXT,
+                mobile_number TEXT,
+                email TEXT,
+                chamber_of_commerce_nr TEXT,
+                vat_id_nr TEXT,
+                var_nr TEXT,
+                city TEXT,
+                zipcode TEXT,
+                street TEXT,
+                house_number INTEGER
+            );
+        `;
+
         const createTableCameraman = `
             CREATE TABLE IF NOT EXISTS Cameraman (
                 id TEXT PRIMARY KEY,
@@ -127,6 +164,8 @@ export class DB {
             );
         `;
 
+        this.db.run(createTableAddress);
+        this.db.run(createTableUser);
         this.db.run(createTableCameraman);
         this.db.run(createTableEquipmentItem);
         this.db.run(createTableClient);
