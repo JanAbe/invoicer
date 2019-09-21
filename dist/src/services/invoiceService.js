@@ -88,7 +88,7 @@ class InvoiceService {
                 city: client.address.city,
                 invoice_nr: '2019A32',
                 contact_person: client.fullName.firstName + ' ' + client.fullName.lastName,
-                project_nr: '823929',
+                project_nr: 'n.v.t',
                 job_descr: job.description,
                 directed_by: job.directedBy,
                 location: job.location,

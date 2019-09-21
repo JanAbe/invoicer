@@ -4,8 +4,6 @@
     {% set vat_costs = 0 %}
     {% set total_costs = 0 %}
 
-    <!-- todo: maybe move container to invoice.html then place print-btn inside the container div -->
-    <!-- <div id="invoice-wrapper"> -->
         <div id="company-name">
             <h4><strong>{{ user_company_name }}</strong></h4>
         </div>
@@ -21,13 +19,13 @@
         </div>
 
         <div id="general-info">
-            <div id="invoice-nr">Rekeningnummer: {{ invoice_nr }}</div>
+            <div id="invoice-nr"><strong>Rekeningnummer:</strong> {{ invoice_nr }}</div>
             <div id="contact-person">Contactpersoon: {{ client_name }}</div>
             <div id="project-nr">Projectnummer: {{ project_nr }}</div>
         </div>
 
         <div id="job-info">
-            <div id="job-description">Klus omschrijving: {{ job_descr }}</div>
+            <div id="job-description">Werktitel: {{ job_descr }}</div>
             <div id="directed-by">Regie: {{ directed_by }}</div>
             <div id="location">Locatie: {{ location }}</div>
         </div>
@@ -104,7 +102,7 @@
                 <tr>
                     <th>Totaal</th>
                     <th>BTW ({{ vat_percentage }}%)</th>
-                    <th>Te betalen bedrag</th>
+                    <th><strong>Te betalen bedrag</strong></th>
                 </tr>
 
                 <tr>
@@ -173,4 +171,12 @@
                 </tbody>
             </table>
         </div>
-    <!-- </div>  -->
+
+        <div id="agreement">
+            <p>
+                'Deze overeenkomst is gebaseerd op de door de Belastingdienst op 29 februari 2016 onder nummer 298349899-08-1 beoordeelde overeenkomst. 
+                De in die overeenkomst gemarkeerde bepalingen zijn in deze overeenkomst ongewijzigd overgenomen. 
+                Voor zover in deze overeenkomst aanpassingen hebben plaatsgevonden, zijn partijen van mening dat deze aanpassingen geen afbreuk doen aan 
+                de in de model- of voorbeeldovereenkomst gemarkeerde bepalingen.'
+            </p>
+        </div>

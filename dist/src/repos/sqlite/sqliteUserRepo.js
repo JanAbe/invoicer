@@ -19,7 +19,7 @@ class SqliteUserRepo {
         return __awaiter(this, void 0, void 0, function* () {
             const query = 'SELECT id, first_name, last_name, iban, company_name, job_title, bank_account_nr, phone_number, mobile_number, email, chamber_of_commerce_nr, vat_id_nr, var_nr, city, zipcode, street, house_number FROM User WHERE id=?;';
             const row = yield this._db.get(query, userID);
-            return new userDTO_1.UserDTO(row.id, row.first_name, row.last_name, row.iban, row.company_name, row.job_title, row.bank_account_number, row.phone_number, row.mobile_number, row.email, row.chamber_of_commerce_nr, row.vat_id_nr, row.var_nr, row.city, row.zipcode, row.street, row.house_nr);
+            return new userDTO_1.UserDTO(row.id, row.first_name, row.last_name, row.iban, row.company_name, row.job_title, row.bank_account_nr, row.phone_number, row.mobile_number, row.email, row.chamber_of_commerce_nr, row.vat_id_nr, row.var_nr, row.city, row.zipcode, row.street, row.house_number);
         });
     }
     saveOrdUpdate(user) {

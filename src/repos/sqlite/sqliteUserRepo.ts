@@ -20,7 +20,7 @@ export class SqliteUserRepo implements UserRepo {
             row.iban,
             row.company_name,
             row.job_title,
-            row.bank_account_number,
+            row.bank_account_nr,
             row.phone_number,
             row.mobile_number,
             row.email,
@@ -30,7 +30,7 @@ export class SqliteUserRepo implements UserRepo {
             row.city,
             row.zipcode,
             row.street,
-            row.house_nr
+            row.house_number
         );
     }
 

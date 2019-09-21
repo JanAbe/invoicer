@@ -95,7 +95,7 @@ export class InvoiceService {
                 city: client.address.city,
                 invoice_nr: '2019A32', // temp hardcoded value
                 contact_person: client.fullName.firstName + ' ' + client.fullName.lastName,
-                project_nr: '823929', // temp hardcoded value
+                project_nr: 'n.v.t', // temp hardcoded value
                 job_descr: job.description,
                 directed_by: job.directedBy,
                 location: job.location,

@@ -100,11 +100,21 @@ body {
     grid-row-end: 7;
 
     margin-top: 20px;
+    width: 90%;
+}
+
+#general-user-info {
+    grid-column-start: 3;
+    grid-column-end: 4;
+    grid-row-start: 6;
+    grid-row-end: 7;
+
+    width: 50%;
 }
 
 #payment-info {
     grid-column-start: 1;
-    grid-column-end: 2;
+    grid-column-end: 3;
     grid-row-start: 7;
     grid-row-end: 8;
 
@@ -112,13 +122,16 @@ body {
     align-self: end;
 }
 
-#general-user-info {
-    grid-column-start: 2;
-    grid-column-end: 3;
-    grid-row-start: 7;
-    grid-row-end: 8;
+#general-user-info > table {
+    border-top: solid thin gray;
+    border-left: solid thin gray;
+}
 
-    padding-left: 300px;
+#agreement {
+    grid-column: 1 / 3;
+    grid-row: 8 / 9;
+    text-align: center;
+    font-size: 10px;
 }
 
 #print-btn-wrapper {

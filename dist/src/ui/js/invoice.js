@@ -43,6 +43,10 @@ const hideElement = (identifier) => {
     generalUserInfo.style.gridColumnEnd = 5;
     generalUserInfo.style.paddingLeft = '0px';
     generalUserInfo.style.justifySelf = 'flex-start';
+
+    const agreement = document.querySelector('#agreement');
+    agreement.style.gridColumnStart = 1;
+    agreement.style.gridColumnEnd = 5;
 }
 
 const showElement = (identifier) => {
@@ -66,10 +70,12 @@ const showElement = (identifier) => {
     paymentInfoSection.style.gridColumnEnd = 3;
     
     const generalUserInfo = document.querySelector('#general-user-info');
-    generalUserInfo.style.gridColumnStart = 2;
-    generalUserInfo.style.gridColumnEnd = 3;
-    generalUserInfo.style.paddingLeft = '300px';
-    generalUserInfo.style.justifySelf = '';
+    generalUserInfo.style.gridColumnStart = 3;
+    generalUserInfo.style.gridColumnEnd = 4;
+    
+    const agreement = document.querySelector('#agreement');
+    agreement.style.gridColumnStart = 1;
+    agreement.style.gridColumnEnd = 3;
 }
 
 const hideElements = (identifiers) => {
