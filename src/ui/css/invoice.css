@@ -104,15 +104,25 @@ body {
 
 #payment-info {
     grid-column-start: 1;
-    grid-column-end: 3;
+    grid-column-end: 2;
     grid-row-start: 7;
     grid-row-end: 8;
 
     margin-top: 75px;
+    align-self: end;
+}
+
+#general-user-info {
+    grid-column-start: 2;
+    grid-column-end: 3;
+    grid-row-start: 7;
+    grid-row-end: 8;
+
+    padding-left: 300px;
 }
 
 #print-btn-wrapper {
-    grid-row-start: 8;
+    grid-row-start: 9;
     grid-column-start: 1;
     grid-column-end: 3;
     
@@ -123,5 +133,4 @@ body {
 
 #print-btn {
     width: 50%;
-    height: 60%;
 }

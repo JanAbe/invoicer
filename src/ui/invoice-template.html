@@ -124,19 +124,53 @@
             </p>
         </div>
 
-        <div>
-            <ul>
-                <li>{{ user_first_name }} {{ user_last_name }}</li>
-                <li>{{ user_job_title }}</li>
-                <li>{{ user_street }} {{ user_house_nr }}</li>
-                <li>{{ user_zipcode}}</li>
-                <li>{{ user_city}}</li>
-                <li>{{ user_phone_nr }}</li>
-                <li>{{ user_mobile_nr }}</li>
-                <li>{{ user_email }}</li>
-                <li>{{ user_vat_nr }}</li>
-                <li>{{ user_chamber_of_commerce_nr }}</li>
-                <li>{{ user_var_nr }}</li>
-            </ul>
+        <div id="general-user-info">
+            <table>
+                <tbody>
+                    <tr>
+                        <th>{{ user_first_name }} {{ user_last_name }}</th>
+                    </tr>
+
+                    <tr>
+                        <th>{{ user_job_title }}</th>
+                    </tr>
+
+                    <tr>
+                        <th>{{ user_street }} {{ user_house_nr }}</th>
+                    </tr>
+
+                    <tr>
+                        <th>{{ user_zipcode }}</th>
+                    </tr>
+
+                    <tr>
+                        <th>{{ user_city }}</td>
+                    </tr>
+
+                    <tr>
+                        <th>tel: {{ user_phone_nr }}</th>
+                    </tr>
+
+                    <tr>
+                        <th>mob: {{ user_mobile_nr }}</th>
+                    </tr>
+
+                    <tr>
+                        <th>{{ user_email }}</th>
+                    </tr>
+
+                    <tr>
+                        <th>btwnr: {{ user_vat_nr }}</th>
+                    </tr>
+
+                    <tr>
+                        <th>k.v.k: {{ user_chamber_of_commerce_nr }}</th>
+                    </tr>
+
+                    <tr>
+                        <th>var: {{ user_var_nr }}</th>
+                    </tr>
+                </tbody>
+            </table>
         </div>
     <!-- </div>  -->
