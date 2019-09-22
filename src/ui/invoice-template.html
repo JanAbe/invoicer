@@ -5,7 +5,7 @@
     {% set total_costs = 0 %}
 
         <div id="company-name">
-            <h4><strong>{{ user_company_name }}</strong></h4>
+            <h4><strong>{{ user_company_name | title }}</strong></h4>
         </div>
 
         <div id="creation-date">
@@ -13,21 +13,21 @@
         </div>
 
         <div id="client-info">
-            <div id="client-name">{{ client_name }}</div>
-            <div id="street-house-nr">{{ street }} {{ house_number }}</div>
-            <div id="zipcode-city">{{ zipcode }}, {{ city }}</div>
+            <div id="client-name">{{ client_name | title }}</div>
+            <div id="street-house-nr">{{ street | capitalize }} {{ house_number }}</div>
+            <div id="zipcode-city">{{ zipcode }}, {{ city | capitalize }}</div>
         </div>
 
         <div id="general-info">
             <div id="invoice-nr"><strong>Rekeningnummer:</strong> {{ invoice_nr }}</div>
-            <div id="contact-person">Contactpersoon: {{ client_name }}</div>
+            <div id="contact-person">Contactpersoon: {{ client_name | title }}</div>
             <div id="project-nr">Projectnummer: {{ project_nr }}</div>
         </div>
 
         <div id="job-info">
-            <div id="job-description">Werktitel: {{ job_descr }}</div>
-            <div id="directed-by">Regie: {{ directed_by }}</div>
-            <div id="location">Locatie: {{ location }}</div>
+            <div id="job-description">Werktitel: {{ job_descr | capitalize }}</div>
+            <div id="directed-by">Regie: {{ directed_by | capitalize }}</div>
+            <div id="location">Locatie: {{ location | capitalize }}</div>
         </div>
 
         {% if cameraman !== undefined %}
@@ -44,7 +44,7 @@
                         <th>Kosten</th>
                     </tr>
                     <tr>
-                        <td>{{ cameraman.firstName }} {{ cameraman.lastName }}</td>
+                        <td>{{ cameraman.firstName | capitalize }} {{ cameraman.lastName | capitalize }}</td>
                         <td>{{ cameraman.period.startDate.toLocaleDateString('nl') }}</td>
                         <td>{{ cameraman.period.endDate.toLocaleDateString('nl') }}</td>
                         <td>{{ cameraman.period.getDays() }}</td>
@@ -77,7 +77,7 @@
                         {% set equipment_costs = item.calculateCost() %}
                         {% set equipment_total_costs = equipment_total_costs + equipment_costs %}
                         <tr>
-                            <td>{{ item.name }}</td>
+                            <td>{{ item.name | title }}</td>
                             <td>{{ item.period.startDate.toLocaleDateString('nl') }}</td>
                             <td>{{ item.period.endDate.toLocaleDateString('nl') }}</td>
                             <td>{{ item.period.getDays() }}</td>
@@ -117,7 +117,7 @@
             <p style="text-align: center">
                 Betaalwijze: Binnen 30 dagen na factuurdatum <br>
                 SEI nr: {{ user_bank_account_nr }} <br>
-                t.n.v: {{ user_first_name }} {{ user_last_name }} <br>
+                t.n.v: {{ user_first_name | capitalize }} {{ user_last_name | capitalize }} <br>
                 IBAN: {{ iban }} <br>
             </p>
         </div>
@@ -126,15 +126,15 @@
             <table>
                 <tbody>
                     <tr>
-                        <th>{{ user_first_name }} {{ user_last_name }}</th>
+                        <th>{{ user_first_name | capitalize }} {{ user_last_name | capitalize }}</th>
                     </tr>
 
                     <tr>
-                        <th>{{ user_job_title }}</th>
+                        <th>{{ user_job_title | capitalize }}</th>
                     </tr>
 
                     <tr>
-                        <th>{{ user_street }} {{ user_house_nr }}</th>
+                        <th>{{ user_street | capitalize }} {{ user_house_nr }}</th>
                     </tr>
 
                     <tr>
@@ -142,15 +142,15 @@
                     </tr>
 
                     <tr>
-                        <th>{{ user_city }}</td>
+                        <th>{{ user_city | capitalize }}</td>
                     </tr>
 
                     <tr>
-                        <th>tel: {{ user_phone_nr }}</th>
+                        <th>Telefoon: {{ user_phone_nr }}</th>
                     </tr>
 
                     <tr>
-                        <th>mob: {{ user_mobile_nr }}</th>
+                        <th>Mobiel: {{ user_mobile_nr }}</th>
                     </tr>
 
                     <tr>
@@ -158,15 +158,15 @@
                     </tr>
 
                     <tr>
-                        <th>btwnr: {{ user_vat_nr }}</th>
+                        <th>Btwnr: {{ user_vat_nr }}</th>
                     </tr>
 
                     <tr>
-                        <th>k.v.k: {{ user_chamber_of_commerce_nr }}</th>
+                        <th>K.v.K: {{ user_chamber_of_commerce_nr }}</th>
                     </tr>
 
                     <tr>
-                        <th>var: {{ user_var_nr }}</th>
+                        <th>Var: {{ user_var_nr }}</th>
                     </tr>
                 </tbody>
             </table>
