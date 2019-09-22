@@ -18,38 +18,6 @@ const fetchAllInvoices = (chan) => {
 }
 
 /**
- * fetchAllInvoicesHTMLAndInsert listens to the provided channel to see
- * if all invoices have been requested. If this is the case
- * the rendered html is added to the page. Thereafter a click event
- * is added to all rendered buttons.
- */
-const fetchAllInvoicesHTMLAndInsert = (chan) => {
-    const invoicesTable = document.querySelector('#invoices-table');
-    ipcRenderer.on(chan, (_, html) => {
-        invoicesTable.insertAdjacentHTML('beforeend', html);
-        bindGenerateInvoiceEventToButtons('.generate-invoice-btn', 'generate-invoice-channel');
-    });
-}
-
-// todo: remove, as is probably unnsecesarry
-/**
- * bindEventToButtons binds a click event to all buttons with the
- * specified css-class. Each click event has a function that
- * sends a request to the specified channel to generate an invoice
- * with the id that is the value of the clicked button. 
- */
-const bindGenerateInvoiceEventToButtons = (class_, chan) => {
-    const generateInvoiceButtons = document.querySelectorAll(class_);
-    for (const btn of generateInvoiceButtons) {
-        btn.addEventListener('click', () => {
-            const invoiceID = btn.value;
-            const userID = localStorage.getItem('id');
-            ipcRenderer.send(chan, {'invoiceID': invoiceID, 'userID': userID});
-        });
-    }
-}
-
-/**
  * bindViewInvoiceEventToButton binds a click event to the 'view invoice' button.
  * When clicked, the invoice will be displayed so the user can look at it.
  */
@@ -74,6 +42,36 @@ const getSelectedInvoiceID = () => {
     }
 
     return selectedInvoiceID;
+}
+
+/**
+ * fetchAllInvoicesHTMLAndInsert listens to the provided channel to see
+ * if all invoices have been requested. If this is the case
+ * the rendered html is added to the page. Thereafter a click event
+ * is added to all rendered rows.
+ */
+const fetchAllInvoicesHTMLAndInsert = (chan) => {
+    const invoicesTable = document.querySelector('#invoices-table');
+    ipcRenderer.on(chan, (_, html) => {
+        invoicesTable.insertAdjacentHTML('beforeend', html);
+        bindClickEventToRow();
+    });
+}
+
+/**
+ * bindClickEventToRow binds a click event to each row
+ * When a row is pressed, it's radiobutton is set to 'checked'
+ * This way the whole row can be pressed, instead of the small
+ * radiobutton
+ */
+const bindClickEventToRow = () => {
+    const tableRows = document.querySelectorAll('table tbody tr');
+    console.log(tableRows);
+    for (const row of tableRows) {
+        row.addEventListener('click', () => {
+            row.querySelector('input').checked = true;
+        });
+    }
 }
 
 readyPage();

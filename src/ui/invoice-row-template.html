@@ -1,10 +1,3 @@
-
-{% macro button(value) %}
-    <button class="btn btn-primary generate-invoice-btn" type="button" value="{{ value }}" >
-        Genereer
-    </button>
-{% endmacro %}
-
 {% macro input(value) %}
     <input type="radio" name="invoice-radio-btn" value="{{ value }}">
 {% endmacro %}
@@ -18,10 +11,5 @@
         <td>{{ invoiceDTO.jobDescription }}</td>
         <td>{{ invoiceDTO.clientName }}</td>
         <td>{{ invoiceDTO.creationDate.toLocaleDateString('nl') }}</td>
-        <td>
-            <span>
-                {{ button(value=invoiceDTO.id) }}
-            </span>
-        </td>
     </tr>
 {% endfor %}

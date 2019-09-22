@@ -1,3 +1,11 @@
+input[type=radio] {
+    margin-top: 6px;
+}
+
+td:nth-child(1) {
+    text-align: center;
+}
+
 .toolbar-actions > div > button,
 .toolbar-actions > div > a {
     border-radius: 20px;
@@ -18,14 +26,6 @@
     border-top: solid thick #d1cfd1;
     display: flex;
     justify-content: space-between;
-}
-
-input[type=radio] {
-    margin-top: 6px;
-}
-
-td:nth-child(1) {
-    text-align: center;
 }
 
 #add-invoice-btn {
