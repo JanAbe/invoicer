@@ -8,3 +8,7 @@ is alleen zo bij firefox*/
     text-decoration: none;
     color: #333;
 }
+
+.nav-group-item:focus {
+    outline: none;
+}

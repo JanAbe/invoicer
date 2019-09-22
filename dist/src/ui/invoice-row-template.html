@@ -5,8 +5,15 @@
     </button>
 {% endmacro %}
 
+{% macro input(value) %}
+    <input type="radio" name="invoice-radio-btn" value="{{ value }}">
+{% endmacro %}
+
 {% for invoiceDTO in invoiceDTOs %}
     <tr>
+        <td>
+            {{ input(value=invoiceDTO.id) }}
+        </td>
         <td>{{ invoiceDTO.invoiceNumber }}</td>
         <td>{{ invoiceDTO.jobDescription }}</td>
         <td>{{ invoiceDTO.clientName }}</td>

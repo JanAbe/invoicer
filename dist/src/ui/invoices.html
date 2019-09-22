@@ -10,8 +10,6 @@
     <link rel="stylesheet" href="./css/photon.min.css">
     <link rel="stylesheet" href="./css/general.css">
     <link rel="stylesheet" href="./css/invoices.css">
-
-    <script src="./js/menu.js" charset="utf-8"></script>
 </head>
 
 <body>
@@ -52,34 +50,41 @@
                 </div>
 
                 <div class="pane">
-                    <header class="toolbar toolbar-header sdf">
-                        <div class="toolbar-actions xd">
-                            <div class="btn-group">
-                                <button class="btn btn-default">
+                    <header class="toolbar toolbar-header invoices-toolbar">
+                        <div class="toolbar-actions invoices-toolbar-actions">
+                            <div>
+                                <a href="./createInvoice.html" id="add-invoice-btn" class="btn btn-default">
                                     Rekening toevoegen
                                     <span class="icon icon-plus"></span>
-                                </button>
+                                </a>
                                 
-                                <button class="btn btn-default">
-                                    Rekening aanpassen
-                                    <span class="icon icon-pencil"></span>
-                                </button>
-                                
-                                <button class="btn btn-default">
-                                    Rekening(en) verwijderen
-                                    <span class="icon icon-trash"></span>
+                                <button id="view-invoice-btn" class="btn btn-default">
+                                    Rekening inzien
+                                    <span class="icon icon-newspaper"></span>
                                 </button>
                             </div>
 
-                            <div class="btn-group">
-                                <button class="btn btn-default">
+                            <div>
+                                <button id="sort-invoices-btn" class="btn btn-default">
                                     Rekeningen sorteren
                                     <span class="icon icon-shuffle"></span>
                                 </button>
                                 
-                                <button class="btn btn-default">
+                                <button id="search-invoices-btn" class="btn btn-default">
                                     Rekeningen doorzoeken
                                     <span class="icon icon-search"></span>
+                                </button>
+                            </div>
+
+                            <div>
+                                <button id="edit-invoice-btn" class="btn btn-default">
+                                    Rekening aanpassen
+                                    <span class="icon icon-pencil"></span>
+                                </button>
+                                
+                                <button id="delete-invoice-btn" class="btn btn-default">
+                                    Rekening verwijderen
+                                    <span class="icon icon-trash"></span>
                                 </button>
                             </div>
                     </header>
@@ -87,6 +92,7 @@
                     <table class="table-striped">
                         <thead>
                             <tr>
+                                <th></th>
                                 <th>Factuurnummer</th>
                                 <th>Klus Omschrijving</th>
                                 <th>Klant Naam</th>

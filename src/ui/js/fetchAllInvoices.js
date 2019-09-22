@@ -5,6 +5,7 @@ const { ipcRenderer } = require('electron');
  */
 const readyPage = () => {
     fetchAllInvoices('fetch-all-invoices-channel');
+    bindViewInvoiceEventToButton('generate-invoice-channel');
     fetchAllInvoicesHTMLAndInsert('fetch-all-invoices-reply-channel');
 }
 
@@ -30,6 +31,7 @@ const fetchAllInvoicesHTMLAndInsert = (chan) => {
     });
 }
 
+// todo: remove, as is probably unnsecesarry
 /**
  * bindEventToButtons binds a click event to all buttons with the
  * specified css-class. Each click event has a function that
@@ -45,6 +47,33 @@ const bindGenerateInvoiceEventToButtons = (class_, chan) => {
             ipcRenderer.send(chan, {'invoiceID': invoiceID, 'userID': userID});
         });
     }
+}
+
+/**
+ * bindViewInvoiceEventToButton binds a click event to the 'view invoice' button.
+ * When clicked, the invoice will be displayed so the user can look at it.
+ */
+const bindViewInvoiceEventToButton = (chan) => {
+    const viewInvoiceBtn = document.querySelector('#view-invoice-btn');
+    viewInvoiceBtn.addEventListener('click', () => {
+        const userID = localStorage.getItem('id');
+        ipcRenderer.send(chan, {'invoiceID': getSelectedInvoiceID(), 'userID': userID});
+    });
+}
+
+/**
+ * getSelectedInvoiceID returns the value, the id, of the selected invoice.
+ */
+const getSelectedInvoiceID = () => {
+    const radioBtns = document.querySelectorAll('input[name="invoice-radio-btn"]');
+    let selectedInvoiceID = radioBtns[0].value;
+    for (const btn of radioBtns) {
+        if (btn.checked) {
+            selectedInvoiceID = btn.value;
+        }
+    }
+
+    return selectedInvoiceID;
 }
 
 readyPage();

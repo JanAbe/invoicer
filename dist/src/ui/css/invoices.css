@@ -1,4 +1,5 @@
-.toolbar-actions > div > button {
+.toolbar-actions > div > button,
+.toolbar-actions > div > a {
     border-radius: 20px;
     padding: 5px 15px 5px 15px;
     margin: 5px 0px 2px 0px;
@@ -8,11 +9,51 @@
     padding-right: 20px;
 }
 
-.sdf {
+.invoices-toolbar {
     background: #D1CFD1;
 }
 
-.xd {
+.invoices-toolbar-actions {
     margin-top: auto;
     border-top: solid thick #d1cfd1;
+    display: flex;
+    justify-content: space-between;
+}
+
+input[type=radio] {
+    margin-top: 6px;
+}
+
+td:nth-child(1) {
+    text-align: center;
+}
+
+#add-invoice-btn {
+    background-color: #deebdd;
+    background-image: linear-gradient(315deg, #deebdd 20%, #bbdbbe 74%);
+}
+
+#view-invoice-btn {
+    background-color: #5ca0f2;
+    background-image: linear-gradient(315deg, #a5cbfa 30%, #f5f7f6 98%);
+}
+
+#sort-invoices-btn {
+    background-color: #f1dfd1;
+    background-image: linear-gradient(-315deg, #f1dfd1 0%, #f6f0ea 74%);
+}
+
+#search-invoices-btn {
+    background-color: #f1dfd1;
+    background-image: linear-gradient(315deg, #f1dfd1 0%, #f6f0ea 74%);
+}
+
+#edit-invoice-btn {
+    background-color: #fffcf9;
+    background-image: linear-gradient(315deg, #fffcf9 5%, #ffd166 74%);
+}
+
+#delete-invoice-btn {
+    background-color: #f5f5f1;
+    background-image: linear-gradient(-315deg, #f5f5f1 5%, #ff5f5f 74%);
 }
