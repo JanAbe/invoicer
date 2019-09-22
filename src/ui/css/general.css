@@ -1,5 +1,6 @@
 a {
     text-decoration: none;
+    outline: none;
 }
 
 /* werkt niet perfect, als je er op klikt, wordt de link heel even blauw 
@@ -13,6 +14,6 @@ is alleen zo bij firefox*/
     outline: none;
 }
 
-.btn:focus {
+.btn:focus, .btn:hover {
     background-blend-mode: multiply;
 }

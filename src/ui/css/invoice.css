@@ -142,8 +142,11 @@ body {
     display: flex;
     align-content: center;
     justify-content: center;
+    
+    height: 25px;
 }
 
 #print-btn {
     width: 50%;
+    margin-left: 50px;
 }

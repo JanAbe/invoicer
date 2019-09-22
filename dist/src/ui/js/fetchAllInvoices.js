@@ -34,14 +34,11 @@ const bindViewInvoiceEventToButton = (chan) => {
  */
 const getSelectedInvoiceID = () => {
     const radioBtns = document.querySelectorAll('input[name="invoice-radio-btn"]');
-    let selectedInvoiceID = radioBtns[0].value;
     for (const btn of radioBtns) {
         if (btn.checked) {
-            selectedInvoiceID = btn.value;
+            return btn.value;
         }
     }
-
-    return selectedInvoiceID;
 }
 
 /**
@@ -53,8 +50,13 @@ const getSelectedInvoiceID = () => {
 const fetchAllInvoicesHTMLAndInsert = (chan) => {
     const invoicesTable = document.querySelector('#invoices-table');
     ipcRenderer.on(chan, (_, html) => {
+        // is there a way to make this better and more clear. Functions
+        // that rely on html elements need to be placed here because of the async nature
+        // of the functions that return the html body. Otherwise the html page is empty
+        // when these functions are called.
         invoicesTable.insertAdjacentHTML('beforeend', html);
         bindClickEventToRow();
+        filterInvoices();
     });
 }
 
@@ -66,12 +68,36 @@ const fetchAllInvoicesHTMLAndInsert = (chan) => {
  */
 const bindClickEventToRow = () => {
     const tableRows = document.querySelectorAll('table tbody tr');
-    console.log(tableRows);
+    tableRows[0].querySelector('input').checked = true; // set first row as selected
     for (const row of tableRows) {
         row.addEventListener('click', () => {
             row.querySelector('input').checked = true;
         });
     }
+}
+
+/**
+ * filterInvoices filters the invoices based on a user provided searchterm
+ * Only the invoices that satisfy the searchterm are shown.
+ */
+const filterInvoices = () => {
+    const searchbar = document.querySelector('#search-invoices-input');
+    const tableRows = document.querySelectorAll('table tbody tr');
+
+    console.log(searchbar);
+    console.log(tableRows);
+
+    searchbar.addEventListener('keyup', () => {
+        const searchTerm = searchbar.value.toLowerCase();
+        for (const row of tableRows) {
+            const cleanedData = row.innerText.trim().toLowerCase();
+            if (cleanedData.includes(searchTerm)) {
+                row.style.display = '';
+            } else {
+                row.style.display = 'none';
+            }
+        }
+    });
 }
 
 readyPage();
