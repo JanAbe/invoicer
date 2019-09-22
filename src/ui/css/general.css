@@ -12,3 +12,7 @@ is alleen zo bij firefox*/
 .nav-group-item:focus {
     outline: none;
 }
+
+.btn:focus {
+    background-blend-mode: multiply;
+}
