@@ -1,6 +1,6 @@
 const { ipcRenderer } = require('electron');
 
-ipcRenderer.on('submit-invoice-error-channel', (event, args) => {
+ipcRenderer.on('submit-invoice-reply-channel', (event, args) => {
     console.log(args);
 });
 

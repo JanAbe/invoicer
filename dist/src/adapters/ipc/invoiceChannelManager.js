@@ -1,51 +1,34 @@
-import { IpcMain, BrowserWindow } from "electron";
-import { InvoiceService } from '../../services/invoiceService';
-import { InvoiceID } from "../../domain/invoiceID";
-import { Cameraman } from "../../domain/cameraman";
-import { Period } from "../../domain/period";
-import { Client } from "../../domain/client";
-import { FullName } from "../../domain/fullName";
-import { Email } from "../../domain/email";
-import { Address } from "../../domain/address";
-import { Job } from "../../domain/job";
-import { EquipmentItem } from "../../domain/equipmentItem";
-import { Invoice } from "../../domain/invoice";
-import { SqliteInvoiceRepo } from "../../repos/sqlite/sqliteInvoiceRepo";
-import { SqliteJobRepo } from "../../repos/sqlite/sqliteJobRepo";
-import { SqliteClientRepo } from "../../repos/sqlite/sqliteClientRepo";
-import { DB } from "../../db";
-import { ChannelManager } from "./channelManager";
-import { ClientDTO } from "../../domain/dto/clientDTO";
-import { CameramanDTO } from "../../domain/dto/cameramanDTO";
-import { EquipmentItemDTO } from "../../domain/dto/equipmentItemDTO";
-import { JobDTO } from "../../domain/dto/jobDTOx";
-
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+const invoiceID_1 = require("../../domain/invoiceID");
+const sqliteInvoiceRepo_1 = require("../../repos/sqlite/sqliteInvoiceRepo");
+const sqliteJobRepo_1 = require("../../repos/sqlite/sqliteJobRepo");
+const sqliteClientRepo_1 = require("../../repos/sqlite/sqliteClientRepo");
+const db_1 = require("../../db");
+const clientDTO_1 = require("../../domain/dto/clientDTO");
+const cameramanDTO_1 = require("../../domain/dto/cameramanDTO");
+const equipmentItemDTO_1 = require("../../domain/dto/equipmentItemDTO");
+const jobDTOx_1 = require("../../domain/dto/jobDTOx");
 /**
  * InvoiceChannel manages all invoice related channels
  * used by IPC for communicating with the renderer process of electron
  */
-export class InvoiceChannelManager implements ChannelManager {
-    private readonly ipcMain: IpcMain;
-    private window: BrowserWindow;
-    private readonly invoiceService: InvoiceService;
-
-    constructor(ipcMain: IpcMain, window: BrowserWindow, invoiceService: InvoiceService) {
+class InvoiceChannelManager {
+    constructor(ipcMain, window, invoiceService) {
         this.ipcMain = ipcMain;
         this.window = window;
         this.invoiceService = invoiceService;
     }
-
     /**
      * initChannels initializes all channels relating
-     * to invoices. 
+     * to invoices.
      * e.g fetchAllInvoices channel
      */
-    public initChannels(): void {
+    initChannels() {
         this.initFetchAll();
         this.initGenerate();
         this.initSubmit();
     }
-    
     // todo: use nunjucks to render html. create templates and extend from other templates
     // this will reduce code (html) duplication. Atm each file has the same navbar html
     // which is just duplication and more error prone
@@ -53,122 +36,114 @@ export class InvoiceChannelManager implements ChannelManager {
      * fetchAll creates a channel for ipcMain to listen to the
      * fetch all invoices event and replies with all the rendered html of the fetched invoices
      */
-    private initFetchAll(): void {
+    initFetchAll() {
         const listenChannel = 'fetch-all-invoices-channel';
         const replyChannel = 'fetch-all-invoices-reply-channel';
-
         this.ipcMain.on(listenChannel, (event, _) => {
             try {
                 this.invoiceService.fetchAllInvoices()
-                .then(renderedHTML => {
+                    .then(renderedHTML => {
                     event.reply(replyChannel, renderedHTML);
                 })
-                .catch(err => {
+                    .catch(err => {
                     console.log(err);
                 });
-            } catch (e) {
+            }
+            catch (e) {
                 console.log(e);
             }
         });
     }
-
     /**
      * initGenerate creates a channel for ipcMain to listen to the
      * generate invoice event and replies with the generated html of the requested invoice
      */
-    private initGenerate(): void {
+    initGenerate() {
         const listenChannel = 'generate-invoice-channel';
         const replyChannel = 'generate-invoice-reply-channel';
         const invoiceLocation = `file://${__dirname}/../../ui/invoice.html`;
-
         this.ipcMain.on(listenChannel, (event, args) => {
             try {
                 const invoiceKey = 'invoiceID';
                 const userKey = 'userID';
-                const renderedHTML = this.invoiceService.generateInvoice(
-                    new InvoiceID(args[invoiceKey]), args[userKey]
-                );
-
+                const renderedHTML = this.invoiceService.generateInvoice(new invoiceID_1.InvoiceID(args[invoiceKey]), args[userKey]);
                 renderedHTML
-                .then(html => {
+                    .then(html => {
                     this.window.loadURL(invoiceLocation);
                     this.window.webContents.on('did-finish-load', () => {
                         event.reply(replyChannel, html);
                     });
                 })
-                .catch(err => {
+                    .catch(err => {
                     console.log(err);
                 });
-            } catch (e) {
+            }
+            catch (e) {
                 console.log(e);
             }
         });
     }
-
     // todo: add checks to see if cameraman and equipmentitem data has been passed
     // also check if at least 1 of the 2 has been passed
     /**
      * initSubmit creates a channel for ipcMain to listen to the
      * submit invoice event.
      */
-    private initSubmit(): void {
+    initSubmit() {
         const listenChannel = 'submit-invoice-channel';
         const replyChannel = 'submit-invoice-reply-channel';
-
         this.ipcMain.on(listenChannel, (event, args) => {
             try {
                 const dbLocation = `${__dirname}/../../../db/Invoice.db`;
-                const db = new DB(dbLocation);
-                const sqliteJobRepo = new SqliteJobRepo(db);
-                const sqliteClientRepo = new SqliteClientRepo(db);
-                const sqliteInvoiceRepo = new SqliteInvoiceRepo(db, sqliteJobRepo);
-
-                const { iban, firstName, lastName, 
-                        email, city, zipcode, street, 
-                        houseNumber, description, location, 
-                        directedBy, cameraman, equipmentItems } = args; 
-
-                let clientDTO: ClientDTO;
+                const db = new db_1.DB(dbLocation);
+                const sqliteJobRepo = new sqliteJobRepo_1.SqliteJobRepo(db);
+                const sqliteClientRepo = new sqliteClientRepo_1.SqliteClientRepo(db);
+                const sqliteInvoiceRepo = new sqliteInvoiceRepo_1.SqliteInvoiceRepo(db, sqliteJobRepo);
+                const { iban, firstName, lastName, email, city, zipcode, street, houseNumber, description, location, directedBy, cameraman, equipmentItems } = args;
+                let clientDTO;
                 if (firstName === "" || lastName === "" || email === "" || city === "" || zipcode === "" || street === "" || houseNumber === "") {
                     event.reply(replyChannel, "All client fields should be provided of a value");
-                } else {
-                    clientDTO = new ClientDTO(firstName, lastName, email, city, street, houseNumber, zipcode);
                 }
-
-                let jobDTO: JobDTO;
+                else {
+                    clientDTO = new clientDTO_1.ClientDTO(firstName, lastName, email, city, street, houseNumber, zipcode);
+                }
+                let jobDTO;
                 if (description === "" || location === "" || directedBy === "") {
                     event.reply(replyChannel, "All job fields should be provided of a value");
-                } else {
-                    jobDTO = new JobDTO(description, location, directedBy);
                 }
-
-                let cameramanDTO: CameramanDTO;
+                else {
+                    jobDTO = new jobDTOx_1.JobDTO(description, location, directedBy);
+                }
+                let cameramanDTO;
                 if (cameraman !== undefined) {
                     const { firstName, lastName, dayPrice, startDate, endDate } = cameraman;
                     if (firstName === "" || lastName === "" || dayPrice === "" || startDate === "" || endDate === "") {
                         event.reply(replyChannel, "All cameraman fields should be provided of a value");
-                    } else {
-                        cameramanDTO = new CameramanDTO(firstName, lastName, dayPrice, startDate, endDate);
+                    }
+                    else {
+                        cameramanDTO = new cameramanDTO_1.CameramanDTO(firstName, lastName, dayPrice, startDate, endDate);
                     }
                 }
-
-                let equipmentItemDTOs: EquipmentItemDTO[] = [];
+                let equipmentItemDTOs = [];
                 if (equipmentItems !== undefined) {
-                    equipmentItems.forEach((e: any) => {
-                        const { equipmentItemName, equipmentItemDayPrice, equipmentItemStartDate, equipmentItemEndDate } = e; 
+                    equipmentItems.forEach((e) => {
+                        const { equipmentItemName, equipmentItemDayPrice, equipmentItemStartDate, equipmentItemEndDate } = e;
                         if (equipmentItemName === "" || equipmentItemDayPrice === "" || equipmentItemStartDate === "" || equipmentItemEndDate === "") {
                             event.reply(replyChannel, "All equipmentItem fields should be provided of a value");
-                        } else {
-                            equipmentItemDTOs.push(new EquipmentItemDTO(equipmentItemName, equipmentItemDayPrice, equipmentItemStartDate, equipmentItemEndDate));
+                        }
+                        else {
+                            equipmentItemDTOs.push(new equipmentItemDTO_1.EquipmentItemDTO(equipmentItemName, equipmentItemDayPrice, equipmentItemStartDate, equipmentItemEndDate));
                         }
                     });
                 }
-
                 // todo: look into the ! (exclamation marks), don't really want them
-                this.invoiceService.createInvoice(iban, jobDTO!, clientDTO!, cameramanDTO!, equipmentItemDTOs);
-            } catch (e) {
+                this.invoiceService.createInvoice(iban, jobDTO, clientDTO, cameramanDTO, equipmentItemDTOs);
+            }
+            catch (e) {
                 console.log(e);
             }
         });
     }
 }
+exports.InvoiceChannelManager = InvoiceChannelManager;
+//# sourceMappingURL=invoiceChannelManager.js.map

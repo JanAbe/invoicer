@@ -5,8 +5,12 @@ import { Job } from "../domain/job";
 import { JobRepo } from "../repos/jobRepo";
 import { ClientRepo } from "../repos/clientRepo";
 import { InvoiceDTO } from "../domain/dto/InvoiceDTO";
-import nunjucks = require('nunjucks');
 import { UserRepo } from "../repos/userRepo";
+import { JobDTO } from "../domain/dto/jobDTOx";
+import { ClientDTO } from "../domain/dto/clientDTO";
+import { CameramanDTO } from "../domain/dto/cameramanDTO";
+import { EquipmentItemDTO } from "../domain/dto/equipmentItemDTO";
+import nunjucks = require('nunjucks');
 
 // InvoiceService contains all services a user can call regarding invoices
 export class InvoiceService {
@@ -22,8 +26,23 @@ export class InvoiceService {
         this._userRepo = userRepo;
     }
 
-    public createInvoice(invoice: Invoice, job: Job): void {
-        this._invoiceRepo.save(invoice, job);
+    // public createInvoice(invoice: Invoice, job: Job): void {
+    //     this._invoiceRepo.save(invoice, job);
+    // }
+
+    public createInvoice(iban: string, 
+                        jobDTO: JobDTO, 
+                        clientDTO: ClientDTO, 
+                        cameramanDTO: CameramanDTO, 
+                        equipmentItemDTOs: EquipmentItemDTO[]) {
+
+        clientDTO.id = this._clientRepo.nextID().toString();
+        jobDTO.id = this._jobRepo.nextID().toString();
+        // todo: transform dto's into domain objects
+        // and create jobID, clientID, invoiceID etc.
+        // probably make a service class dedicated to transforming dto's to domain objects
+        // todo: look into dependencies (dependency flow)
+        // this._invoiceRepo.save(invoice, job);
     }
 
     public async fetchInvoiceByID(invoiceID: InvoiceID): Promise<Invoice> {

@@ -19,8 +19,12 @@ class InvoiceService {
         this._clientRepo = clientRepo;
         this._userRepo = userRepo;
     }
-    createInvoice(invoice, job) {
-        this._invoiceRepo.save(invoice, job);
+    // public createInvoice(invoice: Invoice, job: Job): void {
+    //     this._invoiceRepo.save(invoice, job);
+    // }
+    createInvoice(iban, jobDTO, clientDTO, cameramanDTO, equipmentItemDTOs) {
+        // todo: transform dto's into domain objects
+        // and create jobID, clientID, invoiceID etc.
     }
     fetchInvoiceByID(invoiceID) {
         return __awaiter(this, void 0, void 0, function* () {
