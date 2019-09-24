@@ -56,6 +56,13 @@ createInvoiceBtn.addEventListener('click', () => {
     ipcRenderer.send('submit-invoice-channel', vals);
 });
 
+const getJobDateVals = () => {
+    const jobStartDateVal = document.querySelector('#job-start-date').value;
+    const jodbEndDateVal = document.querySelector('#job-end-date').value;
+
+    return { jobStartDateVal, jodbEndDateVal };
+}
+
 // to add extra equipmentItem input fields
 const extraEquipmentItemBtn = document.querySelector('#equipment-item-add-btn');
 const equipmentItemSegment = document.querySelector('#equipment-item-segment');
@@ -89,6 +96,17 @@ const equipmentItemHtmlSegment = `
 
 extraEquipmentItemBtn.addEventListener('click', () => {
     equipmentItemSegment.insertAdjacentHTML("beforeend", equipmentItemHtmlSegment);
+    
+    const { jobStartDateVal, jodbEndDateVal } = getJobDateVals();
+    const equipmentItemStartDates = document.querySelectorAll('input[name="equipmentItemStartDate"]');
+    const equipmentItemEndDates = document.querySelectorAll('input[name="equipmentItemEndDate"]');
+    for (let i=0; i < equipmentItemEndDates.length; i++) {
+        equipmentItemStartDates[i].value = jobStartDateVal;
+        equipmentItemEndDates[i].value = jodbEndDateVal;
+        
+        syncJobDatesWith('input[name="equipmentItemStartDate"]', 'input[name="equipmentItemEndDate"]');
+    }
+
 });
 
 
@@ -139,7 +157,32 @@ cameramanBtn.addEventListener('click', () => {
     const cameramanLastNameInput = document.querySelector('#cameraman-lastName-input');
     cameramanFirstNameInput.value = localStorage.getItem('firstName');
     cameramanLastNameInput.value = localStorage.getItem('lastName');
+
+    const { jobStartDateVal, jodbEndDateVal } = getJobDateVals();
+    const cameramanStartDate = document.querySelector('input[name="startDate"]');
+    const cameramanEndDate = document.querySelector('input[name="endDate"]');
+    cameramanStartDate.value = jobStartDateVal;
+    cameramanEndDate.value = jodbEndDateVal;
+
+    syncJobDatesWith('input[name="startDate"]', 'input[name="endDate"]');
 });
+
+const syncJobDatesWith = (startDateID, endDateID) => {
+	document.querySelector('#job-start-date').addEventListener('keyup', () => {
+        const otherStartDates = document.querySelectorAll(startDateID);
+        for (startDate of otherStartDates) {
+    		startDate.value = document.querySelector('#job-start-date').value; 
+        }
+    });
+
+	document.querySelector('#job-end-date').addEventListener('keyup', () => {
+        const otherEndDates = document.querySelectorAll(endDateID);
+        for (endDate of otherEndDates) {
+    		endDate.value = document.querySelector('#job-end-date').value; 
+        }
+	});
+}
+
 
 const iban = document.querySelector('#iban-input');
 iban.value = localStorage.getItem('iban');

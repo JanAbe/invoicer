@@ -97,6 +97,4 @@ const filterInvoices = () => {
     });
 }
 
-const searchbar = document.querySelector('#search-invoices-input');
-
 readyPage();

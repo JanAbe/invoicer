@@ -3,8 +3,6 @@ a {
     outline: none;
 }
 
-/* werkt niet perfect, als je er op klikt, wordt de link heel even blauw 
-is alleen zo bij firefox*/
 .nav-group > span > a:visited {
     text-decoration: none;
     color: #333;
@@ -14,6 +12,6 @@ is alleen zo bij firefox*/
     outline: none;
 }
 
-.btn:focus, .btn:hover {
+.btn:hover {
     background-blend-mode: multiply;
 }
