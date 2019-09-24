@@ -103,12 +103,10 @@ extraEquipmentItemBtn.addEventListener('click', () => {
     for (let i=0; i < equipmentItemEndDates.length; i++) {
         equipmentItemStartDates[i].value = jobStartDateVal;
         equipmentItemEndDates[i].value = jodbEndDateVal;
-        
-        syncJobDatesWith('input[name="equipmentItemStartDate"]', 'input[name="equipmentItemEndDate"]');
     }
 
+    syncJobDatesWith('input[name="equipmentItemStartDate"]', 'input[name="equipmentItemEndDate"]');
 });
-
 
 // to add cameraman input fields
 let cameremanCounter = 0;
@@ -167,6 +165,13 @@ cameramanBtn.addEventListener('click', () => {
     syncJobDatesWith('input[name="startDate"]', 'input[name="endDate"]');
 });
 
+/**
+ * SyncJobDatesWith syncs the jobDates input fields with the inputfields
+ * that are provided. When changing a date in one of the jobDate fields,
+ * the provided dateinput fields values, change 
+ * @param {css selector for the other startDate input field} startDateID 
+ * @param {css selector for the other endDate input field} endDateID 
+ */
 const syncJobDatesWith = (startDateID, endDateID) => {
 	document.querySelector('#job-start-date').addEventListener('keyup', () => {
         const otherStartDates = document.querySelectorAll(startDateID);
