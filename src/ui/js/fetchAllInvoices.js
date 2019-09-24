@@ -84,9 +84,6 @@ const filterInvoices = () => {
     const searchbar = document.querySelector('#search-invoices-input');
     const tableRows = document.querySelectorAll('table tbody tr');
 
-    console.log(searchbar);
-    console.log(tableRows);
-
     searchbar.addEventListener('keyup', () => {
         const searchTerm = searchbar.value.toLowerCase();
         for (const row of tableRows) {
@@ -99,5 +96,7 @@ const filterInvoices = () => {
         }
     });
 }
+
+const searchbar = document.querySelector('#search-invoices-input');
 
 readyPage();

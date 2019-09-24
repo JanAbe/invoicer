@@ -1,6 +1,4 @@
-<html>
-
-<head>
+<html><head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
@@ -14,13 +12,13 @@
 <body>
     <div class="window">
 
-        <header class="toolbar toolbar-header" style="display: block;">
+        <header class="toolbar toolbar-header">
             <h1 class="title">Invoicer</h1>
         </header>
 
         <div class="window-content">
             <div class="pane-group">
-                <div class="pane pane-sm sidebar" style="display: block;">
+                <div class="pane pane-sm sidebar">
                     <nav class="nav-group">
                         <h3 class="nav-group-title">Menu</h3>
 
@@ -47,178 +45,211 @@
                     </nav>
                 </div>
 
-                <div id="invoice-section" class="pane container" style="margin: 20px 10%;">
-                    <!-- todo: maybe move container to invoice.html then place print-btn inside the container div -->
-                    <!-- <div id="invoice-wrapper"> -->
-                    <div id="company-name">
-                        <h4><strong>bobs company</strong></h4>
-                    </div>
+                <div id="invoice-section" class="pane container">    
+    
+    
+    
+    
 
-                    <div id="creation-date" style="grid-column: 2 / 3; text-align: right;">
-                        Amsterdam, 17-9-2019
-                    </div>
+        <div id="company-name">
+            <h4><strong>Bobs Company</strong></h4>
+        </div>
 
-                    <div id="client-info">
-                        <div id="client-name">Thor Light</div>
-                        <div id="street-house-nr">mainstreet 23</div>
-                        <div id="zipcode-city">1234ZZ, Atlanta</div>
-                    </div>
+        <div id="creation-date">
+            Amsterdam, 23-9-2019
+        </div>
 
-                    <div id="general-info" style="grid-column: 2 / 3; text-align: right;">
-                        <div id="invoice-nr">Rekeningnummer: 2019A32</div>
-                        <div id="contact-person">Contactpersoon: Thor Light</div>
-                        <div id="project-nr">Projectnummer: 823929</div>
-                    </div>
+        <div id="client-info">
+            <div id="client-name">Carl Carlson</div>
+            <div id="street-house-nr">Mainstreet 2</div>
+            <div id="zipcode-city">9328OP, New york</div>
+        </div>
 
-                    <div id="job-info">
-                        <div id="job-description">Klus omschrijving: Filming theater</div>
-                        <div id="directed-by">Regie: Fred</div>
-                        <div id="location">Locatie: Atlanta</div>
-                    </div>
+        <div id="general-info">
+            <div id="invoice-nr"><strong>Rekeningnummer:</strong> 2019A32</div>
+            <div id="contact-person">Contactpersoon: Carl Carlson</div>
+            <div id="project-nr">Projectnummer: n.v.t</div>
+        </div>
 
-                    <div id="cameraman-segment">
-                        <h5>Cameraman</h5>
-                        <table>
-                            <tbody>
-                                <tr>
-                                    <th>Naam</th>
-                                    <th>Startdatum</th>
-                                    <th>Einddatum</th>
-                                    <th>Gewerkte dagen</th>
-                                    <th>Dagprijs</th>
-                                    <th>Kosten</th>
-                                </tr>
-                                <tr>
-                                    <td>Bobby Baker</td>
-                                    <td>20-10-2019</td>
-                                    <td>25-10-2019</td>
-                                    <td>6</td>
-                                    <td>€100</td>
-                                    <td>€600</td>
-                                </tr>
-                            </tbody>
-                        </table>
+        <div id="job-info">
+            <div id="job-description">Werktitel: Movie work</div>
+            <div id="directed-by">Regie: Michael san</div>
+            <div id="location">Locatie: New york</div>
+        </div>
 
-                        <div class="subtotal">
-                            Subtotaal: €600
-                        </div>
-                    </div>
+        
+            
+            <div id="cameraman-segment">
+                <h5>Cameraman</h5>
+                <table>
+                    <tbody><tr>
+                        <th>Naam</th>
+                        <th>Startdatum</th>
+                        <th>Einddatum</th>
+                        <th>Gewerkte dagen</th>
+                        <th>Dagprijs</th>
+                        <th>Kosten</th>
+                    </tr>
+                    <tr>
+                        <td>Bobby Baker</td>
+                        <td>29-9-2019</td>
+                        <td>15-10-2019</td>
+                        <td>17</td>
+                        <td>€300</td>
+                        <td>€5100</td>
+                    </tr>
+                </tbody></table>
 
-                    <div id="equipment-segment">
-                        <h5>Apparatuur</h5>
-                        <table>
-                            <tbody>
-                                <tr>
-                                    <th>Naam</th>
-                                    <th>Startdatum</th>
-                                    <th>Einddatum</th>
-                                    <th>Gewerkte dagen</th>
-                                    <th>Dagprijs</th>
-                                    <th>Kosten</th>
-                                </tr>
-                                <tr>
-                                    <td>Sony Camera</td>
-                                    <td>20-10-2019</td>
-                                    <td>25-10-2019</td>
-                                    <td>6</td>
-                                    <td>€300</td>
-                                    <td>€1800</td>
-                                </tr>
-                                <tr>
-                                    <td>Slider</td>
-                                    <td>20-10-2019</td>
-                                    <td>22-10-2019</td>
-                                    <td>3</td>
-                                    <td>€20</td>
-                                    <td>€60</td>
-                                </tr>
-                            </tbody>
-                        </table>
+                <div class="subtotal">
+                    Subtotaal: €5100
+                </div>
+            </div>
+        
 
-                        <div class="subtotal">
-                            Subtotaal: €1860
-                        </div>
-                    </div>
+        
+            
+            <div id="equipment-segment">
+                <h5>Apparatuur</h5>
+                <table>
+                    <tbody><tr>
+                        <th>Naam</th>
+                        <th>Startdatum</th>
+                        <th>Einddatum</th>
+                        <th>Gewerkte dagen</th>
+                        <th>Dagprijs</th>
+                        <th>Kosten</th>
+                    </tr>
 
+                    
+                        
+                        
+                        <tr>
+                            <td>Slider</td>
+                            <td>29-9-2019</td>
+                            <td>15-10-2019</td>
+                            <td>17</td>
+                            <td>€40</td>
+                            <td>€680</td>
+                        </tr>
+                    
+                        
+                        
+                        <tr>
+                            <td>Panasonic Camera </td>
+                            <td>29-9-2019</td>
+                            <td>15-10-2019</td>
+                            <td>17</td>
+                            <td>€250</td>
+                            <td>€4250</td>
+                        </tr>
+                    
+                        
+                        
+                        <tr>
+                            <td>Monitor</td>
+                            <td>29-9-2019</td>
+                            <td>15-10-2019</td>
+                            <td>17</td>
+                            <td>€50</td>
+                            <td>€850</td>
+                        </tr>
+                    
+                </tbody></table>
 
-                    <div id="total-cost-segment">
-                        <table>
-                            <tbody>
-                                <tr>
-                                    <th>Totaal</th>
-                                    <th>BTW (21%)</th>
-                                    <th>Te betalen bedrag</th>
-                                </tr>
-                                <tr>
-                                    <td>€2460</td>
-                                    <td>€516.6</td>
-                                    <td><strong>€2976.6</strong></td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
+                <div class="subtotal">
+                    Subtotaal: €5780
+                </div>
+            </div>
+        
 
-                    <div id="payment-info" style="grid-column: 1 / 3;">
-                        <p style="text-align: center">
-                            Betaalwijze: Binnen 30 dagen na factuurdatum <br>
-                            SEI nr: some nr<br>
-                            t.n.v: Bobby Baker <br>
-                            IBAN: 123124 <br>
-                        </p>
-                    </div>
+        <div id="total-cost-segment">
+            <h5>Totale kosten</h5>
+            <table>
+                <tbody>
+                    <tr>
+                    <th>Totaal</th>
+                    <th>BTW (21%)</th>
+                    <th><strong>Te betalen bedrag</strong></th>
+                </tr>
 
-                    <div id="general-user-info">
-                        <table>
-                            <tbody>
-                                <tr>
-                                    <th>Bobby Baker</th>
-                                </tr>
+                <tr>
+                    <td>€10880</td>
+                    <td>€2284.7999999999997</td>
+                    <td><strong>€13164.8</strong></td>
+                </tr>
+            </tbody></table>
+        </div>
 
-                                <tr>
-                                    <th>milkman</th>
-                                </tr>
+        <div id="payment-info">
+            <p style="text-align: center">
+                Betaalwijze: Binnen 30 dagen na factuurdatum <br>
+                SEI nr: 5444445 <br>
+                t.n.v: Bobby Baker <br>
+                IBAN: 123124555555 <br>
+            </p>
+        </div>
 
-                                <tr>
-                                    <th>mainstreet </th>
-                                </tr>
+        <div id="general-user-info">
+            <table>
+                <tbody>
+                    <tr>
+                        <th>Bobby Baker</th>
+                    </tr>
 
-                                <tr>
-                                    <th>1398ZU</th>
-                                </tr>
+                    <tr>
+                        <th>Milkman</th>
+                    </tr>
 
-                                <tr>
-                                    <th>London</td>
-                                </tr>
+                    <tr>
+                        <th>Mainstreet 12</th>
+                    </tr>
 
-                                <tr>
-                                    <th>tel: 2938298</th>
-                                </tr>
+                    <tr>
+                        <th>1398ZU</th>
+                    </tr>
 
-                                <tr>
-                                    <th>mob: 06829283</th>
-                                </tr>
+                    <tr>
+                        <th>London
+                    </th></tr>
 
-                                <tr>
-                                    <th>bob@email.com</th>
-                                </tr>
+                    <tr>
+                        <th>Telefoon: 2938298</th>
+                    </tr>
 
-                                <tr>
-                                    <th>btwnr: 239823</th>
-                                </tr>
+                    <tr>
+                        <th>Mobiel: 06829283</th>
+                    </tr>
 
-                                <tr>
-                                    <th>k.v.k: 892398</th>
-                                </tr>
+                    <tr>
+                        <th>bob@email.com</th>
+                    </tr>
 
-                                <tr>
-                                    <th>var: 39842</th>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
+                    <tr>
+                        <th>Btwnr: 239823</th>
+                    </tr>
 
-                    <div id="print-btn-wrapper">
-                        <button id="print-btn" class="btn btn-primary" type="button" style="display: block;">
+                    <tr>
+                        <th>K.v.K: 892398</th>
+                    </tr>
+
+                    <tr>
+                        <th>Var: 39842</th>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div id="agreement">
+            <p>
+                'Deze overeenkomst is gebaseerd op de door de Belastingdienst op 29 februari 2016 onder nummer 298349899-08-1 beoordeelde overeenkomst. 
+                De in die overeenkomst gemarkeerde bepalingen zijn in deze overeenkomst ongewijzigd overgenomen. 
+                Voor zover in deze overeenkomst aanpassingen hebben plaatsgevonden, zijn partijen van mening dat deze aanpassingen geen afbreuk doen aan 
+                de in de model- of voorbeeldovereenkomst gemarkeerde bepalingen.'
+            </p>
+        </div><div id="print-btn-wrapper">
+                        <!-- todo: style this button (it's height in particular) -->
+                        <a id="cancel-btn" href="./invoices.html" class="btn btn-default">Cancel</a>
+                        <button id="print-btn" class="btn btn-primary" type="button">
                             Print
                         </button>
                     </div>
@@ -231,6 +262,4 @@
     <script src="./js/invoice.js"></script>
 
 
-</body>
-
-</html>
+</body></html>
