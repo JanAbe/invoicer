@@ -1,5 +1,5 @@
-import { Client } from "../domain/client";
-import { ClientID } from "../domain/clientID";
+import { Client } from "./client";
+import { ClientID } from "./clientID";
 
 export interface ClientRepo {
     nextID(): ClientID;

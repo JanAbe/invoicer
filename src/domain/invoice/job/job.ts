@@ -2,8 +2,8 @@ import { JobID } from "./jobID";
 import { isNullOrUndefined } from "util";
 import { Cameraman } from "./cameraman";
 import { EquipmentItem } from "./equipmentItem";
-import { ClientID } from "./clientID";
-import { JobDTO } from "./dto/jobDTO";
+import { ClientID } from "../../client/clientID";
+import { JobDTO } from "../../dto/jobDTO";
 
 export class Job {
     private _id?: JobID;

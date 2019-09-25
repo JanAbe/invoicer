@@ -1,10 +1,10 @@
-import { InvoiceRepo } from "../../../repos/invoiceRepo";
-import { InvoiceID } from "../../../domain/invoiceID";
-import { Invoice } from "../../../domain/invoice";
-import { JobRepo } from "../../../repos/jobRepo";
+import { InvoiceRepo } from "../../../domain/invoice/invoiceRepo";
+import { InvoiceID } from "../../../domain/invoice/invoiceID";
+import { Invoice } from "../../../domain/invoice/invoice";
+import { JobRepo } from "../../../domain/invoice/job/jobRepo";
 import { DB } from "../../../db";
-import { JobID } from "../../../domain/jobID";
-import { Job } from "../../../domain/job";
+import { JobID } from "../../../domain/invoice/job/jobID";
+import { Job } from "../../../domain/invoice/job/job";
 import uuid = require("uuid/v4");
 import moment from "moment";
 

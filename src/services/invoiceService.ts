@@ -1,19 +1,19 @@
-import { InvoiceID } from "../domain/invoiceID";
-import { Invoice } from "../domain/invoice";
-import { InvoiceRepo } from "../repos/invoiceRepo";
-import { Job } from "../domain/job";
-import { JobRepo } from "../repos/jobRepo";
-import { ClientRepo } from "../repos/clientRepo";
+import { InvoiceID } from "../domain/invoice/invoiceID";
+import { Invoice } from "../domain/invoice/invoice";
+import { InvoiceRepo } from "../domain/invoice/invoiceRepo";
+import { Job } from "../domain/invoice/job/job";
+import { JobRepo } from "../domain/invoice/job/jobRepo";
+import { ClientRepo } from "../domain/client/clientRepo";
 import { InvoiceDTO } from "../domain/dto/InvoiceDTO";
 import { UserRepo } from "../repos/userRepo";
 import nunjucks = require('nunjucks');
-import { Client } from "../domain/client";
-import { FullName } from "../domain/fullName";
-import { Email } from "../domain/email";
-import { Address } from "../domain/address";
-import { Cameraman } from "../domain/cameraman";
-import { Period } from "../domain/period";
-import { EquipmentItem } from "../domain/equipmentItem";
+import { Client } from "../domain/client/client";
+import { FullName } from "../domain/client/fullName";
+import { Email } from "../domain/client/email";
+import { Address } from "../domain/client/address";
+import { Cameraman } from "../domain/invoice/job/cameraman";
+import { Period } from "../domain/invoice/job/period";
+import { EquipmentItem } from "../domain/invoice/job/equipmentItem";
 
 // InvoiceService contains all services a user can call regarding invoices
 export class InvoiceService {

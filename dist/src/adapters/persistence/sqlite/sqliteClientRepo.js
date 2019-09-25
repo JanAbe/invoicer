@@ -9,11 +9,11 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-const clientID_1 = require("../../../domain/clientID");
-const client_1 = require("../../../domain/client");
-const fullName_1 = require("../../../domain/fullName");
-const email_1 = require("../../../domain/email");
-const address_1 = require("../../../domain/address");
+const client_1 = require("../../../domain/client/client");
+const clientID_1 = require("../../../domain/client/clientID");
+const fullName_1 = require("../../../domain/client/fullName");
+const email_1 = require("../../../domain/client/email");
+const address_1 = require("../../../domain/client/address");
 const uuid = require("uuid");
 class SqliteClientRepo {
     constructor(db) {

@@ -1,10 +1,10 @@
-import { ClientRepo } from "../../../repos/clientRepo";
+import { ClientRepo } from "../../../domain/client/clientRepo";
 import { DB } from "../../../db";
-import { ClientID } from "../../../domain/clientID";
-import { Client } from "../../../domain/client";
-import { FullName } from "../../../domain/fullName";
-import { Email } from "../../../domain/email";
-import { Address } from "../../../domain/address";
+import { Client } from "../../../domain/client/client";
+import { ClientID } from "../../../domain/client/clientID";
+import { FullName } from "../../../domain/client/fullName";
+import { Email } from "../../../domain/client/email";
+import { Address } from "../../../domain/client/address";
 import uuid = require("uuid");
 
 export class SqliteClientRepo implements ClientRepo {

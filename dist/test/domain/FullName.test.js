@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-const fullName_1 = require("../../src/domain/fullName");
+const fullName_1 = require("../../src/domain/client/fullName");
 describe('FullName', () => {
     describe('constructor', () => {
         it('should create a new fullName object', () => {

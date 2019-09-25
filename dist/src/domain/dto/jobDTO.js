@@ -2,7 +2,6 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 const util_1 = require("util");
 class JobDTO {
-    // private _rentedEntities: Rentable[] = [];
     constructor() {
         this._equipmentItems = [];
     }
@@ -21,9 +20,6 @@ class JobDTO {
     get clientID() {
         return this._clientID;
     }
-    // public get rentedEntities(): Rentable[] {
-    //     return this._rentedEntities;
-    // }
     get cameraman() {
         if (this._cameraman !== undefined) {
             return this._cameraman;
@@ -51,13 +47,6 @@ class JobDTO {
     set clientID(clientID) {
         this._clientID = clientID;
     }
-    // public set rentedEntities(rentedEntities: Rentable[]) {
-    //     if (isNullOrUndefined(rentedEntities)) {
-    //         this._rentedEntities = [];
-    //     } else {
-    //         this._rentedEntities = rentedEntities;
-    //     }
-    // }
     set equipmentItems(equipmentItems) {
         if (util_1.isNullOrUndefined(equipmentItems)) {
             this._equipmentItems = [];

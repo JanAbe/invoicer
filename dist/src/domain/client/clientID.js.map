@@ -1,0 +1,1 @@
+{"version":3,"file":"clientID.js","sourceRoot":"","sources":["../../../../src/domain/client/clientID.ts"],"names":[],"mappings":";;AAAA,MAAa,QAAQ;IAGjB,YAAY,EAAU;QAClB,IAAI,CAAC,GAAG,GAAG,EAAE,CAAC;IAClB,CAAC;IAEM,QAAQ;QACX,OAAO,IAAI,CAAC,GAAG,CAAC;IACpB,CAAC;IAEO,KAAK,CAAC,EAAU;QACpB,mDAAmD;QACnD,IAAI,CAAC,GAAG,GAAG,EAAE,CAAC;IAClB,CAAC;CACJ;AAfD,4BAeC"}

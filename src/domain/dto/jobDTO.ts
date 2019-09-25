@@ -1,9 +1,8 @@
-import { JobID } from "../jobID";
-import { ClientID } from "../clientID";
-import { Cameraman } from "../cameraman";
-import { EquipmentItem } from "../equipmentItem";
+import { ClientID } from "../client/clientID";
+import { Cameraman } from "../invoice/job/cameraman";
+import { EquipmentItem } from "../invoice/job/equipmentItem";
 import { isNullOrUndefined } from "util";
-import { Rentable } from "../rentable";
+import { JobID } from "../invoice/job/jobID";
 
 export class JobDTO {
     private _id?: JobID;
@@ -13,7 +12,6 @@ export class JobDTO {
     private _clientID?: ClientID;
     private _cameraman?: Cameraman;
     private _equipmentItems?: EquipmentItem[] = [];
-    // private _rentedEntities: Rentable[] = [];
 
     constructor() {}
 
@@ -36,10 +34,6 @@ export class JobDTO {
     public get clientID(): ClientID | undefined {
         return this._clientID;
     }
-
-    // public get rentedEntities(): Rentable[] {
-    //     return this._rentedEntities;
-    // }
 
     public get cameraman(): Cameraman | undefined {
         if (this._cameraman !== undefined) {
@@ -77,14 +71,6 @@ export class JobDTO {
         this._clientID = clientID;
     }
 
-    // public set rentedEntities(rentedEntities: Rentable[]) {
-    //     if (isNullOrUndefined(rentedEntities)) {
-    //         this._rentedEntities = [];
-    //     } else {
-    //         this._rentedEntities = rentedEntities;
-    //     }
-    // }
-    
     public set equipmentItems(equipmentItems: EquipmentItem[]) {
         if (isNullOrUndefined(equipmentItems)) {
             this._equipmentItems = [];

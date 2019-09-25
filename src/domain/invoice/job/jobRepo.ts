@@ -1,5 +1,5 @@
-import { Job } from "../domain/job";
-import { JobID } from "../domain/jobID";
+import { Job } from "./job";
+import { JobID } from "./jobID";
 
 export interface JobRepo {
 

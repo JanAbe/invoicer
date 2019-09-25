@@ -1,7 +1,7 @@
-import { FullName } from "../../src/domain/fullName";
+import { FullName } from "../../src/domain/client/fullName";
 
 describe('FullName', () => {
-
+    
     describe('constructor', () => {
         it('should create a new fullName object', () => {
             const firstName = 'tom';

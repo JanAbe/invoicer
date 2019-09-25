@@ -1,4 +1,4 @@
-import { Period } from "../../src/domain/period";
+import { Period } from "../../src/domain/invoice/job/period";
 
 describe('Period', () => {
 

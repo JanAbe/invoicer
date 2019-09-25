@@ -1,4 +1,4 @@
-import { JobID } from "./jobID";
+import { JobID } from "./job/jobID";
 import { isNullOrUndefined } from "util";
 import { InvoiceID } from "./invoiceID";
 import IBAN = require('iban');
