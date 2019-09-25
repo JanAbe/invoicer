@@ -9,7 +9,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-const userDTO_1 = require("../../domain/dto/userDTO");
+const userDTO_1 = require("../../../domain/dto/userDTO");
 const uuid = require("uuid");
 class SqliteUserRepo {
     constructor(db) {

@@ -6,11 +6,14 @@ import { JobRepo } from "../repos/jobRepo";
 import { ClientRepo } from "../repos/clientRepo";
 import { InvoiceDTO } from "../domain/dto/InvoiceDTO";
 import { UserRepo } from "../repos/userRepo";
-import { JobDTO } from "../domain/dto/jobDTOx";
-import { ClientDTO } from "../domain/dto/clientDTO";
-import { CameramanDTO } from "../domain/dto/cameramanDTO";
-import { EquipmentItemDTO } from "../domain/dto/equipmentItemDTO";
 import nunjucks = require('nunjucks');
+import { Client } from "../domain/client";
+import { FullName } from "../domain/fullName";
+import { Email } from "../domain/email";
+import { Address } from "../domain/address";
+import { Cameraman } from "../domain/cameraman";
+import { Period } from "../domain/period";
+import { EquipmentItem } from "../domain/equipmentItem";
 
 // InvoiceService contains all services a user can call regarding invoices
 export class InvoiceService {
@@ -26,31 +29,80 @@ export class InvoiceService {
         this._userRepo = userRepo;
     }
 
-    // public createInvoice(invoice: Invoice, job: Job): void {
-    //     this._invoiceRepo.save(invoice, job);
-    // }
+    // or expect only an invoiceDTO?
+    public createInvoice(invoiceProps: any) {
+        const { iban, client, job, cameraman, equipmentItems } = invoiceProps; 
+        const { clientFirstName, clientLastName, email, city, street, zipcode, houseNumber } = client;
+        const { description, location, directedBy } = job;
+        
+        const clientID = this._clientRepo.nextID();
+        const newClient = new Client(
+            clientID,
+            new FullName(clientFirstName, clientLastName), 
+            new Email(email), 
+            new Address(city, street, houseNumber, zipcode)
+        );
 
-    public createInvoice(iban: string, 
-                        jobDTO: JobDTO, 
-                        clientDTO: ClientDTO, 
-                        cameramanDTO: CameramanDTO, 
-                        equipmentItemDTOs: EquipmentItemDTO[]) {
+        let newCameraman: Cameraman;
+        if (cameraman !== undefined) {
+            const { firstName, lastName, dayPrice, startDate, endDate } = cameraman; 
+            newCameraman = new Cameraman(
+                firstName,
+                lastName,
+                dayPrice,
+                new Period(
+                    new Date(startDate), 
+                    new Date(endDate))
+            )
+        }
 
-        clientDTO.id = this._clientRepo.nextID().toString();
-        jobDTO.id = this._jobRepo.nextID().toString();
-        // todo: transform dto's into domain objects
-        // and create jobID, clientID, invoiceID etc.
-        // probably make a service class dedicated to transforming dto's to domain objects
+        let newEquipmentItems: EquipmentItem[] = [];
+        if (equipmentItems !== undefined) {
+            equipmentItems.forEach((e: any) => {
+                const { equipmentItemName, equipmentItemDayPrice, equipmentItemStartDate, equipmentItemEndDate } = e; 
+                newEquipmentItems.push(
+                    new EquipmentItem(
+                        equipmentItemName,
+                        equipmentItemDayPrice,
+                        new Period(
+                            new Date(equipmentItemStartDate), 
+                            new Date(equipmentItemEndDate))
+                    )
+                );
+            });
+        }
+        
+        const jobID = this._jobRepo.nextID();
+        const newJob = new Job(
+            jobID,
+            description, 
+            location, 
+            directedBy,
+            clientID,
+            newCameraman!,
+            newEquipmentItems
+        )
+
+        const newInvoice = new Invoice(
+            this._invoiceRepo.nextID(),
+            jobID,
+            iban
+        )
+        
+        this._clientRepo.save(newClient);
+        this._invoiceRepo.save(newInvoice, newJob);
         // todo: look into dependencies (dependency flow)
-        // this._invoiceRepo.save(invoice, job);
     }
 
-    public async fetchInvoiceByID(invoiceID: InvoiceID): Promise<Invoice> {
-        return await this._invoiceRepo.invoiceOfID(invoiceID);
+    public async fetchInvoiceByID(invoiceID: string): Promise<Invoice> {
+        return await this._invoiceRepo.invoiceOfID(new InvoiceID(invoiceID));
     }
 
     // rename to fetchAllInvoicesAndRenderHTML
         // or split in 2 functions
+        // because atm it is tightly coupled with html and nunjucks
+        // what if i want to send back a json representation or something
+        // need to add a new adapter class that does stuff with html
     // changed return type to string because i couldn't figure out
     // how to use nunjucks in the client-side scripts
     public async fetchAllInvoices(): Promise<string> {
@@ -96,8 +148,8 @@ export class InvoiceService {
     // todo: look into best way to store money values
         // atm the number datatype is used.
             // 5964 + 1252.44 = 7216.4400000000005
-    public async generateInvoice(invoiceID: InvoiceID, userID: string): Promise<string> {
-        const invoice = await this._invoiceRepo.invoiceOfID(invoiceID);
+    public async generateInvoice(invoiceID: string, userID: string): Promise<string> {
+        const invoice = await this._invoiceRepo.invoiceOfID(new InvoiceID(invoiceID));
         const job = await this._jobRepo.jobOfID(invoice.jobID);
         const client = await this._clientRepo.clientOfID(job.clientID!);
         const user = await this._userRepo.userOfID(userID);

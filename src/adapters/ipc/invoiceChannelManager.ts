@@ -1,24 +1,6 @@
 import { IpcMain, BrowserWindow } from "electron";
 import { InvoiceService } from '../../services/invoiceService';
-import { InvoiceID } from "../../domain/invoiceID";
-import { Cameraman } from "../../domain/cameraman";
-import { Period } from "../../domain/period";
-import { Client } from "../../domain/client";
-import { FullName } from "../../domain/fullName";
-import { Email } from "../../domain/email";
-import { Address } from "../../domain/address";
-import { Job } from "../../domain/job";
-import { EquipmentItem } from "../../domain/equipmentItem";
-import { Invoice } from "../../domain/invoice";
-import { SqliteInvoiceRepo } from "../../repos/sqlite/sqliteInvoiceRepo";
-import { SqliteJobRepo } from "../../repos/sqlite/sqliteJobRepo";
-import { SqliteClientRepo } from "../../repos/sqlite/sqliteClientRepo";
-import { DB } from "../../db";
 import { ChannelManager } from "./channelManager";
-import { ClientDTO } from "../../domain/dto/clientDTO";
-import { CameramanDTO } from "../../domain/dto/cameramanDTO";
-import { EquipmentItemDTO } from "../../domain/dto/equipmentItemDTO";
-import { JobDTO } from "../../domain/dto/jobDTOx";
 
 /**
  * InvoiceChannel manages all invoice related channels
@@ -85,8 +67,14 @@ export class InvoiceChannelManager implements ChannelManager {
             try {
                 const invoiceKey = 'invoiceID';
                 const userKey = 'userID';
+                // todo: check if args[invoiceKey] and args[userKey] aren't undefined
+                if (args[invoiceKey] === "" || args[userKey] === "") {
+                    event.reply(replyChannel, "Invoice and user id need to be supplied");
+                    throw new Error("Invoice and User id need to be supplied");
+                }
+
                 const renderedHTML = this.invoiceService.generateInvoice(
-                    new InvoiceID(args[invoiceKey]), args[userKey]
+                    args[invoiceKey], args[userKey]
                 );
 
                 renderedHTML
@@ -117,55 +105,62 @@ export class InvoiceChannelManager implements ChannelManager {
 
         this.ipcMain.on(listenChannel, (event, args) => {
             try {
-                const dbLocation = `${__dirname}/../../../db/Invoice.db`;
-                const db = new DB(dbLocation);
-                const sqliteJobRepo = new SqliteJobRepo(db);
-                const sqliteClientRepo = new SqliteClientRepo(db);
-                const sqliteInvoiceRepo = new SqliteInvoiceRepo(db, sqliteJobRepo);
-
+                const invoiceProps: any = {};
                 const { iban, firstName, lastName, 
                         email, city, zipcode, street, 
                         houseNumber, description, location, 
                         directedBy, cameraman, equipmentItems } = args; 
+                
+                if (iban === "") {
+                    event.reply(replyChannel, "Iban should be provided of a value");
+                    throw new Error("Iban should be provided of a value");
+                }
 
-                let clientDTO: ClientDTO;
+                invoiceProps['iban'] = iban;
+
                 if (firstName === "" || lastName === "" || email === "" || city === "" || zipcode === "" || street === "" || houseNumber === "") {
                     event.reply(replyChannel, "All client fields should be provided of a value");
-                } else {
-                    clientDTO = new ClientDTO(firstName, lastName, email, city, street, houseNumber, zipcode);
-                }
+                    throw new Error("All client fields should be provided of a value");
+                } 
 
-                let jobDTO: JobDTO;
+                invoiceProps['client'] = {'clientFirstName': firstName, 
+                                          'clientLastName': lastName,
+                                          'email': email,
+                                          'city': city,
+                                          'zipcode': zipcode,
+                                          'street': street,
+                                          'houseNumber': Number(houseNumber)}
+
                 if (description === "" || location === "" || directedBy === "") {
                     event.reply(replyChannel, "All job fields should be provided of a value");
-                } else {
-                    jobDTO = new JobDTO(description, location, directedBy);
+                    throw new Error("All job fields should be provided of a value");
                 }
 
-                let cameramanDTO: CameramanDTO;
+                invoiceProps['job'] = {'description': description, 'location': location, 'directedBy': directedBy};
+
                 if (cameraman !== undefined) {
                     const { firstName, lastName, dayPrice, startDate, endDate } = cameraman;
                     if (firstName === "" || lastName === "" || dayPrice === "" || startDate === "" || endDate === "") {
                         event.reply(replyChannel, "All cameraman fields should be provided of a value");
-                    } else {
-                        cameramanDTO = new CameramanDTO(firstName, lastName, dayPrice, startDate, endDate);
+                        throw new Error("All cameraman fields should be provided of a value");
                     }
+                    
+                    invoiceProps['cameraman'] = cameraman;
                 }
 
-                let equipmentItemDTOs: EquipmentItemDTO[] = [];
                 if (equipmentItems !== undefined) {
                     equipmentItems.forEach((e: any) => {
                         const { equipmentItemName, equipmentItemDayPrice, equipmentItemStartDate, equipmentItemEndDate } = e; 
                         if (equipmentItemName === "" || equipmentItemDayPrice === "" || equipmentItemStartDate === "" || equipmentItemEndDate === "") {
                             event.reply(replyChannel, "All equipmentItem fields should be provided of a value");
-                        } else {
-                            equipmentItemDTOs.push(new EquipmentItemDTO(equipmentItemName, equipmentItemDayPrice, equipmentItemStartDate, equipmentItemEndDate));
-                        }
+                            throw new Error("All equipmentItem fields should be provided of a value");
+                        } 
                     });
+
+                    invoiceProps['equipmentItems'] = equipmentItems;
                 }
 
-                // todo: look into the ! (exclamation marks), don't really want them
-                this.invoiceService.createInvoice(iban, jobDTO!, clientDTO!, cameramanDTO!, equipmentItemDTOs);
+                this.invoiceService.createInvoice(invoiceProps);
             } catch (e) {
                 console.log(e);
             }

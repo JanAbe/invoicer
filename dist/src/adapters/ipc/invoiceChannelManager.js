@@ -1,14 +1,5 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-const invoiceID_1 = require("../../domain/invoiceID");
-const sqliteInvoiceRepo_1 = require("../../repos/sqlite/sqliteInvoiceRepo");
-const sqliteJobRepo_1 = require("../../repos/sqlite/sqliteJobRepo");
-const sqliteClientRepo_1 = require("../../repos/sqlite/sqliteClientRepo");
-const db_1 = require("../../db");
-const clientDTO_1 = require("../../domain/dto/clientDTO");
-const cameramanDTO_1 = require("../../domain/dto/cameramanDTO");
-const equipmentItemDTO_1 = require("../../domain/dto/equipmentItemDTO");
-const jobDTOx_1 = require("../../domain/dto/jobDTOx");
 /**
  * InvoiceChannel manages all invoice related channels
  * used by IPC for communicating with the renderer process of electron
@@ -66,7 +57,12 @@ class InvoiceChannelManager {
             try {
                 const invoiceKey = 'invoiceID';
                 const userKey = 'userID';
-                const renderedHTML = this.invoiceService.generateInvoice(new invoiceID_1.InvoiceID(args[invoiceKey]), args[userKey]);
+                // todo: check if args[invoiceKey] and args[userKey] aren't undefined
+                if (args[invoiceKey] === "" || args[userKey] === "") {
+                    event.reply(replyChannel, "Invoice and user id need to be supplied");
+                    throw new Error("Invoice and User id need to be supplied");
+                }
+                const renderedHTML = this.invoiceService.generateInvoice(args[invoiceKey], args[userKey]);
                 renderedHTML
                     .then(html => {
                     this.window.loadURL(invoiceLocation);
@@ -94,50 +90,48 @@ class InvoiceChannelManager {
         const replyChannel = 'submit-invoice-reply-channel';
         this.ipcMain.on(listenChannel, (event, args) => {
             try {
-                const dbLocation = `${__dirname}/../../../db/Invoice.db`;
-                const db = new db_1.DB(dbLocation);
-                const sqliteJobRepo = new sqliteJobRepo_1.SqliteJobRepo(db);
-                const sqliteClientRepo = new sqliteClientRepo_1.SqliteClientRepo(db);
-                const sqliteInvoiceRepo = new sqliteInvoiceRepo_1.SqliteInvoiceRepo(db, sqliteJobRepo);
+                const invoiceProps = {};
                 const { iban, firstName, lastName, email, city, zipcode, street, houseNumber, description, location, directedBy, cameraman, equipmentItems } = args;
-                let clientDTO;
+                if (iban === "") {
+                    event.reply(replyChannel, "Iban should be provided of a value");
+                    throw new Error("Iban should be provided of a value");
+                }
+                invoiceProps['iban'] = iban;
                 if (firstName === "" || lastName === "" || email === "" || city === "" || zipcode === "" || street === "" || houseNumber === "") {
                     event.reply(replyChannel, "All client fields should be provided of a value");
+                    throw new Error("All client fields should be provided of a value");
                 }
-                else {
-                    clientDTO = new clientDTO_1.ClientDTO(firstName, lastName, email, city, street, houseNumber, zipcode);
-                }
-                let jobDTO;
+                invoiceProps['client'] = { 'clientFirstName': firstName,
+                    'clientLastName': lastName,
+                    'email': email,
+                    'city': city,
+                    'zipcode': zipcode,
+                    'street': street,
+                    'houseNumber': Number(houseNumber) };
                 if (description === "" || location === "" || directedBy === "") {
                     event.reply(replyChannel, "All job fields should be provided of a value");
+                    throw new Error("All job fields should be provided of a value");
                 }
-                else {
-                    jobDTO = new jobDTOx_1.JobDTO(description, location, directedBy);
-                }
-                let cameramanDTO;
+                invoiceProps['job'] = { 'description': description, 'location': location, 'directedBy': directedBy };
                 if (cameraman !== undefined) {
                     const { firstName, lastName, dayPrice, startDate, endDate } = cameraman;
                     if (firstName === "" || lastName === "" || dayPrice === "" || startDate === "" || endDate === "") {
                         event.reply(replyChannel, "All cameraman fields should be provided of a value");
+                        throw new Error("All cameraman fields should be provided of a value");
                     }
-                    else {
-                        cameramanDTO = new cameramanDTO_1.CameramanDTO(firstName, lastName, dayPrice, startDate, endDate);
-                    }
+                    invoiceProps['cameraman'] = cameraman;
                 }
-                let equipmentItemDTOs = [];
                 if (equipmentItems !== undefined) {
                     equipmentItems.forEach((e) => {
                         const { equipmentItemName, equipmentItemDayPrice, equipmentItemStartDate, equipmentItemEndDate } = e;
                         if (equipmentItemName === "" || equipmentItemDayPrice === "" || equipmentItemStartDate === "" || equipmentItemEndDate === "") {
                             event.reply(replyChannel, "All equipmentItem fields should be provided of a value");
-                        }
-                        else {
-                            equipmentItemDTOs.push(new equipmentItemDTO_1.EquipmentItemDTO(equipmentItemName, equipmentItemDayPrice, equipmentItemStartDate, equipmentItemEndDate));
+                            throw new Error("All equipmentItem fields should be provided of a value");
                         }
                     });
+                    invoiceProps['equipmentItems'] = equipmentItems;
                 }
-                // todo: look into the ! (exclamation marks), don't really want them
-                this.invoiceService.createInvoice(iban, jobDTO, clientDTO, cameramanDTO, equipmentItemDTOs);
+                this.invoiceService.createInvoice(invoiceProps);
             }
             catch (e) {
                 console.log(e);

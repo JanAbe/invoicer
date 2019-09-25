@@ -9,8 +9,18 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
+const invoiceID_1 = require("../domain/invoiceID");
+const invoice_1 = require("../domain/invoice");
+const job_1 = require("../domain/job");
 const InvoiceDTO_1 = require("../domain/dto/InvoiceDTO");
 const nunjucks = require("nunjucks");
+const client_1 = require("../domain/client");
+const fullName_1 = require("../domain/fullName");
+const email_1 = require("../domain/email");
+const address_1 = require("../domain/address");
+const cameraman_1 = require("../domain/cameraman");
+const period_1 = require("../domain/period");
+const equipmentItem_1 = require("../domain/equipmentItem");
 // InvoiceService contains all services a user can call regarding invoices
 class InvoiceService {
     constructor(invoiceRepo, jobRepo, clientRepo, userRepo) {
@@ -19,20 +29,42 @@ class InvoiceService {
         this._clientRepo = clientRepo;
         this._userRepo = userRepo;
     }
-    // public createInvoice(invoice: Invoice, job: Job): void {
-    //     this._invoiceRepo.save(invoice, job);
-    // }
-    createInvoice(iban, jobDTO, clientDTO, cameramanDTO, equipmentItemDTOs) {
-        // todo: transform dto's into domain objects
-        // and create jobID, clientID, invoiceID etc.
+    // or expect only an invoiceDTO?
+    createInvoice(invoiceProps) {
+        const { iban, client, job, cameraman, equipmentItems } = invoiceProps;
+        const { clientFirstName, clientLastName, email, city, street, zipcode, houseNumber } = client;
+        const { description, location, directedBy } = job;
+        const clientID = this._clientRepo.nextID();
+        const newClient = new client_1.Client(clientID, new fullName_1.FullName(clientFirstName, clientLastName), new email_1.Email(email), new address_1.Address(city, street, houseNumber, zipcode));
+        let newCameraman;
+        if (cameraman !== undefined) {
+            const { firstName, lastName, dayPrice, startDate, endDate } = cameraman;
+            newCameraman = new cameraman_1.Cameraman(firstName, lastName, dayPrice, new period_1.Period(new Date(startDate), new Date(endDate)));
+        }
+        let newEquipmentItems = [];
+        if (equipmentItems !== undefined) {
+            equipmentItems.forEach((e) => {
+                const { equipmentItemName, equipmentItemDayPrice, equipmentItemStartDate, equipmentItemEndDate } = e;
+                newEquipmentItems.push(new equipmentItem_1.EquipmentItem(equipmentItemName, equipmentItemDayPrice, new period_1.Period(new Date(equipmentItemStartDate), new Date(equipmentItemEndDate))));
+            });
+        }
+        const jobID = this._jobRepo.nextID();
+        const newJob = new job_1.Job(jobID, description, location, directedBy, clientID, newCameraman, newEquipmentItems);
+        const newInvoice = new invoice_1.Invoice(this._invoiceRepo.nextID(), jobID, iban);
+        this._clientRepo.save(newClient);
+        this._invoiceRepo.save(newInvoice, newJob);
+        // todo: look into dependencies (dependency flow)
     }
     fetchInvoiceByID(invoiceID) {
         return __awaiter(this, void 0, void 0, function* () {
-            return yield this._invoiceRepo.invoiceOfID(invoiceID);
+            return yield this._invoiceRepo.invoiceOfID(new invoiceID_1.InvoiceID(invoiceID));
         });
     }
     // rename to fetchAllInvoicesAndRenderHTML
     // or split in 2 functions
+    // because atm it is tightly coupled with html and nunjucks
+    // what if i want to send back a json representation or something
+    // need to add a new adapter class that does stuff with html
     // changed return type to string because i couldn't figure out
     // how to use nunjucks in the client-side scripts
     fetchAllInvoices() {
@@ -77,7 +109,7 @@ class InvoiceService {
     // 5964 + 1252.44 = 7216.4400000000005
     generateInvoice(invoiceID, userID) {
         return __awaiter(this, void 0, void 0, function* () {
-            const invoice = yield this._invoiceRepo.invoiceOfID(invoiceID);
+            const invoice = yield this._invoiceRepo.invoiceOfID(new invoiceID_1.InvoiceID(invoiceID));
             const job = yield this._jobRepo.jobOfID(invoice.jobID);
             const client = yield this._clientRepo.clientOfID(job.clientID);
             const user = yield this._userRepo.userOfID(userID);

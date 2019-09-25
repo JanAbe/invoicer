@@ -1,6 +1,6 @@
-import { UserRepo } from "../userRepo";
-import { DB } from "../../db";
-import { UserDTO } from "../../domain/dto/userDTO";
+import { UserRepo } from "../../../repos/userRepo";
+import { DB } from "../../../db";
+import { UserDTO } from "../../../domain/dto/userDTO";
 import uuid = require("uuid");
 
 export class SqliteUserRepo implements UserRepo {
@@ -34,7 +34,7 @@ export class SqliteUserRepo implements UserRepo {
         );
     }
 
-    public async saveOrdUpdate(user: UserDTO): Promise<string> {
+    public async saveOrUpdate(user: UserDTO): Promise<string> {
         const existsQuery = `SELECT id FROM User where id=?;`;
         let id: string = "";
  
@@ -60,7 +60,7 @@ export class SqliteUserRepo implements UserRepo {
         });
     }
 
-    public save(user: UserDTO, id: string): void {
+    private save(user: UserDTO, id: string): void {
         const insertQuery = `INSERT INTO User(id, first_name, last_name, iban, company_name, job_title, bank_account_nr, phone_number, mobile_number, email, chamber_of_commerce_nr, vat_id_nr, var_nr, city, zipcode, street, house_number) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);`;
     
         this._db.run(insertQuery, [
@@ -84,7 +84,7 @@ export class SqliteUserRepo implements UserRepo {
         ]);
     }
 
-    public update(user: UserDTO): void {
+    private update(user: UserDTO): void {
         const updateQuery = `UPDATE User SET first_name=?, last_name=?, iban=?, company_name=?, job_title=?, bank_account_nr=?, phone_number=?, mobile_number=?, email=?, chamber_of_commerce_nr=?, vat_id_nr=?, var_nr=?, city=?, zipcode=?, street=?, house_number=? WHERE id=?;`;
         this._db.run(updateQuery, [
             user.firstName,
