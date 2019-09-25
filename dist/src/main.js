@@ -42,7 +42,7 @@ electron_1.app.on('ready', () => {
     const sqliteInvoiceRepo = new sqliteInvoiceRepo_1.SqliteInvoiceRepo(db, sqliteJobRepo);
     const invoiceService = new invoiceService_1.InvoiceService(sqliteInvoiceRepo, sqliteJobRepo, sqliteClientRepo, sqliteUserRepo);
     const userService = new userService_1.UserService(sqliteUserRepo);
-    const invoiceChanMan = new invoiceChannelManager_1.InvoiceChannelManager(electron_1.ipcMain, mainWindow, invoiceService);
+    const invoiceChanMan = new invoiceChannelManager_1.InvoiceChannelManager(electron_1.ipcMain, mainWindow, invoiceService, userService);
     const userChanMan = new userChannelManager_1.UserChannelManager(electron_1.ipcMain, userService);
     invoiceChanMan.initChannels();
     userChanMan.initChannels();

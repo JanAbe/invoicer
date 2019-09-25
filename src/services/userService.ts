@@ -35,4 +35,8 @@ export class UserService {
 
         return await this._userRepo.saveOrUpdate(userDTO);
     }
+
+    public async fetchUserByID(userID: string): Promise<UserDTO> {
+        return await this._userRepo.userOfID(userID);
+    }
 }

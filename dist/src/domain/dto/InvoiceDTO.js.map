@@ -1,1 +1,1 @@
-{"version":3,"file":"InvoiceDTO.js","sourceRoot":"","sources":["../../../../src/domain/dto/InvoiceDTO.ts"],"names":[],"mappings":";;AAEA,MAAa,UAAU;IAOnB,gBAAe,CAAC;CACnB;AARD,gCAQC"}
+{"version":3,"file":"InvoiceDTO.js","sourceRoot":"","sources":["../../../../src/domain/dto/InvoiceDTO.ts"],"names":[],"mappings":";;AAIA,kEAAkE;AAClE,2DAA2D;AAC3D,MAAa,UAAU;IASnB,gBAAe,CAAC;CACnB;AAVD,gCAUC"}

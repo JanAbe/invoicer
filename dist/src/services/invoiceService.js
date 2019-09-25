@@ -20,7 +20,10 @@ const address_1 = require("../domain/client/address");
 const cameraman_1 = require("../domain/invoice/job/cameraman");
 const period_1 = require("../domain/invoice/job/period");
 const equipmentItem_1 = require("../domain/invoice/job/equipmentItem");
-const nunjucks = require("nunjucks");
+const jobDTOx_1 = require("../domain/dto/jobDTOx");
+const clientDTO_1 = require("../domain/dto/clientDTO");
+const cameramanDTO_1 = require("../domain/dto/cameramanDTO");
+const equipmentItemDTO_1 = require("../domain/dto/equipmentItemDTO");
 // InvoiceService contains all services a user can call regarding invoices
 class InvoiceService {
     constructor(invoiceRepo, jobRepo, clientRepo, userRepo) {
@@ -55,11 +58,6 @@ class InvoiceService {
         this._invoiceRepo.save(newInvoice, newJob);
         // todo: look into dependencies (dependency flow)
     }
-    fetchInvoiceByID(invoiceID) {
-        return __awaiter(this, void 0, void 0, function* () {
-            return yield this._invoiceRepo.invoiceOfID(new invoiceID_1.InvoiceID(invoiceID));
-        });
-    }
     // rename to fetchAllInvoicesAndRenderHTML
     // or split in 2 functions
     // because atm it is tightly coupled with html and nunjucks
@@ -78,27 +76,21 @@ class InvoiceService {
                 invoiceDTO.creationDate = invoice.creationDate;
                 yield this._jobRepo.jobOfID(invoice.jobID)
                     .then(job => {
-                    invoiceDTO.jobDescription = job.description;
+                    invoiceDTO.job = new jobDTOx_1.JobDTO(job.description);
                     return job.clientID;
                 })
                     .then(clientID => {
                     return this._clientRepo.clientOfID(clientID);
                 })
                     .then(client => {
-                    invoiceDTO.clientName = client.fullName.toString();
+                    invoiceDTO.client = new clientDTO_1.ClientDTO(client.fullName.firstName, client.fullName.lastName);
                 })
                     .catch(err => {
                     console.log(err);
                 });
                 invoiceDTOs.push(invoiceDTO);
             }
-            nunjucks.configure('src/ui', { autoescape: true });
-            return new Promise((resolve, reject) => {
-                const html = nunjucks.render('invoice-row-template.html', {
-                    invoiceDTOs: invoiceDTOs
-                });
-                resolve(html);
-            });
+            return invoiceDTOs;
         });
     }
     // todo: remove hardcoded values and write code to support this
@@ -107,49 +99,35 @@ class InvoiceService {
     // todo: look into best way to store money values
     // atm the number datatype is used.
     // 5964 + 1252.44 = 7216.4400000000005
-    generateInvoice(invoiceID, userID) {
+    // todo: think about where i want to place this function
+    // because it returns html it is pretty specific. Keep it here, or move to some htmlService?
+    // todo: maybe rename / remove function?
+    // make invoiceChannelManager call the htmlService directly instead of via this function?
+    // but how does the invoiceChanManager get all necessary objects.
+    // it needs to talk to the repositories, but they are in the inner hexagon, so this would mean
+    // it would skip the application service layer, hmmm....
+    fetchInvoiceByID(invoiceID) {
         return __awaiter(this, void 0, void 0, function* () {
             const invoice = yield this._invoiceRepo.invoiceOfID(new invoiceID_1.InvoiceID(invoiceID));
             const job = yield this._jobRepo.jobOfID(invoice.jobID);
             const client = yield this._clientRepo.clientOfID(job.clientID);
-            const user = yield this._userRepo.userOfID(userID);
-            const vatPercentage = 21;
-            nunjucks.configure('src/ui', { autoescape: true });
-            const html = nunjucks.render('invoice-template.html', {
-                creation_date: invoice.creationDate,
-                client_name: client.fullName.firstName + ' ' + client.fullName.lastName,
-                street: client.address.street,
-                house_number: client.address.houseNumber,
-                zipcode: client.address.zipcode,
-                city: client.address.city,
-                invoice_nr: '2019A32',
-                contact_person: client.fullName.firstName + ' ' + client.fullName.lastName,
-                project_nr: 'n.v.t',
-                job_descr: job.description,
-                directed_by: job.directedBy,
-                location: job.location,
-                cameraman: job.cameraman,
-                equipment_items: job.equipmentItems,
-                vat_percentage: vatPercentage,
-                iban: invoice.iban,
-                user_first_name: user.firstName,
-                user_last_name: user.lastName,
-                user_iban: user.iban,
-                user_company_name: user.companyName,
-                user_job_title: user.jobTitle,
-                user_bank_account_nr: user.bankAccountNr,
-                user_phone_nr: user.phoneNr,
-                user_mobile_nr: user.mobileNr,
-                user_email: user.email,
-                user_chamber_of_commerce_nr: user.chamberOfCommerceNr,
-                user_vat_nr: user.vatNr,
-                user_var_nr: user.varNr,
-                user_city: user.city,
-                user_zipcode: user.zipcode,
-                user_street: user.street,
-                user_house_nr: user.houseNr
+            const invoiceDTO = new InvoiceDTO_1.InvoiceDTO();
+            invoiceDTO.id = invoice.invoiceID.toString();
+            invoiceDTO.invoiceNumber = 'some-number';
+            invoiceDTO.projectNumber = 'project-number';
+            invoiceDTO.creationDate = invoice.creationDate;
+            invoiceDTO.client = new clientDTO_1.ClientDTO(client.fullName.firstName, client.fullName.lastName, client.email.emailAddress, client.address.city, client.address.street, client.address.houseNumber, client.address.zipcode, client.id.toString());
+            invoiceDTO.job = new jobDTOx_1.JobDTO(job.description, job.location, job.directedBy, undefined, job.id.toString());
+            if (job.cameraman !== undefined) {
+                invoiceDTO.job.cameramanDTO = new cameramanDTO_1.CameramanDTO(job.cameraman.firstName, job.cameraman.lastName, job.cameraman.dayPrice, job.cameraman.period.startDate, job.cameraman.period.endDate, job.cameraman.period.getDays(), job.cameraman.calculateCost());
+            }
+            const equipmentItemDTOs = [];
+            job.equipmentItems.forEach(e => {
+                const { name, dayPrice, period } = e;
+                equipmentItemDTOs.push(new equipmentItemDTO_1.EquipmentItemDTO(name, dayPrice, period.startDate, period.endDate, period.getDays(), e.calculateCost()));
             });
-            return html;
+            invoiceDTO.job.equipmentItemDTOs = equipmentItemDTOs;
+            return invoiceDTO;
         });
     }
 }

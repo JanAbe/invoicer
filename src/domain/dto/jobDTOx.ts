@@ -2,9 +2,9 @@ import { CameramanDTO } from "./cameramanDTO";
 import { EquipmentItemDTO } from "./equipmentItemDTO";
 
 export class JobDTO {
-    public description: string;
-    public location: string;
-    public directedBy: string;
+    public description?: string;
+    public location?: string;
+    public directedBy?: string;
     public comment?: string;
     public id?: string;
     public cameramanDTO?: CameramanDTO;
@@ -12,9 +12,9 @@ export class JobDTO {
     public clientID?: string;
 
     constructor(
-        description: string,
-        location: string,
-        directedBy: string,
+        description?: string,
+        location?: string,
+        directedBy?: string,
         comment?: string,
         id?: string,
         cameramanDTO?: CameramanDTO,

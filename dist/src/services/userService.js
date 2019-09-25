@@ -21,6 +21,11 @@ class UserService {
             return yield this._userRepo.saveOrUpdate(userDTO);
         });
     }
+    fetchUserByID(userID) {
+        return __awaiter(this, void 0, void 0, function* () {
+            return yield this._userRepo.userOfID(userID);
+        });
+    }
 }
 exports.UserService = UserService;
 //# sourceMappingURL=userService.js.map

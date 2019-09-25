@@ -1,14 +1,16 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+const htmlService_1 = require("../../services/htmlService");
 /**
  * InvoiceChannel manages all invoice related channels
  * used by IPC for communicating with the renderer process of electron
  */
 class InvoiceChannelManager {
-    constructor(ipcMain, window, invoiceService) {
+    constructor(ipcMain, window, invoiceService, userService) {
         this.ipcMain = ipcMain;
         this.window = window;
         this.invoiceService = invoiceService;
+        this.userService = userService;
     }
     /**
      * initChannels initializes all channels relating
@@ -33,6 +35,9 @@ class InvoiceChannelManager {
         this.ipcMain.on(listenChannel, (event, _) => {
             try {
                 this.invoiceService.fetchAllInvoices()
+                    .then(invoiceDTOs => {
+                    return htmlService_1.HtmlService.generateAllInvoiceTemplates(invoiceDTOs);
+                })
                     .then(renderedHTML => {
                     event.reply(replyChannel, renderedHTML);
                 })
@@ -62,12 +67,19 @@ class InvoiceChannelManager {
                     event.reply(replyChannel, "Invoice and user id need to be supplied");
                     throw new Error("Invoice and User id need to be supplied");
                 }
-                const renderedHTML = this.invoiceService.generateInvoice(args[invoiceKey], args[userKey]);
-                renderedHTML
-                    .then(html => {
+                const fetchInvoiceByIDPromise = this.invoiceService.fetchInvoiceByID(args[invoiceKey]);
+                const fetchUserByIDPromise = this.userService.fetchUserByID(args[userKey]);
+                Promise.all([fetchInvoiceByIDPromise, fetchUserByIDPromise])
+                    .then(results => {
+                    return results;
+                })
+                    .then(results => {
+                    const invoiceDTO = results[0];
+                    const userDTO = results[1];
+                    const renderedHTML = htmlService_1.HtmlService.generateInvoiceTemplate(invoiceDTO, userDTO);
                     this.window.loadURL(invoiceLocation);
                     this.window.webContents.on('did-finish-load', () => {
-                        event.reply(replyChannel, html);
+                        event.reply(replyChannel, renderedHTML);
                     });
                 })
                     .catch(err => {
@@ -135,6 +147,21 @@ class InvoiceChannelManager {
             }
             catch (e) {
                 console.log(e);
+            }
+        });
+    }
+    // todo: look into the possibility of making a general/abstract initChannel function
+    // it takes. initChannel(listenChan, replyChan, succeedCallback, errorCallback)
+    // where succeedCallback and errorCallback are two functions, one wil run in the try block
+    // and the other will run in the catchblock
+    // todo: replace any type with a better function describing type
+    initChannel(listenChan, replyChan, succeedCallback, errorCallback) {
+        this.ipcMain.on(listenChan, (event, args) => {
+            try {
+                succeedCallback();
+            }
+            catch (e) {
+                errorCallback();
             }
         });
     }

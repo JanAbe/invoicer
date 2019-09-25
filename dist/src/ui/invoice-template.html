@@ -5,33 +5,33 @@
     {% set total_costs = 0 %}
 
         <div id="company-name">
-            <h4><strong>{{ user_company_name | title }}</strong></h4>
+            <h4><strong>{{ userDTO.companyName | title }}</strong></h4>
         </div>
 
         <div id="creation-date">
-            Amsterdam, {{ creation_date.toLocaleDateString('nl') }}
+            Amsterdam, {{ invoiceDTO.creationDate.toLocaleDateString('nl') }}
         </div>
 
         <div id="client-info">
-            <div id="client-name">{{ client_name | title }}</div>
-            <div id="street-house-nr">{{ street | capitalize }} {{ house_number }}</div>
-            <div id="zipcode-city">{{ zipcode }}, {{ city | capitalize }}</div>
+            <div id="client-name">{{ invoiceDTO.client.firstName | capitalize }} {{ invoiceDTO.client.lastName | capitalize }}</div>
+            <div id="street-house-nr">{{ invoiceDTO.client.street | capitalize }} {{ invoiceDTO.client.houseNumber }}</div>
+            <div id="zipcode-city">{{ invoiceDTO.client.zipcode }}, {{ invoiceDTO.client.city | capitalize }}</div>
         </div>
 
         <div id="general-info">
-            <div id="invoice-nr"><strong>Rekeningnummer:</strong> {{ invoice_nr }}</div>
-            <div id="contact-person">Contactpersoon: {{ client_name | title }}</div>
-            <div id="project-nr">Projectnummer: {{ project_nr }}</div>
+            <div id="invoice-nr"><strong>Rekeningnummer:</strong> {{ invoiceDTO.invoiceNumber }}</div>
+            <div id="contact-person">Contactpersoon: {{ invoiceDTO.client.firstName | capitalize }} {{ invoiceDTO.client.lastName | capitalize }}</div>
+            <div id="project-nr">Projectnummer: {{ invoiceDTO.projectNumber }}</div>
         </div>
 
         <div id="job-info">
-            <div id="job-description">Werktitel: {{ job_descr | capitalize }}</div>
-            <div id="directed-by">Regie: {{ directed_by | capitalize }}</div>
-            <div id="location">Locatie: {{ location | capitalize }}</div>
+            <div id="job-description">Werktitel: {{ invoiceDTO.job.description | capitalize }}</div>
+            <div id="directed-by">Regie: {{ invoiceDTO.job.directedBy | capitalize }}</div>
+            <div id="location">Locatie: {{ invoiceDTO.job.location | capitalize }}</div>
         </div>
 
-        {% if cameraman !== undefined %}
-            {% set cameraman_costs = cameraman.calculateCost() %}
+        {% if invoiceDTO.job.cameramanDTO !== undefined %}
+            {% set cameraman_costs = invoiceDTO.job.cameramanDTO.costs %}
             <div id="cameraman-segment">
                 <h5>Cameraman</h5>
                 <table>
@@ -44,12 +44,12 @@
                         <th>Kosten</th>
                     </tr>
                     <tr>
-                        <td>{{ cameraman.firstName | capitalize }} {{ cameraman.lastName | capitalize }}</td>
-                        <td>{{ cameraman.period.startDate.toLocaleDateString('nl') }}</td>
-                        <td>{{ cameraman.period.endDate.toLocaleDateString('nl') }}</td>
-                        <td>{{ cameraman.period.getDays() }}</td>
-                        <td>€{{ cameraman.dayPrice }}</td>
-                        <td>€{{ cameraman_costs }}</td>
+                        <td>{{ invoiceDTO.job.cameramanDTO.firstName | capitalize }} {{ invoiceDTO.job.cameramanDTO.lastName | capitalize }}</td>
+                        <td>{{ invoiceDTO.job.cameramanDTO.startDate.toLocaleDateString('nl') }}</td>
+                        <td>{{ invoiceDTO.job.cameramanDTO.endDate.toLocaleDateString('nl') }}</td>
+                        <td>{{ invoiceDTO.job.cameramanDTO.daysWorked }}</td>
+                        <td>€{{ invoiceDTO.job.cameramanDTO.dayPrice }}</td>
+                        <td>€{{ invoiceDTO.job.cameramanDTO.costs }}</td>
                     </tr>
                 </table>
 
@@ -59,7 +59,7 @@
             </div>
         {% endif %}
 
-        {% if equipment_items.length !== 0 %}
+        {% if invoiceDTO.job.equipmentItemDTOs.length !== 0 %}
             {% set equipment_costs = 0 %}
             <div id="equipment-segment">
                 <h5>Apparatuur</h5>
@@ -73,16 +73,16 @@
                         <th>Kosten</th>
                     </tr>
 
-                    {% for item in equipment_items %}
-                        {% set equipment_costs = item.calculateCost() %}
+                    {% for item in invoiceDTO.job.equipmentItemDTOs %}
+                        {% set equipment_costs = item.costs %}
                         {% set equipment_total_costs = equipment_total_costs + equipment_costs %}
                         <tr>
                             <td>{{ item.name | title }}</td>
-                            <td>{{ item.period.startDate.toLocaleDateString('nl') }}</td>
-                            <td>{{ item.period.endDate.toLocaleDateString('nl') }}</td>
-                            <td>{{ item.period.getDays() }}</td>
+                            <td>{{ item.startDate.toLocaleDateString('nl') }}</td>
+                            <td>{{ item.endDate.toLocaleDateString('nl') }}</td>
+                            <td>{{ item.daysRented }}</td>
                             <td>€{{ item.dayPrice }}</td>
-                            <td>€{{ equipment_costs }}</td>
+                            <td>€{{ item.costs }}</td>
                         </tr>
                     {% endfor %}
                 </table>
@@ -95,13 +95,13 @@
 
         <div id="total-cost-segment">
             {% set subtotal_costs = cameraman_costs + equipment_total_costs %}
-            {% set vat_costs = subtotal_costs * (vat_percentage / 100) %}
+            {% set vat_costs = subtotal_costs * (vatPercentage / 100) %}
             {% set total_costs = subtotal_costs + vat_costs %}
             <h5>Totale kosten</h5>
             <table>
                 <tr>
                     <th>Totaal</th>
-                    <th>BTW ({{ vat_percentage }}%)</th>
+                    <th>BTW ({{ vatPercentage }}%)</th>
                     <th><strong>Te betalen bedrag</strong></th>
                 </tr>
 
@@ -116,9 +116,9 @@
         <div id="payment-info">
             <p style="text-align: center">
                 Betaalwijze: Binnen 30 dagen na factuurdatum <br>
-                SEI nr: {{ user_bank_account_nr }} <br>
-                t.n.v: {{ user_first_name | capitalize }} {{ user_last_name | capitalize }} <br>
-                IBAN: {{ user_iban }} <br>
+                SEI nr: {{ userDTO.bankAccountNr }} <br>
+                t.n.v: {{ userDTO.firstName | capitalize }} {{ userDTO.lastName | capitalize }} <br>
+                IBAN: {{ userDTO.iban }} <br>
             </p>
         </div>
 
@@ -126,47 +126,47 @@
             <table>
                 <tbody>
                     <tr>
-                        <th>{{ user_first_name | capitalize }} {{ user_last_name | capitalize }}</th>
+                        <th>{{ userDTO.firstName | capitalize }} {{ userDTO.lastName | capitalize }}</th>
                     </tr>
 
                     <tr>
-                        <th>{{ user_job_title | capitalize }}</th>
+                        <th>{{ userDTO.jobTitle | capitalize }}</th>
                     </tr>
 
                     <tr>
-                        <th>{{ user_street | capitalize }} {{ user_house_nr }}</th>
+                        <th>{{ userDTO.street | capitalize }} {{ userDTO.houseNr }}</th>
                     </tr>
 
                     <tr>
-                        <th>{{ user_zipcode }}</th>
+                        <th>{{ userDTO.zipcode }}</th>
                     </tr>
 
                     <tr>
-                        <th>{{ user_city | capitalize }}</td>
+                        <th>{{ userDTO.city | capitalize }}</td>
                     </tr>
 
                     <tr>
-                        <th>Telefoon: {{ user_phone_nr }}</th>
+                        <th>Telefoon: {{ userDTO.phoneNr }}</th>
                     </tr>
 
                     <tr>
-                        <th>Mobiel: {{ user_mobile_nr }}</th>
+                        <th>Mobiel: {{ userDTO.mobileNr }}</th>
                     </tr>
 
                     <tr>
-                        <th>{{ user_email }}</th>
+                        <th>{{ userDTO.email }}</th>
                     </tr>
 
                     <tr>
-                        <th>Btwnr: {{ user_vat_nr }}</th>
+                        <th>Btwnr: {{ userDTO.vatNr }}</th>
                     </tr>
 
                     <tr>
-                        <th>K.v.K: {{ user_chamber_of_commerce_nr }}</th>
+                        <th>K.v.K: {{ userDTO.chamberOfCommerceNr }}</th>
                     </tr>
 
                     <tr>
-                        <th>Var: {{ user_var_nr }}</th>
+                        <th>Var: {{ userDTO.varNr }}</th>
                     </tr>
                 </tbody>
             </table>

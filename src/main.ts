@@ -51,7 +51,7 @@ app.on('ready', () => {
     const invoiceService = new InvoiceService(sqliteInvoiceRepo, sqliteJobRepo, sqliteClientRepo, sqliteUserRepo);
     const userService = new UserService(sqliteUserRepo);
 
-    const invoiceChanMan = new InvoiceChannelManager(ipcMain, mainWindow, invoiceService);
+    const invoiceChanMan = new InvoiceChannelManager(ipcMain, mainWindow, invoiceService, userService);
     const userChanMan = new UserChannelManager(ipcMain, userService);
 
     invoiceChanMan.initChannels();
