@@ -1,4 +1,4 @@
-import { UserRepo } from "../repos/userRepo";
+import { UserRepo } from "../domain/user/userRepo";
 import { UserDTO } from "../domain/dto/userDTO";
 
 export class UserService {

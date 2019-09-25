@@ -18,6 +18,7 @@ export class UserDTO {
     public street: string;
     public houseNr: string;
 
+    // todo: create a user domain object with correct value objects and stuff.
     constructor(id: string,
         firstName: string,
         lastName: string,

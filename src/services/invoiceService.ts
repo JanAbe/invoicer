@@ -5,8 +5,7 @@ import { Job } from "../domain/invoice/job/job";
 import { JobRepo } from "../domain/invoice/job/jobRepo";
 import { ClientRepo } from "../domain/client/clientRepo";
 import { InvoiceDTO } from "../domain/dto/InvoiceDTO";
-import { UserRepo } from "../repos/userRepo";
-import nunjucks = require('nunjucks');
+import { UserRepo } from "../domain/user/userRepo";
 import { Client } from "../domain/client/client";
 import { FullName } from "../domain/client/fullName";
 import { Email } from "../domain/client/email";
@@ -14,6 +13,7 @@ import { Address } from "../domain/client/address";
 import { Cameraman } from "../domain/invoice/job/cameraman";
 import { Period } from "../domain/invoice/job/period";
 import { EquipmentItem } from "../domain/invoice/job/equipmentItem";
+import nunjucks = require('nunjucks');
 
 // InvoiceService contains all services a user can call regarding invoices
 export class InvoiceService {

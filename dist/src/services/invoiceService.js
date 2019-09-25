@@ -13,7 +13,6 @@ const invoiceID_1 = require("../domain/invoice/invoiceID");
 const invoice_1 = require("../domain/invoice/invoice");
 const job_1 = require("../domain/invoice/job/job");
 const InvoiceDTO_1 = require("../domain/dto/InvoiceDTO");
-const nunjucks = require("nunjucks");
 const client_1 = require("../domain/client/client");
 const fullName_1 = require("../domain/client/fullName");
 const email_1 = require("../domain/client/email");
@@ -21,6 +20,7 @@ const address_1 = require("../domain/client/address");
 const cameraman_1 = require("../domain/invoice/job/cameraman");
 const period_1 = require("../domain/invoice/job/period");
 const equipmentItem_1 = require("../domain/invoice/job/equipmentItem");
+const nunjucks = require("nunjucks");
 // InvoiceService contains all services a user can call regarding invoices
 class InvoiceService {
     constructor(invoiceRepo, jobRepo, clientRepo, userRepo) {

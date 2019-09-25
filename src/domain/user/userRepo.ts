@@ -1,4 +1,4 @@
-import { UserDTO } from "../domain/dto/userDTO";
+import { UserDTO } from "../dto/userDTO";
 
 export interface UserRepo {
 
