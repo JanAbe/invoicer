@@ -163,6 +163,7 @@ export class InvoiceService {
         invoiceDTO.invoiceNumber = 'some-number';
         invoiceDTO.projectNumber = 'project-number';
         invoiceDTO.creationDate = invoice.creationDate;
+        invoiceDTO.vatPercentage = 21;
         invoiceDTO.clientDTO = new ClientDTO(
             client.fullName.firstName,
             client.fullName.lastName,
@@ -190,7 +191,7 @@ export class InvoiceService {
                 job.cameraman.period.startDate,
                 job.cameraman.period.endDate,
                 job.cameraman.period.getDays(),
-                job.cameraman.calculateCost() 
+                job.cameraman.calculateCost()
             )
         }
 
@@ -209,6 +210,9 @@ export class InvoiceService {
             )
         });
         invoiceDTO.jobDTO.equipmentItemDTOs = equipmentItemDTOs;
+        invoiceDTO.jobDTO.totalCosts = job.calculateCost();
+        invoiceDTO.jobDTO.vatCosts = job.calculateVATCosts(invoiceDTO.jobDTO.totalCosts, invoiceDTO.vatPercentage);
+        invoiceDTO.jobDTO.totalCostsWithVAT = job.calculateCostsIncludingVAT(invoiceDTO.jobDTO.totalCosts, invoiceDTO.jobDTO.vatCosts);
         
         return invoiceDTO;
     }

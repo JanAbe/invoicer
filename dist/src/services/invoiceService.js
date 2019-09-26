@@ -116,6 +116,7 @@ class InvoiceService {
             invoiceDTO.invoiceNumber = 'some-number';
             invoiceDTO.projectNumber = 'project-number';
             invoiceDTO.creationDate = invoice.creationDate;
+            invoiceDTO.vatPercentage = 21;
             invoiceDTO.clientDTO = new clientDTO_1.ClientDTO(client.fullName.firstName, client.fullName.lastName, client.email.emailAddress, client.address.city, client.address.street, client.address.houseNumber, client.address.zipcode, client.id.toString());
             invoiceDTO.jobDTO = new jobDTOx_1.JobDTO(job.description, job.location, job.directedBy, undefined, job.id.toString());
             if (job.cameraman !== undefined) {
@@ -127,6 +128,9 @@ class InvoiceService {
                 equipmentItemDTOs.push(new equipmentItemDTO_1.EquipmentItemDTO(name, dayPrice, period.startDate, period.endDate, period.getDays(), e.calculateCost()));
             });
             invoiceDTO.jobDTO.equipmentItemDTOs = equipmentItemDTOs;
+            invoiceDTO.jobDTO.totalCosts = job.calculateCost();
+            invoiceDTO.jobDTO.vatCosts = job.calculateVATCosts(invoiceDTO.jobDTO.totalCosts, invoiceDTO.vatPercentage);
+            invoiceDTO.jobDTO.totalCostsWithVAT = job.calculateCostsIncludingVAT(invoiceDTO.jobDTO.totalCosts, invoiceDTO.jobDTO.vatCosts);
             return invoiceDTO;
         });
     }

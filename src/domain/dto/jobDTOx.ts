@@ -9,6 +9,9 @@ export class JobDTO {
     public id?: string;
     public cameramanDTO?: CameramanDTO;
     public equipmentItemDTOs?: EquipmentItemDTO[];
+    public totalCosts?: number;
+    public vatCosts?: number;
+    public totalCostsWithVAT?: number;
     public clientID?: string;
 
     constructor(
@@ -19,6 +22,9 @@ export class JobDTO {
         id?: string,
         cameramanDTO?: CameramanDTO,
         equipmentItemDTOs?: EquipmentItemDTO[],
+        totalCosts?: number,
+        vatCosts?: number,
+        totalCostsWithVAT?: number,
         clientID?: string
     ) {
         this.description = description;
@@ -28,6 +34,9 @@ export class JobDTO {
         this.id = id;
         this.cameramanDTO = cameramanDTO;
         this.equipmentItemDTOs = equipmentItemDTOs;
+        this.totalCosts = totalCosts;
+        this.vatCosts = vatCosts,
+        this.totalCostsWithVAT = totalCostsWithVAT,
         this.clientID = clientID;
     }
 }

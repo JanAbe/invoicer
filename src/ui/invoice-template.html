@@ -95,20 +95,23 @@
 
         <div id="total-cost-segment">
             {% set subtotal_costs = cameraman_costs + equipment_total_costs %}
-            {% set vat_costs = subtotal_costs * (vatPercentage / 100) %}
+            {% set vat_costs = subtotal_costs * (invoiceDTO.vatPercentage / 100) %}
             {% set total_costs = subtotal_costs + vat_costs %}
             <h5>Totale kosten</h5>
             <table>
                 <tr>
                     <th>Totaal</th>
-                    <th>BTW ({{ vatPercentage }}%)</th>
+                    <th>BTW ({{ invoiceDTO.vatPercentage }}%)</th>
                     <th><strong>Te betalen bedrag</strong></th>
                 </tr>
 
                 <tr>
-                    <td>€{{ subtotal_costs }}</td>
-                    <td>€{{ vat_costs }}</td>
-                    <td><strong>€{{ total_costs }}</strong></td>
+                    {# <td>€{{ subtotal_costs }}</td> #}
+                    {# <td>€{{ vat_costs }}</td>
+                    <td><strong>€{{ total_costs }}</strong></td> #}
+                    <td>€{{ invoiceDTO.jobDTO.totalCosts.toFixed(2) }}</td>
+                    <td>€{{ invoiceDTO.jobDTO.vatCosts.toFixed(2) }}</td>
+                    <td><strong>€{{ invoiceDTO.jobDTO.totalCostsWithVAT.toFixed(2) }}</strong></td>
                 </tr>
             </table>
         </div>

@@ -1,6 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const util_1 = require("util");
+const ezmoney = require("ezmoney");
 // vgm is dit nu een soort value object
 // het heeft wel een aparte tabel in de database denk ik
 // maar het is onderdeel van Job
@@ -17,7 +18,10 @@ class EquipmentItem {
     }
     calculateCost() {
         const daysWorked = this.period.getDays();
-        return this.dayPrice * daysWorked;
+        // return this.dayPrice * daysWorked;
+        const dayPrice = ezmoney.fromNumber(this.dayPrice, 'EUR', 2);
+        const cost = ezmoney.multiply(dayPrice, daysWorked, 0);
+        return ezmoney.toNumber(cost);
     }
     get name() {
         return this._name;

@@ -9,6 +9,7 @@ export class InvoiceDTO {
     public invoiceNumber?: string;
     public projectNumber?: string;
     public creationDate?: Date;
+    public vatPercentage?: number;
 
     public clientDTO?: ClientDTO;
     public jobDTO?: JobDTO

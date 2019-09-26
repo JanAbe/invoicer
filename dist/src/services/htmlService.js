@@ -7,12 +7,10 @@ const nunjucks = require("nunjucks");
  */
 class HtmlService {
     static generateInvoiceTemplate(invoiceDTO, userDTO) {
-        const vatPercentage = 21;
         nunjucks.configure('src/ui', { autoescape: true });
         const html = nunjucks.render('invoice-template.html', {
             invoiceDTO: invoiceDTO,
             userDTO: userDTO,
-            vatPercentage: vatPercentage
         });
         return html;
     }

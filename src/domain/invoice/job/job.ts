@@ -4,6 +4,7 @@ import { Cameraman } from "./cameraman";
 import { EquipmentItem } from "./equipmentItem";
 import { ClientID } from "../../client/clientID";
 import { JobDTO } from "../../dto/jobDTO";
+import ezmoney = require('ezmoney');
 
 export class Job {
     private _id?: JobID;
@@ -48,18 +49,54 @@ export class Job {
         );
     }
 
+    /**
+     * Calculate the total amount of money that needs to be paid, by combining
+     * the costs of renting equipment items and cameraman, and the amount of VAT
+     * that needs to be paid.
+     * @param costs the costs of the rented out equipment and cameraman
+     * @param vatCosts the costs that needs to be paid because of VAT
+     */
+    public calculateCostsIncludingVAT(costs: number, vatCosts: number): number {
+        const costsEUR = ezmoney.fromNumber(costs, 'EUR', 2);
+        const vatCostsEUR = ezmoney.fromNumber(vatCosts, 'EUR', 2);
+        const total = ezmoney.add(costsEUR, vatCostsEUR);
+        return ezmoney.toNumber(total);
+    }
+
+    /**
+     * Calculates the amount of money that needs to be paid based on
+     * which equipmentItems and cameraman were rented out.
+     */
     public calculateCost(): number {
-        let cost: number = 0;
+        let costs = ezmoney.fromNumber(0, 'EUR', 2);
 
         if (!isNullOrUndefined(this.cameraman)) {
-            cost += this.cameraman.calculateCost();
+            const cameramanCosts = ezmoney.fromNumber(this.cameraman.calculateCost(), 'EUR', 2);
+            costs = ezmoney.add(costs, cameramanCosts);
         }
-
+        
         if (!isNullOrUndefined(this.equipmentItems) && this.equipmentItems.length !== 0) {
-            this.equipmentItems.forEach(item => cost += item.calculateCost());
+            this.equipmentItems.forEach(item => {
+                const equipmentItemCosts = ezmoney.fromNumber(item.calculateCost(), 'EUR', 2);
+                costs = ezmoney.add(costs, equipmentItemCosts);
+            });
         }
+        
+        return ezmoney.toNumber(costs);
+    }
 
-        return cost;
+    /**
+     * Calculates the amount of money that needs to be paid because of VAT
+     * @param costs the costs of the rented out equipment and cameraman
+     * @param vatPercentage the percentage of VAT that needs to be paid
+     */
+    public calculateVATCosts(costs: number, vatPercentage: number): number {
+        const costsEUR = ezmoney.fromNumber(costs, 'EUR', 2);
+        const vatCosts = ezmoney.multiply(costsEUR, vatPercentage, 2);
+
+        return ezmoney.toNumber(
+            ezmoney.divide(vatCosts, 100, 2)
+        );
     }
 
     public get id(): JobID | undefined {

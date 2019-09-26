@@ -1,19 +1,18 @@
 import { Rentable } from "./rentable";
 import { Period } from "./period";
 import { isNullOrUndefined } from "util";
+import ezmoney = require('ezmoney');
 
 // vgm is dit nu een soort value object
 // het heeft wel een aparte tabel in de database denk ik
 // maar het is onderdeel van Job
 export class Cameraman implements Rentable {
-    // private _name!: string;
     private _firstName!: string;
     private _lastName!: string;
     private _dayPrice!: number;
     private _period!: Period;
 
     constructor(firstName: string, lastName: string, dayPrice: number, period: Period) {
-        // this.setName(name);
         this.setFirstName(firstName);
         this.setLastName(lastName);
         this.setDayPrice(dayPrice);
@@ -22,14 +21,12 @@ export class Cameraman implements Rentable {
 
     public calculateCost(): number {
         const daysWorked = this.period.getDays();
-        const cost = this.dayPrice * daysWorked;
+        // const cost = this.dayPrice * daysWorked;
 
-        return cost;
+        const dayPrice = ezmoney.fromNumber(this.dayPrice, 'EUR', 2);
+        const cost = ezmoney.multiply(dayPrice, daysWorked, 0);
+        return ezmoney.toNumber(cost);
     }
-
-    // public get name(): string {
-    //     return this._name;
-    // }
 
     public get firstName(): string {
         return this._firstName;
@@ -47,14 +44,6 @@ export class Cameraman implements Rentable {
         return this._period;
     }
     
-    // private setName(name: string): void {
-    //     if (isNullOrUndefined(name)) {
-    //         throw new Error("Provided name is null or undefined.");
-    //     }
-
-    //     this._name = name;
-    // }
-
     private setFirstName(firstName: string): void {
         if (isNullOrUndefined(firstName)) {
             throw new Error("Provided firstname is null or undefined.");

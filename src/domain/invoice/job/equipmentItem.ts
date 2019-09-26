@@ -1,6 +1,7 @@
 import { Rentable } from "./rentable";
 import { Period } from "./period";
 import { isNullOrUndefined } from "util";
+import ezmoney = require('ezmoney');
 
 // vgm is dit nu een soort value object
 // het heeft wel een aparte tabel in de database denk ik
@@ -23,7 +24,11 @@ export class EquipmentItem implements Rentable {
 
     public calculateCost(): number {
         const daysWorked = this.period.getDays();
-        return this.dayPrice * daysWorked;
+        // return this.dayPrice * daysWorked;
+
+        const dayPrice = ezmoney.fromNumber(this.dayPrice, 'EUR', 2);
+        const cost = ezmoney.multiply(dayPrice, daysWorked, 0);
+        return ezmoney.toNumber(cost);
     }
 
     public get name(): string {

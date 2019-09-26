@@ -1,12 +1,12 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const util_1 = require("util");
+const ezmoney = require("ezmoney");
 // vgm is dit nu een soort value object
 // het heeft wel een aparte tabel in de database denk ik
 // maar het is onderdeel van Job
 class Cameraman {
     constructor(firstName, lastName, dayPrice, period) {
-        // this.setName(name);
         this.setFirstName(firstName);
         this.setLastName(lastName);
         this.setDayPrice(dayPrice);
@@ -14,12 +14,11 @@ class Cameraman {
     }
     calculateCost() {
         const daysWorked = this.period.getDays();
-        const cost = this.dayPrice * daysWorked;
-        return cost;
+        // const cost = this.dayPrice * daysWorked;
+        const dayPrice = ezmoney.fromNumber(this.dayPrice, 'EUR', 2);
+        const cost = ezmoney.multiply(dayPrice, daysWorked, 0);
+        return ezmoney.toNumber(cost);
     }
-    // public get name(): string {
-    //     return this._name;
-    // }
     get firstName() {
         return this._firstName;
     }
@@ -32,12 +31,6 @@ class Cameraman {
     get period() {
         return this._period;
     }
-    // private setName(name: string): void {
-    //     if (isNullOrUndefined(name)) {
-    //         throw new Error("Provided name is null or undefined.");
-    //     }
-    //     this._name = name;
-    // }
     setFirstName(firstName) {
         if (util_1.isNullOrUndefined(firstName)) {
             throw new Error("Provided firstname is null or undefined.");
