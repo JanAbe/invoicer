@@ -71,6 +71,7 @@ export class Address {
         this._houseNumber = houseNumber;
     }
     
+    // todo: add more checks
     private setZipcode(zipcode: string): void {
         const DUTCH_ZIPCODE_LENGTH = 6;
 

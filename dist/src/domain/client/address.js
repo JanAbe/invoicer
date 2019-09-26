@@ -50,6 +50,7 @@ class Address {
         }
         this._houseNumber = houseNumber;
     }
+    // todo: add more checks
     setZipcode(zipcode) {
         const DUTCH_ZIPCODE_LENGTH = 6;
         if (util_1.isNullOrUndefined(zipcode)) {

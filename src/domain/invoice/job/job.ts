@@ -59,6 +59,20 @@ export class Job {
         const total = ezmoney.add(costsEUR, vatCostsEUR);
         return ezmoney.toNumber(total);
     }
+    
+    /**
+     * Calculates the amount of money that needs to be paid because of VAT
+     * @param costs the costs of the rented out equipment and cameraman
+     * @param vatPercentage the percentage of VAT that needs to be paid
+     */
+    public calculateVATCosts(costs: number, vatPercentage: number): number {
+        const costsEUR = ezmoney.fromNumber(costs, 'EUR', 2, ezmoney.roundUp);
+        const vatCosts = ezmoney.multiply(costsEUR, vatPercentage, 2, ezmoney.roundUp);
+
+        return ezmoney.toNumber(
+            ezmoney.divide(vatCosts, 100, 2, ezmoney.roundUp)
+        );
+    }
 
     /**
      * Calculates the amount of money that needs to be paid based on
@@ -80,20 +94,6 @@ export class Job {
         }
         
         return ezmoney.toNumber(costs);
-    }
-
-    /**
-     * Calculates the amount of money that needs to be paid because of VAT
-     * @param costs the costs of the rented out equipment and cameraman
-     * @param vatPercentage the percentage of VAT that needs to be paid
-     */
-    public calculateVATCosts(costs: number, vatPercentage: number): number {
-        const costsEUR = ezmoney.fromNumber(costs, 'EUR', 2, ezmoney.roundUp);
-        const vatCosts = ezmoney.multiply(costsEUR, vatPercentage, 2, ezmoney.roundUp);
-
-        return ezmoney.toNumber(
-            ezmoney.divide(vatCosts, 100, 2, ezmoney.roundUp)
-        );
     }
 
     public get id(): JobID | undefined {

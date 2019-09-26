@@ -16,7 +16,7 @@ describe('FullName', () => {
         });
     });
     describe('setFirstName', () => {
-        it('should trim the input', () => {
+        it('should trim the input, removing whitespaces', () => {
             const firstName = '   tom ';
             const lastName = ' bicycle ';
             const result = new fullName_1.FullName(firstName, lastName);
