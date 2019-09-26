@@ -71,9 +71,6 @@ class InvoiceChannelManager {
                 const fetchUserByIDPromise = this.userService.fetchUserByID(args[userKey]);
                 Promise.all([fetchInvoiceByIDPromise, fetchUserByIDPromise])
                     .then(results => {
-                    return results;
-                })
-                    .then(results => {
                     const invoiceDTO = results[0];
                     const userDTO = results[1];
                     const renderedHTML = htmlService_1.HtmlService.generateInvoiceTemplate(invoiceDTO, userDTO);

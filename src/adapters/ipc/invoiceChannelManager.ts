@@ -85,9 +85,6 @@ export class InvoiceChannelManager implements ChannelManager {
 
                 Promise.all([fetchInvoiceByIDPromise, fetchUserByIDPromise])
                 .then(results => {
-                    return results;
-                })
-                .then(results => {
                     const invoiceDTO = results[0];
                     const userDTO = results[1];
                     const renderedHTML = HtmlService.generateInvoiceTemplate(invoiceDTO, userDTO);

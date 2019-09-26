@@ -76,14 +76,14 @@ class InvoiceService {
                 invoiceDTO.creationDate = invoice.creationDate;
                 yield this._jobRepo.jobOfID(invoice.jobID)
                     .then(job => {
-                    invoiceDTO.job = new jobDTOx_1.JobDTO(job.description);
+                    invoiceDTO.jobDTO = new jobDTOx_1.JobDTO(job.description);
                     return job.clientID;
                 })
                     .then(clientID => {
                     return this._clientRepo.clientOfID(clientID);
                 })
                     .then(client => {
-                    invoiceDTO.client = new clientDTO_1.ClientDTO(client.fullName.firstName, client.fullName.lastName);
+                    invoiceDTO.clientDTO = new clientDTO_1.ClientDTO(client.fullName.firstName, client.fullName.lastName);
                 })
                     .catch(err => {
                     console.log(err);
@@ -116,17 +116,17 @@ class InvoiceService {
             invoiceDTO.invoiceNumber = 'some-number';
             invoiceDTO.projectNumber = 'project-number';
             invoiceDTO.creationDate = invoice.creationDate;
-            invoiceDTO.client = new clientDTO_1.ClientDTO(client.fullName.firstName, client.fullName.lastName, client.email.emailAddress, client.address.city, client.address.street, client.address.houseNumber, client.address.zipcode, client.id.toString());
-            invoiceDTO.job = new jobDTOx_1.JobDTO(job.description, job.location, job.directedBy, undefined, job.id.toString());
+            invoiceDTO.clientDTO = new clientDTO_1.ClientDTO(client.fullName.firstName, client.fullName.lastName, client.email.emailAddress, client.address.city, client.address.street, client.address.houseNumber, client.address.zipcode, client.id.toString());
+            invoiceDTO.jobDTO = new jobDTOx_1.JobDTO(job.description, job.location, job.directedBy, undefined, job.id.toString());
             if (job.cameraman !== undefined) {
-                invoiceDTO.job.cameramanDTO = new cameramanDTO_1.CameramanDTO(job.cameraman.firstName, job.cameraman.lastName, job.cameraman.dayPrice, job.cameraman.period.startDate, job.cameraman.period.endDate, job.cameraman.period.getDays(), job.cameraman.calculateCost());
+                invoiceDTO.jobDTO.cameramanDTO = new cameramanDTO_1.CameramanDTO(job.cameraman.firstName, job.cameraman.lastName, job.cameraman.dayPrice, job.cameraman.period.startDate, job.cameraman.period.endDate, job.cameraman.period.getDays(), job.cameraman.calculateCost());
             }
             const equipmentItemDTOs = [];
             job.equipmentItems.forEach(e => {
                 const { name, dayPrice, period } = e;
                 equipmentItemDTOs.push(new equipmentItemDTO_1.EquipmentItemDTO(name, dayPrice, period.startDate, period.endDate, period.getDays(), e.calculateCost()));
             });
-            invoiceDTO.job.equipmentItemDTOs = equipmentItemDTOs;
+            invoiceDTO.jobDTO.equipmentItemDTOs = equipmentItemDTOs;
             return invoiceDTO;
         });
     }

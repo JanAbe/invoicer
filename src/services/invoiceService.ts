@@ -118,14 +118,14 @@ export class InvoiceService {
 
             await this._jobRepo.jobOfID(invoice.jobID)
                 .then(job => {
-                    invoiceDTO.job = new JobDTO(job.description);
+                    invoiceDTO.jobDTO = new JobDTO(job.description);
                     return job.clientID;
                 })
                 .then(clientID => {
                     return this._clientRepo.clientOfID(clientID!);
                 })
                 .then(client => {
-                    invoiceDTO.client = new ClientDTO(
+                    invoiceDTO.clientDTO = new ClientDTO(
                         client.fullName.firstName,
                         client.fullName.lastName
                     );
@@ -163,7 +163,7 @@ export class InvoiceService {
         invoiceDTO.invoiceNumber = 'some-number';
         invoiceDTO.projectNumber = 'project-number';
         invoiceDTO.creationDate = invoice.creationDate;
-        invoiceDTO.client = new ClientDTO(
+        invoiceDTO.clientDTO = new ClientDTO(
             client.fullName.firstName,
             client.fullName.lastName,
             client.email.emailAddress,
@@ -174,7 +174,7 @@ export class InvoiceService {
             client.id.toString()
         )
 
-        invoiceDTO.job = new JobDTO(
+        invoiceDTO.jobDTO = new JobDTO(
             job.description,
             job.location,
             job.directedBy,
@@ -183,7 +183,7 @@ export class InvoiceService {
         );
 
         if (job.cameraman !== undefined) {
-            invoiceDTO.job.cameramanDTO = new CameramanDTO(
+            invoiceDTO.jobDTO.cameramanDTO = new CameramanDTO(
                 job.cameraman.firstName,
                 job.cameraman.lastName,
                 job.cameraman.dayPrice,
@@ -208,7 +208,7 @@ export class InvoiceService {
                 )
             )
         });
-        invoiceDTO.job.equipmentItemDTOs = equipmentItemDTOs;
+        invoiceDTO.jobDTO.equipmentItemDTOs = equipmentItemDTOs;
         
         return invoiceDTO;
     }

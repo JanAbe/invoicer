@@ -13,25 +13,25 @@
         </div>
 
         <div id="client-info">
-            <div id="client-name">{{ invoiceDTO.client.firstName | capitalize }} {{ invoiceDTO.client.lastName | capitalize }}</div>
-            <div id="street-house-nr">{{ invoiceDTO.client.street | capitalize }} {{ invoiceDTO.client.houseNumber }}</div>
-            <div id="zipcode-city">{{ invoiceDTO.client.zipcode }}, {{ invoiceDTO.client.city | capitalize }}</div>
+            <div id="client-name">{{ invoiceDTO.clientDTO.firstName | capitalize }} {{ invoiceDTO.clientDTO.lastName | capitalize }}</div>
+            <div id="street-house-nr">{{ invoiceDTO.clientDTO.street | capitalize }} {{ invoiceDTO.clientDTO.houseNumber }}</div>
+            <div id="zipcode-city">{{ invoiceDTO.clientDTO.zipcode }}, {{ invoiceDTO.clientDTO.city | capitalize }}</div>
         </div>
 
         <div id="general-info">
             <div id="invoice-nr"><strong>Rekeningnummer:</strong> {{ invoiceDTO.invoiceNumber }}</div>
-            <div id="contact-person">Contactpersoon: {{ invoiceDTO.client.firstName | capitalize }} {{ invoiceDTO.client.lastName | capitalize }}</div>
+            <div id="contact-person">Contactpersoon: {{ invoiceDTO.clientDTO.firstName | capitalize }} {{ invoiceDTO.clientDTO.lastName | capitalize }}</div>
             <div id="project-nr">Projectnummer: {{ invoiceDTO.projectNumber }}</div>
         </div>
 
         <div id="job-info">
-            <div id="job-description">Werktitel: {{ invoiceDTO.job.description | capitalize }}</div>
-            <div id="directed-by">Regie: {{ invoiceDTO.job.directedBy | capitalize }}</div>
-            <div id="location">Locatie: {{ invoiceDTO.job.location | capitalize }}</div>
+            <div id="job-description">Werktitel: {{ invoiceDTO.jobDTO.description | capitalize }}</div>
+            <div id="directed-by">Regie: {{ invoiceDTO.jobDTO.directedBy | capitalize }}</div>
+            <div id="location">Locatie: {{ invoiceDTO.jobDTO.location | capitalize }}</div>
         </div>
 
-        {% if invoiceDTO.job.cameramanDTO !== undefined %}
-            {% set cameraman_costs = invoiceDTO.job.cameramanDTO.costs %}
+        {% if invoiceDTO.jobDTO.cameramanDTO !== undefined %}
+            {% set cameraman_costs = invoiceDTO.jobDTO.cameramanDTO.costs %}
             <div id="cameraman-segment">
                 <h5>Cameraman</h5>
                 <table>
@@ -44,12 +44,12 @@
                         <th>Kosten</th>
                     </tr>
                     <tr>
-                        <td>{{ invoiceDTO.job.cameramanDTO.firstName | capitalize }} {{ invoiceDTO.job.cameramanDTO.lastName | capitalize }}</td>
-                        <td>{{ invoiceDTO.job.cameramanDTO.startDate.toLocaleDateString('nl') }}</td>
-                        <td>{{ invoiceDTO.job.cameramanDTO.endDate.toLocaleDateString('nl') }}</td>
-                        <td>{{ invoiceDTO.job.cameramanDTO.daysWorked }}</td>
-                        <td>€{{ invoiceDTO.job.cameramanDTO.dayPrice }}</td>
-                        <td>€{{ invoiceDTO.job.cameramanDTO.costs }}</td>
+                        <td>{{ invoiceDTO.jobDTO.cameramanDTO.firstName | capitalize }} {{ invoiceDTO.jobDTO.cameramanDTO.lastName | capitalize }}</td>
+                        <td>{{ invoiceDTO.jobDTO.cameramanDTO.startDate.toLocaleDateString('nl') }}</td>
+                        <td>{{ invoiceDTO.jobDTO.cameramanDTO.endDate.toLocaleDateString('nl') }}</td>
+                        <td>{{ invoiceDTO.jobDTO.cameramanDTO.daysWorked }}</td>
+                        <td>€{{ invoiceDTO.jobDTO.cameramanDTO.dayPrice }}</td>
+                        <td>€{{ invoiceDTO.jobDTO.cameramanDTO.costs }}</td>
                     </tr>
                 </table>
 
@@ -59,7 +59,7 @@
             </div>
         {% endif %}
 
-        {% if invoiceDTO.job.equipmentItemDTOs.length !== 0 %}
+        {% if invoiceDTO.jobDTO.equipmentItemDTOs.length !== 0 %}
             {% set equipment_costs = 0 %}
             <div id="equipment-segment">
                 <h5>Apparatuur</h5>
@@ -73,7 +73,7 @@
                         <th>Kosten</th>
                     </tr>
 
-                    {% for item in invoiceDTO.job.equipmentItemDTOs %}
+                    {% for item in invoiceDTO.jobDTO.equipmentItemDTOs %}
                         {% set equipment_costs = item.costs %}
                         {% set equipment_total_costs = equipment_total_costs + equipment_costs %}
                         <tr>

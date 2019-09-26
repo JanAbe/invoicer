@@ -10,8 +10,8 @@ export class InvoiceDTO {
     public projectNumber?: string;
     public creationDate?: Date;
 
-    public client?: ClientDTO;
-    public job?: JobDTO
+    public clientDTO?: ClientDTO;
+    public jobDTO?: JobDTO
 
     constructor() {}
 }

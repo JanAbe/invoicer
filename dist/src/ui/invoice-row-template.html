@@ -8,8 +8,8 @@
             {{ input(value=invoiceDTO.id) }}
         </td>
         <td>{{ invoiceDTO.invoiceNumber }}</td>
-        <td>{{ invoiceDTO.job.description }}</td>
-        <td>{{ invoiceDTO.client.firstName }} {{ invoiceDTO.client.lastName }}</td>
+        <td>{{ invoiceDTO.jobDTO.description }}</td>
+        <td>{{ invoiceDTO.clientDTO.firstName }} {{ invoiceDTO.clientDTO.lastName }}</td>
         <td>{{ invoiceDTO.creationDate.toLocaleDateString('nl') }}</td>
     </tr>
 {% endfor %}
