@@ -48,13 +48,13 @@
                         <td>{{ invoiceDTO.jobDTO.cameramanDTO.startDate.toLocaleDateString('nl') }}</td>
                         <td>{{ invoiceDTO.jobDTO.cameramanDTO.endDate.toLocaleDateString('nl') }}</td>
                         <td>{{ invoiceDTO.jobDTO.cameramanDTO.daysWorked }}</td>
-                        <td>€{{ invoiceDTO.jobDTO.cameramanDTO.dayPrice }}</td>
-                        <td>€{{ invoiceDTO.jobDTO.cameramanDTO.costs }}</td>
+                        <td>€{{ invoiceDTO.jobDTO.cameramanDTO.dayPrice.toFixed(2) }}</td>
+                        <td>€{{ invoiceDTO.jobDTO.cameramanDTO.costs.toFixed(2) }}</td>
                     </tr>
                 </table>
 
                 <div class="subtotal">
-                    Subtotaal: €{{ cameraman_costs }}
+                    Subtotaal: €{{ cameraman_costs.toFixed(2) }}
                 </div>
             </div>
         {% endif %}
@@ -81,14 +81,14 @@
                             <td>{{ item.startDate.toLocaleDateString('nl') }}</td>
                             <td>{{ item.endDate.toLocaleDateString('nl') }}</td>
                             <td>{{ item.daysRented }}</td>
-                            <td>€{{ item.dayPrice }}</td>
-                            <td>€{{ item.costs }}</td>
+                            <td>€{{ item.dayPrice.toFixed(2) }}</td>
+                            <td>€{{ item.costs.toFixed(2) }}</td>
                         </tr>
                     {% endfor %}
                 </table>
 
                 <div class="subtotal">
-                    Subtotaal: €{{ equipment_total_costs }}
+                    Subtotaal: €{{ equipment_total_costs.toFixed(2) }}
                 </div>
             </div>
         {% endif %}
@@ -106,9 +106,6 @@
                 </tr>
 
                 <tr>
-                    {# <td>€{{ subtotal_costs }}</td> #}
-                    {# <td>€{{ vat_costs }}</td>
-                    <td><strong>€{{ total_costs }}</strong></td> #}
                     <td>€{{ invoiceDTO.jobDTO.totalCosts.toFixed(2) }}</td>
                     <td>€{{ invoiceDTO.jobDTO.vatCosts.toFixed(2) }}</td>
                     <td><strong>€{{ invoiceDTO.jobDTO.totalCostsWithVAT.toFixed(2) }}</strong></td>

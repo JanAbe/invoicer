@@ -12,6 +12,7 @@ class Invoice {
         this._iban = iban;
         this._creationDate = creationDate;
     }
+    // todo: implement this method
     generateInvoiceNumber() {
         // two ideas atm:
         // create static variable invoiceNumber

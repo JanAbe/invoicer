@@ -58,13 +58,6 @@ class InvoiceService {
         this._invoiceRepo.save(newInvoice, newJob);
         // todo: look into dependencies (dependency flow)
     }
-    // rename to fetchAllInvoicesAndRenderHTML
-    // or split in 2 functions
-    // because atm it is tightly coupled with html and nunjucks
-    // what if i want to send back a json representation or something
-    // need to add a new adapter class that does stuff with html
-    // changed return type to string because i couldn't figure out
-    // how to use nunjucks in the client-side scripts
     fetchAllInvoices() {
         return __awaiter(this, void 0, void 0, function* () {
             const invoiceDTOs = [];
@@ -94,18 +87,6 @@ class InvoiceService {
         });
     }
     // todo: remove hardcoded values and write code to support this
-    // todo: rename to generateInvoiceHTML?
-    // todo: look into used (!) exclamation marks
-    // todo: look into best way to store money values
-    // atm the number datatype is used.
-    // 5964 + 1252.44 = 7216.4400000000005
-    // todo: think about where i want to place this function
-    // because it returns html it is pretty specific. Keep it here, or move to some htmlService?
-    // todo: maybe rename / remove function?
-    // make invoiceChannelManager call the htmlService directly instead of via this function?
-    // but how does the invoiceChanManager get all necessary objects.
-    // it needs to talk to the repositories, but they are in the inner hexagon, so this would mean
-    // it would skip the application service layer, hmmm....
     fetchInvoiceByID(invoiceID) {
         return __awaiter(this, void 0, void 0, function* () {
             const invoice = yield this._invoiceRepo.invoiceOfID(new invoiceID_1.InvoiceID(invoiceID));

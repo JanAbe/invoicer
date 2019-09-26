@@ -20,6 +20,7 @@ export class Invoice {
         this._creationDate = creationDate;
     }
 
+    // todo: implement this method
     public generateInvoiceNumber(): string {
         // two ideas atm:
             // create static variable invoiceNumber

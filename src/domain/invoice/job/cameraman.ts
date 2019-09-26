@@ -21,10 +21,8 @@ export class Cameraman implements Rentable {
 
     public calculateCost(): number {
         const daysWorked = this.period.getDays();
-        // const cost = this.dayPrice * daysWorked;
-
         const dayPrice = ezmoney.fromNumber(this.dayPrice, 'EUR', 2);
-        const cost = ezmoney.multiply(dayPrice, daysWorked, 0);
+        const cost = ezmoney.multiply(dayPrice, daysWorked, 0, ezmoney.roundUp);
         return ezmoney.toNumber(cost);
     }
 

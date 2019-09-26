@@ -3,9 +3,6 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const util_1 = require("util");
 const ezmoney = require("ezmoney");
 class Job {
-    // of wel een propety _period: Period toevoegen
-    // dan tijdens het toevoegen van een cameraman en apparatuurItems
-    // kijken of de opgegeven periodes daarvan, binnen de periode van de klus vallen
     constructor(id, description, location, directedBy, clientID, cameraman, equipmentItems = [], comment) {
         this._id = id;
         this._description = description;
@@ -37,14 +34,14 @@ class Job {
      * which equipmentItems and cameraman were rented out.
      */
     calculateCost() {
-        let costs = ezmoney.fromNumber(0, 'EUR', 2);
+        let costs = ezmoney.fromNumber(0, 'EUR', 2, ezmoney.roundUp);
         if (!util_1.isNullOrUndefined(this.cameraman)) {
-            const cameramanCosts = ezmoney.fromNumber(this.cameraman.calculateCost(), 'EUR', 2);
+            const cameramanCosts = ezmoney.fromNumber(this.cameraman.calculateCost(), 'EUR', 2, ezmoney.roundUp);
             costs = ezmoney.add(costs, cameramanCosts);
         }
         if (!util_1.isNullOrUndefined(this.equipmentItems) && this.equipmentItems.length !== 0) {
             this.equipmentItems.forEach(item => {
-                const equipmentItemCosts = ezmoney.fromNumber(item.calculateCost(), 'EUR', 2);
+                const equipmentItemCosts = ezmoney.fromNumber(item.calculateCost(), 'EUR', 2, ezmoney.roundUp);
                 costs = ezmoney.add(costs, equipmentItemCosts);
             });
         }
@@ -56,9 +53,9 @@ class Job {
      * @param vatPercentage the percentage of VAT that needs to be paid
      */
     calculateVATCosts(costs, vatPercentage) {
-        const costsEUR = ezmoney.fromNumber(costs, 'EUR', 2);
-        const vatCosts = ezmoney.multiply(costsEUR, vatPercentage, 2);
-        return ezmoney.toNumber(ezmoney.divide(vatCosts, 100, 2));
+        const costsEUR = ezmoney.fromNumber(costs, 'EUR', 2, ezmoney.roundUp);
+        const vatCosts = ezmoney.multiply(costsEUR, vatPercentage, 2, ezmoney.roundUp);
+        return ezmoney.toNumber(ezmoney.divide(vatCosts, 100, 2, ezmoney.roundUp));
     }
     get id() {
         return this._id;

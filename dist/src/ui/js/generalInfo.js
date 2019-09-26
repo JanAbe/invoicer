@@ -37,9 +37,6 @@ street.value = localStorage.getItem('street');
 houseNr.value = localStorage.getItem('houseNr');
 id.value = localStorage.getItem('id');
 
-// todo: fix
-// have to click the button two times in order to update the 
-// id key in the localstorage from "" to [some id]
 btn.addEventListener('click', () => {
     localStorage.setItem('firstName', firstName.value);
     localStorage.setItem('lastName', lastName.value);
