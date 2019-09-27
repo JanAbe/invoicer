@@ -32,7 +32,7 @@ export class InvoiceService {
         this._userRepo = userRepo;
     }
 
-    public createInvoice(invoiceProps: any) {
+    public async createInvoice(invoiceProps: any) {
         const { iban, client, job, cameraman, equipmentItems } = invoiceProps; 
         const { clientFirstName, clientLastName, email, city, street, zipcode, houseNumber } = client;
         const { description, location, directedBy } = job;
@@ -85,10 +85,13 @@ export class InvoiceService {
             newEquipmentItems
         )
 
+        const creationDate = new Date();
         const newInvoice = new Invoice(
             this._invoiceRepo.nextID(),
+            await this._invoiceRepo.nextInvoiceNumber(creationDate),
             jobID,
-            iban
+            iban,
+            creationDate
         )
         
         this._clientRepo.save(newClient);
@@ -138,7 +141,7 @@ export class InvoiceService {
 
         const invoiceDTO = new InvoiceDTO();
         invoiceDTO.id = invoice.invoiceID.toString();
-        invoiceDTO.invoiceNumber = 'some-number';
+        invoiceDTO.invoiceNumber = invoice.invoiceNumber;
         invoiceDTO.projectNumber = 'project-number';
         invoiceDTO.creationDate = invoice.creationDate;
         invoiceDTO.vatPercentage = 21;

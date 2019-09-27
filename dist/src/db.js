@@ -22,7 +22,7 @@ class DB {
                     reject(err);
                 }
                 else {
-                    resolve(this.lastID); // extend this so the number of updated fields are returned if an update query is passed and succesful?
+                    resolve(this.lastID);
                 }
             });
         });
@@ -147,6 +147,7 @@ class DB {
         const createTableInvoice = `
             CREATE TABLE IF NOT EXISTS Invoice (
                 id TEXT PRIMARY KEY,
+                invoice_number TEXT,
                 iban TEXT,
                 creation_date TEXT,
                 ref_job TEXT,

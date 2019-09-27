@@ -1,8 +1,8 @@
 import { IpcMain, BrowserWindow } from "electron";
-import { InvoiceService } from '../../services/invoiceService';
+import { InvoiceService } from '../../application/invoiceService';
 import { ChannelManager } from "./channelManager";
-import { HtmlService } from "../../services/htmlService";
-import { UserService } from "../../services/userService";
+import { HtmlService } from "../../application/htmlService";
+import { UserService } from "../../application/userService";
 
 /**
  * InvoiceChannel manages all invoice related channels

@@ -5,36 +5,49 @@ import IBAN = require('iban');
 
 export class Invoice {
     private _invoiceID!: InvoiceID;
+    private _invoiceNumber!: string; // maybe/probably give this its own type
     private _jobID!: JobID;
     private _iban!: string;
     private _creationDate: Date;
 
-    // todo: create tests (for everything lol :c)
-    // todo: add comment attribute
-        // user can write some text in there
-    // todo: add invoiceNumber attribute
-    constructor(invoiceID: InvoiceID, jobID: JobID, iban: string, creationDate: Date = new Date()) {
+    constructor(invoiceID: InvoiceID, invoiceNumber: string, jobID: JobID, iban: string, creationDate: Date = new Date()) {
         this.setInvoiceID(invoiceID);
+        this.setInvoiceNumber(invoiceNumber);
         this.setJobID(jobID);
         this.setIban(iban);
         this._creationDate = creationDate;
     }
 
-    // todo: implement this method
-    public generateInvoiceNumber(): string {
-        // two ideas atm:
-            // create static variable invoiceNumber
-            // or create attribute invoiceNumber
-            // than retrieve previously created invoice
-            // based on creationDate. Use this one's invoiceNumber
-            // to determine the invoiceNumber of the current invoice
-        // or should this method be placed in the application service?
-            // because it needs a repository to fetch the previous invoiceNumber
-        throw new Error('Not implemented yet'); 
+    /**
+     * Generates a new invoice number based on the amount of already present
+     * invoices of this year, the creation date
+     * @param nrOfInvoices the nr of invoices that are already made this year
+     * @param creationDate the date this invoice is being made
+     */
+    // todo: rewrite so it isn't the slowest thing ever
+    public static generateInvoiceNumber(nrOfInvoices: number, creationDate: Date): string {
+        const maxSize = 5; // max 99_999 invoiceNumbers can be made === enough room for growth
+        if (nrOfInvoices === 99999) {
+            throw new Error("Max nr of invoices already reached. Aborting.")
+        }
+        nrOfInvoices++
+        let nextInvoiceNumber = nrOfInvoices.toString();
+        while (nextInvoiceNumber.length !== maxSize) {
+            nextInvoiceNumber = `0${nextInvoiceNumber}`;
+        }
+
+        nextInvoiceNumber = `${creationDate.getFullYear()}${nextInvoiceNumber}`;
+
+        return nextInvoiceNumber;
     }
+
 
     public get invoiceID(): InvoiceID {
         return this._invoiceID;
+    }
+
+    public get invoiceNumber(): string {
+        return this._invoiceNumber;
     }
 
     public get jobID(): JobID {
@@ -55,6 +68,15 @@ export class Invoice {
         }
 
         this._invoiceID = invoiceID;
+    }
+
+    private setInvoiceNumber(invoiceNumber: string) {
+        if (isNullOrUndefined(invoiceNumber)) {
+            throw new Error("Provided invoiceNumber is null or undefined");
+        }
+
+        this._invoiceNumber = invoiceNumber;
+        
     }
 
     private setJobID(jobID: JobID) {

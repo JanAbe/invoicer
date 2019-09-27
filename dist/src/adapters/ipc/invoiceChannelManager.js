@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-const htmlService_1 = require("../../services/htmlService");
+const htmlService_1 = require("../../application/htmlService");
 /**
  * InvoiceChannel manages all invoice related channels
  * used by IPC for communicating with the renderer process of electron
@@ -97,6 +97,9 @@ class InvoiceChannelManager {
     initSubmit() {
         const listenChannel = 'submit-invoice-channel';
         const replyChannel = 'submit-invoice-reply-channel';
+        // todo: maybe remove all checks to see if the key is empty
+        // and move these checks to the domain classes
+        // then just pass the args to the invoiceService method
         this.ipcMain.on(listenChannel, (event, args) => {
             try {
                 const invoiceProps = {};

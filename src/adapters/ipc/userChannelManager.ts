@@ -1,6 +1,6 @@
 import { ChannelManager } from "./channelManager";
 import { IpcMain } from "electron";
-import { UserService } from "../../services/userService";
+import { UserService } from "../../application/userService";
 
 /**
  * UserChannel manages all user related channels

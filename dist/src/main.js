@@ -5,11 +5,11 @@ const db_1 = require("./db");
 const sqliteInvoiceRepo_1 = require("./adapters/persistence/sqlite/sqliteInvoiceRepo");
 const sqliteJobRepo_1 = require("./adapters/persistence/sqlite/sqliteJobRepo");
 const sqliteClientRepo_1 = require("./adapters/persistence/sqlite/sqliteClientRepo");
-const invoiceService_1 = require("./services/invoiceService");
+const invoiceService_1 = require("./application/invoiceService");
 const sqliteUserRepo_1 = require("./adapters/persistence/sqlite/sqliteUserRepo");
 const invoiceChannelManager_1 = require("./adapters/ipc/invoiceChannelManager");
 const userChannelManager_1 = require("./adapters/ipc/userChannelManager");
-const userService_1 = require("./services/userService");
+const userService_1 = require("./application/userService");
 // Handle creating/removing shortcuts on Windows when installing/uninstalling.
 if (require('electron-squirrel-startup')) { // eslint-disable-line global-require
     electron_1.app.quit();

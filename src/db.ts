@@ -157,6 +157,7 @@ export class DB {
         const createTableInvoice = `
             CREATE TABLE IF NOT EXISTS Invoice (
                 id TEXT PRIMARY KEY,
+                invoice_number TEXT,
                 iban TEXT,
                 creation_date TEXT,
                 ref_job TEXT,

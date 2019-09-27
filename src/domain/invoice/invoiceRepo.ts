@@ -7,6 +7,9 @@ export interface InvoiceRepo {
     // nextID creates a new InvoiceID to use
     nextID(): InvoiceID;
 
+    // nextInvoiceNumber creates an InvoiceNumber based on the previous one and the given date, thus returning the next one in line
+    nextInvoiceNumber(date: Date): Promise<string>;
+
     // TODO: think about a way that is better for performance than to fetch 'em all. Maybe work with observables or something?
     // invoices fetches all invoices in the database
     invoices(): Promise<Invoice[]>;

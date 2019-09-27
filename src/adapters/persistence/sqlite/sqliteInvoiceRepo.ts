@@ -21,6 +21,19 @@ export class SqliteInvoiceRepo implements InvoiceRepo {
         return new InvoiceID(uuid());
     }
 
+    public async nextInvoiceNumber(date: Date): Promise<string> {
+        let nextInvoiceNumber = '';
+        const year = date.getFullYear().toString();
+        const nrOfInvoicesCurrentYearQuery = `SELECT Count(*) as nr FROM Invoice WHERE creation_date LIKE '%${year}%';`;
+        const row = await this._db.get(nrOfInvoicesCurrentYearQuery);
+
+        if (row === undefined) {
+            return nextInvoiceNumber;
+        }
+
+        return Invoice.generateInvoiceNumber(row.nr, date);
+    }
+
     public async invoices(): Promise<Invoice[]> {
         const query: string = 'SELECT id from Invoice;';
         let invoices: Invoice[] = [];
@@ -42,21 +55,22 @@ export class SqliteInvoiceRepo implements InvoiceRepo {
     }
 
     public async invoiceOfID(invoiceID: InvoiceID): Promise<Invoice> {
-        const query = 'SELECT id, creation_date, iban, ref_job FROM Invoice WHERE id=?'; 
+        const query = 'SELECT id, creation_date, invoice_number, iban, ref_job FROM Invoice WHERE id=?'; 
 
         // how does this work?
         // how is this a promise? it was suggested by vscode to change it into this
         const row = await this._db.get(query, [invoiceID.toString()]);
-        return new Invoice(new InvoiceID(row.id), new JobID(row.ref_job), row.iban, moment(row.creation_date, 'DD/MM/YYYY').toDate());
+        return new Invoice(new InvoiceID(row.id), row.invoice_number, new JobID(row.ref_job), row.iban, moment(row.creation_date, 'DD/MM/YYYY').toDate());
     }
 
     public save(invoice: Invoice, job: Job): void {
         this._jobRepo.save(job);
-        const invoiceQuery = 'INSERT INTO Invoice (id, iban, creation_date, ref_job) VALUES (?, ?, ?, ?);';
+        const invoiceQuery = 'INSERT INTO Invoice (id, invoice_number, iban, creation_date, ref_job) VALUES (?, ?, ?, ?, ?);';
         this._db.run(invoiceQuery, [
             invoice.invoiceID.toString(),
+            invoice.invoiceNumber,
             invoice.iban,
-            invoice.creationDate.toLocaleDateString('nl'),
+            invoice.creationDate.toLocaleString('nl'),
             invoice.jobID.toString()
         ]);
     }

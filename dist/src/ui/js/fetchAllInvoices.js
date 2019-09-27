@@ -55,8 +55,12 @@ const fetchAllInvoicesHTMLAndInsert = (chan) => {
         // of the functions that return the html body. Otherwise the html page is empty
         // when these functions are called.
         invoicesTable.insertAdjacentHTML('beforeend', html);
-        bindClickEventToRow();
-        filterInvoices();
+        try {
+            bindClickEventToRow();
+            filterInvoices();
+        } catch(e) {
+            // todo: think about what to do here
+        }
     });
 }
 

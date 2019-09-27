@@ -3,11 +3,11 @@ import { DB } from './db';
 import { SqliteInvoiceRepo } from './adapters/persistence/sqlite/sqliteInvoiceRepo';
 import { SqliteJobRepo } from './adapters/persistence/sqlite/sqliteJobRepo';
 import { SqliteClientRepo } from './adapters/persistence/sqlite/sqliteClientRepo';
-import { InvoiceService } from './services/invoiceService';
+import { InvoiceService } from './application/invoiceService';
 import { SqliteUserRepo } from './adapters/persistence/sqlite/sqliteUserRepo';
 import { InvoiceChannelManager } from './adapters/ipc/invoiceChannelManager';
 import { UserChannelManager } from './adapters/ipc/userChannelManager';
-import { UserService } from './services/userService';
+import { UserService } from './application/userService';
 
 // Handle creating/removing shortcuts on Windows when installing/uninstalling.
 if (require('electron-squirrel-startup')) { // eslint-disable-line global-require

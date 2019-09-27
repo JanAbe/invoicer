@@ -25,6 +25,18 @@ class SqliteInvoiceRepo {
     nextID() {
         return new invoiceID_1.InvoiceID(uuid());
     }
+    nextInvoiceNumber(date) {
+        return __awaiter(this, void 0, void 0, function* () {
+            let nextInvoiceNumber = '';
+            const year = date.getFullYear().toString();
+            const nrOfInvoicesCurrentYearQuery = `SELECT Count(*) as nr FROM Invoice WHERE creation_date LIKE '%${year}%';`;
+            const row = yield this._db.get(nrOfInvoicesCurrentYearQuery);
+            if (row === undefined) {
+                return nextInvoiceNumber;
+            }
+            return invoice_1.Invoice.generateInvoiceNumber(row.nr, date);
+        });
+    }
     invoices() {
         return __awaiter(this, void 0, void 0, function* () {
             const query = 'SELECT id from Invoice;';
@@ -45,20 +57,21 @@ class SqliteInvoiceRepo {
     }
     invoiceOfID(invoiceID) {
         return __awaiter(this, void 0, void 0, function* () {
-            const query = 'SELECT id, creation_date, iban, ref_job FROM Invoice WHERE id=?';
+            const query = 'SELECT id, creation_date, invoice_number, iban, ref_job FROM Invoice WHERE id=?';
             // how does this work?
             // how is this a promise? it was suggested by vscode to change it into this
             const row = yield this._db.get(query, [invoiceID.toString()]);
-            return new invoice_1.Invoice(new invoiceID_1.InvoiceID(row.id), new jobID_1.JobID(row.ref_job), row.iban, moment_1.default(row.creation_date, 'DD/MM/YYYY').toDate());
+            return new invoice_1.Invoice(new invoiceID_1.InvoiceID(row.id), row.invoice_number, new jobID_1.JobID(row.ref_job), row.iban, moment_1.default(row.creation_date, 'DD/MM/YYYY').toDate());
         });
     }
     save(invoice, job) {
         this._jobRepo.save(job);
-        const invoiceQuery = 'INSERT INTO Invoice (id, iban, creation_date, ref_job) VALUES (?, ?, ?, ?);';
+        const invoiceQuery = 'INSERT INTO Invoice (id, invoice_number, iban, creation_date, ref_job) VALUES (?, ?, ?, ?, ?);';
         this._db.run(invoiceQuery, [
             invoice.invoiceID.toString(),
+            invoice.invoiceNumber,
             invoice.iban,
-            invoice.creationDate.toLocaleDateString('nl'),
+            invoice.creationDate.toLocaleString('nl'),
             invoice.jobID.toString()
         ]);
     }
