@@ -23,6 +23,9 @@ class UserService {
     }
     fetchUserByID(userID) {
         return __awaiter(this, void 0, void 0, function* () {
+            if (userID === undefined) {
+                throw new Error('Provided userID is undefined');
+            }
             return yield this._userRepo.userOfID(userID);
         });
     }

@@ -26,8 +26,8 @@ export class Invoice {
      */
     // todo: rewrite so it isn't the slowest thing ever
     public static generateInvoiceNumber(nrOfInvoices: number, creationDate: Date): string {
-        const maxSize = 5; // max 99_999 invoiceNumbers can be made === enough room for growth
-        if (nrOfInvoices === 99999) {
+        const maxSize = 2; // max 99 invoiceNumbers can be made each year === enough room for growth
+        if (nrOfInvoices === 99) {
             throw new Error("Max nr of invoices already reached. Aborting.")
         }
         nrOfInvoices++

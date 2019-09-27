@@ -71,18 +71,19 @@ export class Address {
         this._houseNumber = houseNumber;
     }
     
-    // todo: add more checks
     private setZipcode(zipcode: string): void {
-        const DUTCH_ZIPCODE_LENGTH = 6;
+        const validationRegex = /^\d{4}\s*[a-zA-z]{2}$/;
 
         if (isNullOrUndefined(zipcode)) {
             throw new Error("Provided zipcode is null or undefined");
         }
 
-        if (zipcode.length !== DUTCH_ZIPCODE_LENGTH) {
-            throw new Error("Provided zipcode has a length that is different than the length of Dutch zipcodes.");
+        if (!validationRegex.test(zipcode)) {
+            throw new Error("Provided zipcode is invalid.");
         }
 
+        zipcode = zipcode.replace(/\s/g, '');
+        zipcode = zipcode.toUpperCase();
         this._zipcode = zipcode;
     }
     

@@ -91,6 +91,9 @@ class InvoiceService {
     // todo: remove hardcoded values and write code to support this
     fetchInvoiceByID(invoiceID) {
         return __awaiter(this, void 0, void 0, function* () {
+            if (invoiceID === undefined) {
+                throw new Error('Provided invoiceDTO is undefined');
+            }
             const invoice = yield this._invoiceRepo.invoiceOfID(new invoiceID_1.InvoiceID(invoiceID));
             const job = yield this._jobRepo.jobOfID(invoice.jobID);
             const client = yield this._clientRepo.clientOfID(job.clientID);

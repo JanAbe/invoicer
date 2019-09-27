@@ -74,7 +74,7 @@ export class InvoiceChannelManager implements ChannelManager {
             try {
                 const invoiceKey = 'invoiceID';
                 const userKey = 'userID';
-                // todo: check if args[invoiceKey] and args[userKey] aren't undefined
+
                 if (args[invoiceKey] === "" || args[userKey] === "") {
                     event.reply(replyChannel, "Invoice and user id need to be supplied");
                     throw new Error("Invoice and User id need to be supplied");
@@ -103,8 +103,6 @@ export class InvoiceChannelManager implements ChannelManager {
         });
     }
 
-    // todo: add checks to see if cameraman and equipmentitem data has been passed
-    // also check if at least 1 of the 2 has been passed
     /**
      * initSubmit creates a channel for ipcMain to listen to the
      * submit invoice event.

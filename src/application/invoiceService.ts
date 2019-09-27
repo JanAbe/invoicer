@@ -135,6 +135,10 @@ export class InvoiceService {
 
     // todo: remove hardcoded values and write code to support this
     public async fetchInvoiceByID(invoiceID: string): Promise<InvoiceDTO> {
+        if (invoiceID === undefined) {
+            throw new Error('Provided invoiceDTO is undefined');
+        }
+
         const invoice = await this._invoiceRepo.invoiceOfID(new InvoiceID(invoiceID));
         const job = await this._jobRepo.jobOfID(invoice.jobID);
         const client = await this._clientRepo.clientOfID(job.clientID!);

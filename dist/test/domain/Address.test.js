@@ -24,9 +24,26 @@ describe('Address', () => {
                 new address_1.Address('Milan', 'Mainstreet', -2, '9823YY');
             });
         });
-        it('should throw an error when an invalid Zipcode is provided', () => {
+        it('should not throw an error when a valid Zipcode is provided, wich has many spaces', () => {
+            assert.doesNotThrow(() => {
+                new address_1.Address('Milan', 'Mainstreet', 12, '9819    OI');
+            });
+        });
+        it('should correctly format the valid zipcode', () => {
+            const address = new address_1.Address('Milan', 'Mainstreet', 12, '9819    Oi');
+            const expectedZipcode = '9819OI';
+            if (address.zipcode !== expectedZipcode) {
+                throw new Error(`Zipcode formatted incorrectly. Expected: ${expectedZipcode}, got: ${address.zipcode}`);
+            }
+        });
+        it('should throw an error when an invalid Zipcode is provided, wich has too many numbers', () => {
             assert.throws(() => {
                 new address_1.Address('Milan', 'Mainstreet', 12, '98199OI');
+            });
+        });
+        it('should throw an error when an invalid Zipcode is provided, wich has too many letters', () => {
+            assert.throws(() => {
+                new address_1.Address('Milan', 'Mainstreet', 12, '9819OII');
             });
         });
     });

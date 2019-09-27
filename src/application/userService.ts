@@ -37,6 +37,10 @@ export class UserService {
     }
 
     public async fetchUserByID(userID: string): Promise<UserDTO> {
+        if (userID === undefined) {
+            throw new Error('Provided userID is undefined');
+        }
+
         return await this._userRepo.userOfID(userID);
     }
 }
