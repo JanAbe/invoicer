@@ -22,7 +22,7 @@ export class DB {
                     console.log(`${err} running SQL query: ${query}`);
                     reject(err);
                 } else {
-                    resolve(this.lastID); // extend this so the number of updated fields are returned if an update query is passed and succesful?
+                    resolve(this.lastID);
                 }
             });
         });

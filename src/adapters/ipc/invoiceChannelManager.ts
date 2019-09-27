@@ -113,6 +113,9 @@ export class InvoiceChannelManager implements ChannelManager {
         const listenChannel = 'submit-invoice-channel';
         const replyChannel = 'submit-invoice-reply-channel';
 
+        // todo: maybe remove all checks to see if the key is empty
+        // and move these checks to the domain classes
+        // then just pass the args to the invoiceService method
         this.ipcMain.on(listenChannel, (event, args) => {
             try {
                 const invoiceProps: any = {};

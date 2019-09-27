@@ -13,8 +13,6 @@ import { Address } from "../domain/client/address";
 import { Cameraman } from "../domain/invoice/job/cameraman";
 import { Period } from "../domain/invoice/job/period";
 import { EquipmentItem } from "../domain/invoice/job/equipmentItem";
-import nunjucks = require('nunjucks');
-import { HtmlService } from "./htmlService";
 import { JobDTO } from "../domain/dto/jobDTOx";
 import { ClientDTO } from "../domain/dto/clientDTO";
 import { CameramanDTO } from "../domain/dto/cameramanDTO";
@@ -34,7 +32,6 @@ export class InvoiceService {
         this._userRepo = userRepo;
     }
 
-    // or expect only an invoiceDTO?
     public createInvoice(invoiceProps: any) {
         const { iban, client, job, cameraman, equipmentItems } = invoiceProps; 
         const { clientFirstName, clientLastName, email, city, street, zipcode, houseNumber } = client;

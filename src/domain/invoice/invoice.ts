@@ -4,9 +4,9 @@ import { InvoiceID } from "./invoiceID";
 import IBAN = require('iban');
 
 export class Invoice {
-    private _invoiceID: InvoiceID;
-    private _jobID: JobID;
-    private _iban: string;
+    private _invoiceID!: InvoiceID;
+    private _jobID!: JobID;
+    private _iban!: string;
     private _creationDate: Date;
 
     // todo: create tests (for everything lol :c)
@@ -14,9 +14,9 @@ export class Invoice {
         // user can write some text in there
     // todo: add invoiceNumber attribute
     constructor(invoiceID: InvoiceID, jobID: JobID, iban: string, creationDate: Date = new Date()) {
-        this._invoiceID = invoiceID;
-        this._jobID = jobID;
-        this._iban = iban;
+        this.setInvoiceID(invoiceID);
+        this.setJobID(jobID);
+        this.setIban(iban);
         this._creationDate = creationDate;
     }
 
@@ -28,7 +28,9 @@ export class Invoice {
             // than retrieve previously created invoice
             // based on creationDate. Use this one's invoiceNumber
             // to determine the invoiceNumber of the current invoice
-        throw new Error(); 
+        // or should this method be placed in the application service?
+            // because it needs a repository to fetch the previous invoiceNumber
+        throw new Error('Not implemented yet'); 
     }
 
     public get invoiceID(): InvoiceID {
@@ -47,7 +49,7 @@ export class Invoice {
         return this._creationDate;
     }
     
-    public set invoiceID(invoiceID: InvoiceID) {
+    private setInvoiceID(invoiceID: InvoiceID) {
         if (isNullOrUndefined(invoiceID)) {
             throw new Error("Provided invoiceID is null or undefined");
         }
@@ -55,8 +57,7 @@ export class Invoice {
         this._invoiceID = invoiceID;
     }
 
-    // do i want to make it possible to change the jobID of an invoice?
-    public set jobID(jobID: JobID) {
+    private setJobID(jobID: JobID) {
         if (isNullOrUndefined(jobID)) {
             throw new Error("Provided jobID is null or undefined");
         }
@@ -64,14 +65,14 @@ export class Invoice {
         this._jobID = jobID;
     }
 
-    public set iban(iban: string) {
+    private setIban(iban: string) {
         if (isNullOrUndefined(iban)) {
             throw new Error("Provided iban is null or undefined");
         }
         
-        // if (!IBAN.isValid(iban)) {
-        //     throw new Error("Provided iban is invalid");
-        // }
+        if (!IBAN.isValid(iban)) {
+            throw new Error("Provided iban is invalid");
+        }
 
         this._iban = iban;
     }
