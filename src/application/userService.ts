@@ -1,5 +1,6 @@
 import { UserRepo } from "../domain/user/userRepo";
 import { UserDTO } from "../domain/dto/userDTO";
+import { isNullOrUndefined } from "util";
 
 export class UserService {
     private readonly _userRepo: UserRepo;
@@ -37,8 +38,8 @@ export class UserService {
     }
 
     public async fetchUserByID(userID: string): Promise<UserDTO> {
-        if (userID === undefined) {
-            throw new Error('Provided userID is undefined');
+        if (isNullOrUndefined(userID) ) {
+            throw new Error('Provided userID is null or undefined');
         }
 
         return await this._userRepo.userOfID(userID);

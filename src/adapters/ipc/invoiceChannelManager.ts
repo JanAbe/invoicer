@@ -111,70 +111,27 @@ export class InvoiceChannelManager implements ChannelManager {
         const listenChannel = 'submit-invoice-channel';
         const replyChannel = 'submit-invoice-reply-channel';
 
-        // todo: maybe remove all checks to see if the key is empty
-        // and move these checks to the domain classes
-        // then just pass the args to the invoiceService method
-        this.ipcMain.on(listenChannel, (event, args) => {
-            try {
-                const invoiceProps: any = {};
-                const { iban, firstName, lastName, 
-                        email, city, zipcode, street, 
-                        houseNumber, description, location, 
-                        directedBy, cameraman, equipmentItems } = args; 
-                
-                if (iban === "") {
-                    event.reply(replyChannel, "Iban should be provided of a value");
-                    throw new Error("Iban should be provided of a value");
-                }
+        // but how do i pass correct error messages back to the user?
+        // or should that happen client-side during the entering of the info?
+        this.ipcMain.on(listenChannel, (_, args) => {
+            const invoiceProps: any = {};
+            const { iban, firstName, lastName, 
+                    email, city, zipcode, street, 
+                    houseNumber, description, location, 
+                    directedBy, cameraman, equipmentItems } = args; 
 
-                invoiceProps['iban'] = iban;
-
-                if (firstName === "" || lastName === "" || email === "" || city === "" || zipcode === "" || street === "" || houseNumber === "") {
-                    event.reply(replyChannel, "All client fields should be provided of a value");
-                    throw new Error("All client fields should be provided of a value");
-                } 
-
-                invoiceProps['client'] = {'clientFirstName': firstName, 
-                                          'clientLastName': lastName,
-                                          'email': email,
-                                          'city': city,
-                                          'zipcode': zipcode,
-                                          'street': street,
-                                          'houseNumber': Number(houseNumber)}
-
-                if (description === "" || location === "" || directedBy === "") {
-                    event.reply(replyChannel, "All job fields should be provided of a value");
-                    throw new Error("All job fields should be provided of a value");
-                }
-
-                invoiceProps['job'] = {'description': description, 'location': location, 'directedBy': directedBy};
-
-                if (cameraman !== undefined) {
-                    const { firstName, lastName, dayPrice, startDate, endDate } = cameraman;
-                    if (firstName === "" || lastName === "" || dayPrice === "" || startDate === "" || endDate === "") {
-                        event.reply(replyChannel, "All cameraman fields should be provided of a value");
-                        throw new Error("All cameraman fields should be provided of a value");
-                    }
-                    
-                    invoiceProps['cameraman'] = cameraman;
-                }
-
-                if (equipmentItems !== undefined) {
-                    equipmentItems.forEach((e: any) => {
-                        const { equipmentItemName, equipmentItemDayPrice, equipmentItemStartDate, equipmentItemEndDate } = e; 
-                        if (equipmentItemName === "" || equipmentItemDayPrice === "" || equipmentItemStartDate === "" || equipmentItemEndDate === "") {
-                            event.reply(replyChannel, "All equipmentItem fields should be provided of a value");
-                            throw new Error("All equipmentItem fields should be provided of a value");
-                        } 
-                    });
-
-                    invoiceProps['equipmentItems'] = equipmentItems;
-                }
-
-                this.invoiceService.createInvoice(invoiceProps);
-            } catch (e) {
-                console.log(e);
-            }
+            invoiceProps['iban'] = iban;
+            invoiceProps['client'] = {'clientFirstName': firstName, 
+                                        'clientLastName': lastName,
+                                        'email': email,
+                                        'city': city,
+                                        'zipcode': zipcode,
+                                        'street': street,
+                                        'houseNumber': Number(houseNumber)}
+            invoiceProps['job'] = {'description': description, 'location': location, 'directedBy': directedBy};
+            invoiceProps['cameraman'] = cameraman;
+            invoiceProps['equipmentItems'] = equipmentItems;
+            this.invoiceService.createInvoice(invoiceProps);
         });
     }
 

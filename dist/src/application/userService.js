@@ -10,6 +10,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const userDTO_1 = require("../domain/dto/userDTO");
+const util_1 = require("util");
 class UserService {
     constructor(userRepo) {
         this._userRepo = userRepo;
@@ -23,8 +24,8 @@ class UserService {
     }
     fetchUserByID(userID) {
         return __awaiter(this, void 0, void 0, function* () {
-            if (userID === undefined) {
-                throw new Error('Provided userID is undefined');
+            if (util_1.isNullOrUndefined(userID)) {
+                throw new Error('Provided userID is null or undefined');
             }
             return yield this._userRepo.userOfID(userID);
         });

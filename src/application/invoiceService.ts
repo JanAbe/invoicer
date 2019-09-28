@@ -5,7 +5,6 @@ import { Job } from "../domain/invoice/job/job";
 import { JobRepo } from "../domain/invoice/job/jobRepo";
 import { ClientRepo } from "../domain/client/clientRepo";
 import { InvoiceDTO } from "../domain/dto/InvoiceDTO";
-import { UserRepo } from "../domain/user/userRepo";
 import { Client } from "../domain/client/client";
 import { FullName } from "../domain/client/fullName";
 import { Email } from "../domain/client/email";
@@ -23,20 +22,19 @@ export class InvoiceService {
     private _invoiceRepo: InvoiceRepo;
     private _jobRepo: JobRepo;
     private _clientRepo: ClientRepo;
-    private _userRepo: UserRepo;
 
-    constructor(invoiceRepo: InvoiceRepo, jobRepo: JobRepo, clientRepo: ClientRepo, userRepo: UserRepo) {
+    constructor(invoiceRepo: InvoiceRepo, jobRepo: JobRepo, clientRepo: ClientRepo) {
         this._invoiceRepo = invoiceRepo;
         this._jobRepo = jobRepo;
         this._clientRepo = clientRepo;
-        this._userRepo = userRepo;
     }
 
+    // todo: turn invoiceProps into its own calls or something
     public async createInvoice(invoiceProps: any) {
         const { iban, client, job, cameraman, equipmentItems } = invoiceProps; 
         const { clientFirstName, clientLastName, email, city, street, zipcode, houseNumber } = client;
         const { description, location, directedBy } = job;
-        
+
         const clientID = this._clientRepo.nextID();
         const newClient = new Client(
             clientID,
@@ -55,7 +53,7 @@ export class InvoiceService {
                 new Period(
                     new Date(startDate), 
                     new Date(endDate))
-            )
+            );
         }
 
         let newEquipmentItems: EquipmentItem[] = [];
@@ -83,7 +81,7 @@ export class InvoiceService {
             clientID,
             newCameraman!,
             newEquipmentItems
-        )
+        );
 
         const creationDate = new Date();
         const newInvoice = new Invoice(
@@ -92,11 +90,10 @@ export class InvoiceService {
             jobID,
             iban,
             creationDate
-        )
+        );
         
         this._clientRepo.save(newClient);
         this._invoiceRepo.save(newInvoice, newJob);
-        // todo: look into dependencies (dependency flow)
     }
 
     public async fetchAllInvoices(): Promise<InvoiceDTO[]> {
@@ -135,10 +132,6 @@ export class InvoiceService {
 
     // todo: remove hardcoded values and write code to support this
     public async fetchInvoiceByID(invoiceID: string): Promise<InvoiceDTO> {
-        if (invoiceID === undefined) {
-            throw new Error('Provided invoiceDTO is undefined');
-        }
-
         const invoice = await this._invoiceRepo.invoiceOfID(new InvoiceID(invoiceID));
         const job = await this._jobRepo.jobOfID(invoice.jobID);
         const client = await this._clientRepo.clientOfID(job.clientID!);

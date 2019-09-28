@@ -1,10 +1,10 @@
 import { isNullOrUndefined } from "util";
 
 export class InvoiceID {
-    private _id: string;
+    private _id!: string;
 
     constructor(id: string) {
-        this._id = id;
+        this.setID(id);
     }
 
     public toString(): string {

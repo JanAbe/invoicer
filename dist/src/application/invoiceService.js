@@ -26,12 +26,12 @@ const cameramanDTO_1 = require("../domain/dto/cameramanDTO");
 const equipmentItemDTO_1 = require("../domain/dto/equipmentItemDTO");
 // InvoiceService contains all services a user can call regarding invoices
 class InvoiceService {
-    constructor(invoiceRepo, jobRepo, clientRepo, userRepo) {
+    constructor(invoiceRepo, jobRepo, clientRepo) {
         this._invoiceRepo = invoiceRepo;
         this._jobRepo = jobRepo;
         this._clientRepo = clientRepo;
-        this._userRepo = userRepo;
     }
+    // todo: turn invoiceProps into its own calls or something
     createInvoice(invoiceProps) {
         return __awaiter(this, void 0, void 0, function* () {
             const { iban, client, job, cameraman, equipmentItems } = invoiceProps;
@@ -57,7 +57,6 @@ class InvoiceService {
             const newInvoice = new invoice_1.Invoice(this._invoiceRepo.nextID(), yield this._invoiceRepo.nextInvoiceNumber(creationDate), jobID, iban, creationDate);
             this._clientRepo.save(newClient);
             this._invoiceRepo.save(newInvoice, newJob);
-            // todo: look into dependencies (dependency flow)
         });
     }
     fetchAllInvoices() {
@@ -91,9 +90,6 @@ class InvoiceService {
     // todo: remove hardcoded values and write code to support this
     fetchInvoiceByID(invoiceID) {
         return __awaiter(this, void 0, void 0, function* () {
-            if (invoiceID === undefined) {
-                throw new Error('Provided invoiceDTO is undefined');
-            }
             const invoice = yield this._invoiceRepo.invoiceOfID(new invoiceID_1.InvoiceID(invoiceID));
             const job = yield this._jobRepo.jobOfID(invoice.jobID);
             const client = yield this._clientRepo.clientOfID(job.clientID);

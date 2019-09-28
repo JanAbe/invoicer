@@ -1,11 +1,11 @@
 import { isNullOrUndefined } from "util";
 
 export class JobID {
-    private _id: string;
+    private _id!: string;
 
     constructor(id: string) {
         // needs check to see if incoming string is a UUID4
-        this._id = id;
+        this.setID(id);
     }
 
     public toString(): string {

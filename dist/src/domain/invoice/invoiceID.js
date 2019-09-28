@@ -3,7 +3,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const util_1 = require("util");
 class InvoiceID {
     constructor(id) {
-        this._id = id;
+        this.setID(id);
     }
     toString() {
         return this._id;
