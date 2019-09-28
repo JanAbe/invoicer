@@ -16,7 +16,7 @@ describe('Address', () => {
         });
         it('should throw an error when an invalid Street is provided', () => {
             assert.throws(() => {
-                new address_1.Address('Milan', '', 12, '9823YY');
+                new address_1.Address('Milan', '   ', 12, '9823YY');
             });
         });
         it('should throw an error when an invalid HouseNumber is provided', () => {

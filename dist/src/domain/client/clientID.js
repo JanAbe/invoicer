@@ -8,7 +8,7 @@ class ClientID {
         return this._id;
     }
     setID(id) {
-        // needs check to see if incoming string is a UUID4
+        // todo: needs check to see if incoming string is a UUID4
         this._id = id;
     }
 }

@@ -1,4 +1,5 @@
 import { isNullOrUndefined } from "util";
+import { isEmpty } from "../../util/helpers";
 
 export class FullName {
     private _firstName!: string;
@@ -22,12 +23,20 @@ export class FullName {
             throw new Error("Provided firstname is null or undefined.");
         }
 
+        if (isEmpty(firstName)) {
+            throw new Error("Provided firstName is empty");
+        }
+
         this._firstName = firstName.trim();
     }
 
     private setLastName(lastName: string): void {
         if (isNullOrUndefined(lastName)) {
             throw new Error("Provided lastname is null or undefined.");
+        }
+
+        if (isEmpty(lastName)) {
+            throw new Error("Provided lastname is empty");
         }
 
         this._lastName = lastName.trim();

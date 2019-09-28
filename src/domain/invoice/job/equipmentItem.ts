@@ -2,6 +2,7 @@ import { Rentable } from "./rentable";
 import { Period } from "./period";
 import { isNullOrUndefined } from "util";
 import ezmoney = require('ezmoney');
+import { isEmpty } from "../../../util/helpers";
 
 // vgm is dit nu een soort value object
 // het heeft wel een aparte tabel in de database denk ik
@@ -46,6 +47,10 @@ export class EquipmentItem implements Rentable {
             throw new Error("Provided name is null or undefined.");
         }
 
+        if (isEmpty(name)) {
+            throw new Error("Provided name is empty");
+        }
+
         this._name = name;
     }
 
@@ -57,7 +62,7 @@ export class EquipmentItem implements Rentable {
         }
 
         if (dayPrice < MINIMUM_DAY_PRICE) {
-            throw new Error("Provided dayPrice is lower than the minimum possible daily wage (0)")
+            throw new Error(`Provided dayPrice is lower than the minimum possible daily wage (${MINIMUM_DAY_PRICE})`);
         }
 
         this._dayPrice = dayPrice;

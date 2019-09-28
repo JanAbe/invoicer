@@ -2,6 +2,7 @@ import { JobID } from "./job/jobID";
 import { isNullOrUndefined } from "util";
 import { InvoiceID } from "./invoiceID";
 import IBAN = require('iban');
+import { isEmpty } from "../../util/helpers";
 
 export class Invoice {
     private _invoiceID!: InvoiceID;
@@ -73,6 +74,10 @@ export class Invoice {
     private setInvoiceNumber(invoiceNumber: string) {
         if (isNullOrUndefined(invoiceNumber)) {
             throw new Error("Provided invoiceNumber is null or undefined");
+        }
+
+        if (isEmpty(invoiceNumber)) {
+            throw new Error("Provided invoiceNumber is empty");
         }
 
         this._invoiceNumber = invoiceNumber;

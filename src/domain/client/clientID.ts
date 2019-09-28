@@ -10,7 +10,7 @@ export class ClientID {
     }
 
     private setID(id: string): void {
-        // needs check to see if incoming string is a UUID4
+        // todo: needs check to see if incoming string is a UUID4
         this._id = id;
     }
 }

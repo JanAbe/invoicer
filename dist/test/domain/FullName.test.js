@@ -1,6 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const fullName_1 = require("../../src/domain/client/fullName");
+const assert = require("assert");
 describe('FullName', () => {
     describe('constructor', () => {
         it('should create a new fullName object', () => {
@@ -26,6 +27,11 @@ describe('FullName', () => {
             if (result.lastName !== 'bicycle') {
                 throw new Error(`Lastname not correctly set. Expected: bicycle, got: ${result.lastName}`);
             }
+        });
+        it('should throw an error when the provided firstname is empty', () => {
+            assert.throws(() => {
+                new fullName_1.FullName('  ', 'Baker');
+            });
         });
     });
 });

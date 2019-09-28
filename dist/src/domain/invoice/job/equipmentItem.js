@@ -2,6 +2,7 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 const util_1 = require("util");
 const ezmoney = require("ezmoney");
+const helpers_1 = require("../../../util/helpers");
 // vgm is dit nu een soort value object
 // het heeft wel een aparte tabel in de database denk ik
 // maar het is onderdeel van Job
@@ -35,6 +36,9 @@ class EquipmentItem {
         if (util_1.isNullOrUndefined(name)) {
             throw new Error("Provided name is null or undefined.");
         }
+        if (helpers_1.isEmpty(name)) {
+            throw new Error("Provided name is empty");
+        }
         this._name = name;
     }
     setDayPrice(dayPrice) {
@@ -43,7 +47,7 @@ class EquipmentItem {
             throw new Error("Provided dayPrice is null or undefined.");
         }
         if (dayPrice < MINIMUM_DAY_PRICE) {
-            throw new Error("Provided dayPrice is lower than the minimum possible daily wage (0)");
+            throw new Error(`Provided dayPrice is lower than the minimum possible daily wage (${MINIMUM_DAY_PRICE})`);
         }
         this._dayPrice = dayPrice;
     }

@@ -2,6 +2,7 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 const util_1 = require("util");
 const ezmoney = require("ezmoney");
+const helpers_1 = require("../../../util/helpers");
 // vgm is dit nu een soort value object
 // het heeft wel een aparte tabel in de database denk ik
 // maar het is onderdeel van Job
@@ -34,11 +35,17 @@ class Cameraman {
         if (util_1.isNullOrUndefined(firstName)) {
             throw new Error("Provided firstname is null or undefined.");
         }
+        if (helpers_1.isEmpty(firstName)) {
+            throw new Error("Provided firstname is empty");
+        }
         this._firstName = firstName;
     }
     setLastName(lastName) {
         if (util_1.isNullOrUndefined(lastName)) {
             throw new Error("Provided lastname is null or undefined.");
+        }
+        if (helpers_1.isEmpty(lastName)) {
+            throw new Error("Provided lastname is empty");
         }
         this._lastName = lastName;
     }

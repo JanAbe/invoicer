@@ -12,24 +12,16 @@ export class Email {
     }
 
     private setEmailAddress(emailAddress: string): void {
+        const validationRegex = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+        
         if (isNullOrUndefined(emailAddress)) {
             throw new Error("Provided emailAddress is null or undefined.");
         }
 
-        if (!this.isValid(emailAddress)) {
-            throw new Error("Provided emailAddress is invalid.");
-        } 
-
-        this._emailAddress = emailAddress;
-    }
-
-    // TODO: add more checks
-    // isValid checks if the provided emailAddress is valid 
-    private isValid(emailAddress: string): boolean {
-        if (emailAddress.includes("@")) {
-            return true;
+        if (!validationRegex.test(emailAddress)) {
+            throw new Error("Provided emailaddress is invalid");
         }
 
-        return false;
+        this._emailAddress = emailAddress;
     }
 }

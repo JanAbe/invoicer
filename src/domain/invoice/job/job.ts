@@ -5,6 +5,7 @@ import { EquipmentItem } from "./equipmentItem";
 import { ClientID } from "../../client/clientID";
 import { JobDTO } from "../../dto/jobDTO";
 import ezmoney = require('ezmoney');
+import { isEmpty } from "../../../util/helpers";
 
 export class Job {
     private _id?: JobID;
@@ -145,6 +146,10 @@ export class Job {
             throw new Error("Provided description is null or undefined");
         }
 
+        if (isEmpty(description)) {
+            throw new Error("Provided description is empty");
+        }
+
         this._description = description;
     }
     
@@ -153,12 +158,20 @@ export class Job {
             throw new Error("Provided location is null or undefined");
         }
 
+        if (isEmpty(location)) {
+            throw new Error("Provided location is empty");
+        }
+
         this._location = location;
     }
     
     public set directedBy(directedBy: string | undefined) {
         if (isNullOrUndefined(directedBy)) {
             throw new Error("Provided argument for 'directedBy' is null or undefined");
+        }
+
+        if (isEmpty(directedBy)) {
+            throw new Error("Provided directedBy is empty");
         }
 
         this._directedBy = directedBy;

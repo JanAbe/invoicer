@@ -1,4 +1,5 @@
 import { isNullOrUndefined } from "util";
+import { isEmpty } from "../../util/helpers";
 
 export class Address {
     private _city!: string;
@@ -30,28 +31,24 @@ export class Address {
     }
 
     private setCity(city: string): void {
-        const MINIMUM_CITY_NAME_LENGTH = 1;
-
         if (isNullOrUndefined(city)) {
             throw new Error("Provided city is null or undefined");
         }
 
-        if (city.length < MINIMUM_CITY_NAME_LENGTH) {
-            throw new Error("Provided city can not have a length that is smaller than the minimum city name length (1)");
+        if (isEmpty(city)) {
+            throw new Error("Provided city can not be empty");
         }
 
         this._city = city;
     }
     
     private setStreet(street: string): void {
-        const MINIMUM_STREET_NAME_LENGTH = 1;
-
         if (isNullOrUndefined(street)) {
             throw new Error("Provided street is null or undefined");
         }
 
-        if (street.length < MINIMUM_STREET_NAME_LENGTH) {
-            throw new Error("Provided street can not have a length that is smaller than the minimum street name length (1)");
+        if (isEmpty(street)) {
+            throw new Error("Provided street can not be empty");
         }
 
         this._street = street;
@@ -82,6 +79,7 @@ export class Address {
             throw new Error("Provided zipcode is invalid.");
         }
 
+        // remove all whitespaces
         zipcode = zipcode.replace(/\s/g, '');
         zipcode = zipcode.toUpperCase();
         this._zipcode = zipcode;

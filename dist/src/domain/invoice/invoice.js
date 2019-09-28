@@ -2,6 +2,7 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 const util_1 = require("util");
 const IBAN = require("iban");
+const helpers_1 = require("../../util/helpers");
 class Invoice {
     constructor(invoiceID, invoiceNumber, jobID, iban, creationDate = new Date()) {
         this.setInvoiceID(invoiceID);
@@ -54,6 +55,9 @@ class Invoice {
     setInvoiceNumber(invoiceNumber) {
         if (util_1.isNullOrUndefined(invoiceNumber)) {
             throw new Error("Provided invoiceNumber is null or undefined");
+        }
+        if (helpers_1.isEmpty(invoiceNumber)) {
+            throw new Error("Provided invoiceNumber is empty");
         }
         this._invoiceNumber = invoiceNumber;
     }

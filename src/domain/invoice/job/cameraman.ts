@@ -2,6 +2,7 @@ import { Rentable } from "./rentable";
 import { Period } from "./period";
 import { isNullOrUndefined } from "util";
 import ezmoney = require('ezmoney');
+import { isEmpty } from "../../../util/helpers";
 
 // vgm is dit nu een soort value object
 // het heeft wel een aparte tabel in de database denk ik
@@ -47,12 +48,20 @@ export class Cameraman implements Rentable {
             throw new Error("Provided firstname is null or undefined.");
         }
 
+        if (isEmpty(firstName)) {
+            throw new Error("Provided firstname is empty");
+        }
+
         this._firstName = firstName;
     }
 
     private setLastName(lastName: string): void {
         if (isNullOrUndefined(lastName)) {
             throw new Error("Provided lastname is null or undefined.");
+        }
+
+        if (isEmpty(lastName)) {
+            throw new Error("Provided lastname is empty");
         }
 
         this._lastName = lastName;

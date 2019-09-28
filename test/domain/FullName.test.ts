@@ -1,4 +1,5 @@
 import { FullName } from "../../src/domain/client/fullName";
+import assert = require("assert");
 
 describe('FullName', () => {
     
@@ -28,6 +29,12 @@ describe('FullName', () => {
             if (result.lastName !== 'bicycle') {
                 throw new Error(`Lastname not correctly set. Expected: bicycle, got: ${result.lastName}`);
             }
+        });
+
+        it('should throw an error when the provided firstname is empty', () => {
+            assert.throws(() => {
+                new FullName('  ', 'Baker');
+            });
         });
     });
 });

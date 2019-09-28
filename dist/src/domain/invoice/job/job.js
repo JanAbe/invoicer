@@ -2,6 +2,7 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 const util_1 = require("util");
 const ezmoney = require("ezmoney");
+const helpers_1 = require("../../../util/helpers");
 class Job {
     constructor(id, description, location, directedBy, clientID, cameraman, equipmentItems = [], comment) {
         this._id = id;
@@ -94,17 +95,26 @@ class Job {
         if (util_1.isNullOrUndefined(description)) {
             throw new Error("Provided description is null or undefined");
         }
+        if (helpers_1.isEmpty(description)) {
+            throw new Error("Provided description is empty");
+        }
         this._description = description;
     }
     set location(location) {
         if (util_1.isNullOrUndefined(location)) {
             throw new Error("Provided location is null or undefined");
         }
+        if (helpers_1.isEmpty(location)) {
+            throw new Error("Provided location is empty");
+        }
         this._location = location;
     }
     set directedBy(directedBy) {
         if (util_1.isNullOrUndefined(directedBy)) {
             throw new Error("Provided argument for 'directedBy' is null or undefined");
+        }
+        if (helpers_1.isEmpty(directedBy)) {
+            throw new Error("Provided directedBy is empty");
         }
         this._directedBy = directedBy;
     }
