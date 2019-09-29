@@ -1,0 +1,6 @@
+
+class InvoiceForm {
+    constructor() {}
+
+    
+}

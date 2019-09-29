@@ -1,5 +1,10 @@
 const { ipcRenderer } = require('electron');
 
+const invoiceForm = new InvoiceForm();
+invoiceForm.init();
+
+
+
 ipcRenderer.on('submit-invoice-reply-channel', (event, args) => {
     console.log(args);
 });
@@ -224,102 +229,102 @@ const removeEquipmentItemFieldsEvent = (btn) => {
 }
 
 // to add cameraman input fields
-let cameremanCounter = 0;
-const cameramanBtn = document.querySelector('#cameraman-add-btn');
-const cameramanSegment = document.querySelector('#cameraman-segment');
-const cameremanHtmlSegment = `
-    <div class="two-input-fields">
-        <div class="form-group">
-            <label>Voornaam</label>
-            <input id="cameraman-firstName-input" name="firstName" type="text" class="form-control" placeholder="Voornaam" readonly>
-        </div>
+// let cameremanCounter = 0;
+// const cameramanBtn = document.querySelector('#cameraman-add-btn');
+// const cameramanSegment = document.querySelector('#cameraman-segment');
+// const cameremanHtmlSegment = `
+//     <div class="two-input-fields">
+//         <div class="form-group">
+//             <label>Voornaam</label>
+//             <input id="cameraman-firstName-input" name="firstName" type="text" class="form-control" placeholder="Voornaam" readonly>
+//         </div>
 
-        <div class="form-group">
-            <span style="display: inherit;">
-                <button id="cameraman-rm-btn" type="button" class="btn btn-default icon icon-trash"></button>
-            </span>
-            <label>Achternaam</label>
-            <input id="cameraman-lastName-input" name="lastName" type="text" class="form-control" placeholder="Achternaam" readonly>
-        </div>
-    </div>
+//         <div class="form-group">
+//             <span style="display: inherit;">
+//                 <button id="cameraman-rm-btn" type="button" class="btn btn-default icon icon-trash"></button>
+//             </span>
+//             <label>Achternaam</label>
+//             <input id="cameraman-lastName-input" name="lastName" type="text" class="form-control" placeholder="Achternaam" readonly>
+//         </div>
+//     </div>
 
-    <div class="form-group">
-        <label>Dagprijs</label>
-        <input id="cameraman-dayPrice" name="dayPrice" type="number" class="form-control" placeholder="Dagprijs">
-    </div>
+//     <div class="form-group">
+//         <label>Dagprijs</label>
+//         <input id="cameraman-dayPrice" name="dayPrice" type="number" class="form-control" placeholder="Dagprijs">
+//     </div>
 
-    <div class="two-input-fields">
-        <div class="form-group">
-            <label>Begindatum</label>
-            <input id="cameraman-startDate" name="startDate" type="date" class="form-control" placeholder="Begindatum">
-        </div>
+//     <div class="two-input-fields">
+//         <div class="form-group">
+//             <label>Begindatum</label>
+//             <input id="cameraman-startDate" name="startDate" type="date" class="form-control" placeholder="Begindatum">
+//         </div>
 
-        <div class="form-group">
-            <label>Einddatum</label>
-            <input id="cameraman-endDate" name="endDate" type="date" class="form-control" placeholder="Einddatum">
-        </div>
-    </div>
-`;
+//         <div class="form-group">
+//             <label>Einddatum</label>
+//             <input id="cameraman-endDate" name="endDate" type="date" class="form-control" placeholder="Einddatum">
+//         </div>
+//     </div>
+// `;
 
-cameramanBtn.addEventListener('click', () => {
-    if (++cameremanCounter == 1) {
-        cameramanSegment.insertAdjacentHTML("beforeend", cameremanHtmlSegment);
-    } 
+// cameramanBtn.addEventListener('click', () => {
+//     if (++cameremanCounter == 1) {
+//         cameramanSegment.insertAdjacentHTML("beforeend", cameremanHtmlSegment);
+//     } 
 
-    const cameremanRemoveBtn = document.querySelector('#cameraman-rm-btn');
-    removeCameraFieldsEvent(cameremanRemoveBtn);
+//     const cameremanRemoveBtn = document.querySelector('#cameraman-rm-btn');
+//     removeCameraFieldsEvent(cameremanRemoveBtn);
 
-    validate(
-        document.querySelector('#cameraman-firstName-input'),
-        /^[a-zA-Z][^\s]*[\s|a-zA-Z]*?$/
-    )
+//     validate(
+//         document.querySelector('#cameraman-firstName-input'),
+//         /^[a-zA-Z][^\s]*[\s|a-zA-Z]*?$/
+//     )
 
-    validate(
-        document.querySelector('#cameraman-lastName-input'),
-        /^[a-zA-Z][^\s]*[\s|a-zA-Z]*?$/
-    )
+//     validate(
+//         document.querySelector('#cameraman-lastName-input'),
+//         /^[a-zA-Z][^\s]*[\s|a-zA-Z]*?$/
+//     )
 
-    validate(
-        document.querySelector('#cameraman-dayPrice'),
-        /^[0-9][^\s]*$/
-    )
+//     validate(
+//         document.querySelector('#cameraman-dayPrice'),
+//         /^[0-9][^\s]*$/
+//     )
 
-    validate(
-        document.querySelector('#cameraman-startDate'),
-        /^[0-9]{4}-[0-9]{2}-[0-9]{2}/
-    )
+//     validate(
+//         document.querySelector('#cameraman-startDate'),
+//         /^[0-9]{4}-[0-9]{2}-[0-9]{2}/
+//     )
 
-    validate(
-        document.querySelector('#cameraman-endDate'),
-        /^[0-9]{4}-[0-9]{2}-[0-9]{2}/
-    )
+//     validate(
+//         document.querySelector('#cameraman-endDate'),
+//         /^[0-9]{4}-[0-9]{2}-[0-9]{2}/
+//     )
 
-    const cameramanFirstNameInput = document.querySelector('#cameraman-firstName-input');
-    const cameramanLastNameInput = document.querySelector('#cameraman-lastName-input');
-    cameramanFirstNameInput.value = localStorage.getItem('firstName');
-    cameramanLastNameInput.value = localStorage.getItem('lastName');
+//     const cameramanFirstNameInput = document.querySelector('#cameraman-firstName-input');
+//     const cameramanLastNameInput = document.querySelector('#cameraman-lastName-input');
+//     cameramanFirstNameInput.value = localStorage.getItem('firstName');
+//     cameramanLastNameInput.value = localStorage.getItem('lastName');
 
-    const { jobStartDateVal, jodbEndDateVal } = getJobDateVals();
-    const cameramanStartDate = document.querySelector('input[name="startDate"]');
-    const cameramanEndDate = document.querySelector('input[name="endDate"]');
-    cameramanStartDate.value = jobStartDateVal;
-    cameramanEndDate.value = jodbEndDateVal;
+//     const { jobStartDateVal, jodbEndDateVal } = getJobDateVals();
+//     const cameramanStartDate = document.querySelector('input[name="startDate"]');
+//     const cameramanEndDate = document.querySelector('input[name="endDate"]');
+//     cameramanStartDate.value = jobStartDateVal;
+//     cameramanEndDate.value = jodbEndDateVal;
 
-    syncJobDatesWith('input[name="startDate"]', 'input[name="endDate"]');
-});
+//     syncJobDatesWith('input[name="startDate"]', 'input[name="endDate"]');
+// });
 
-/**
- * binds a click event to the provided button to remove the child nodes
- * of the cameramansegment
- */
-const removeCameraFieldsEvent = (btn) => {
-    btn.addEventListener('click', () => {
-        cameremanCounter--;
-        while(cameramanSegment.hasChildNodes()) {
-            cameramanSegment.removeChild(cameramanSegment.firstChild);
-        }
-    });
-}
+// /**
+//  * binds a click event to the provided button to remove the child nodes
+//  * of the cameramansegment
+//  */
+// const removeCameraFieldsEvent = (btn) => {
+//     btn.addEventListener('click', () => {
+//         cameremanCounter--;
+//         while(cameramanSegment.hasChildNodes()) {
+//             cameramanSegment.removeChild(cameramanSegment.firstChild);
+//         }
+//     });
+// }
 
 /**
  * SyncJobDatesWith syncs the jobDates input fields with the inputfields
