@@ -39,7 +39,7 @@ class SqliteInvoiceRepo {
     }
     invoices() {
         return __awaiter(this, void 0, void 0, function* () {
-            const query = 'SELECT id from Invoice;';
+            const query = 'SELECT id FROM Invoice ORDER BY invoice_number DESC;';
             let invoices = [];
             let invoicdeIDs = [];
             const rows = yield this._db.all(query);

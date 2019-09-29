@@ -15,3 +15,8 @@ a {
 .btn:hover {
     background-blend-mode: multiply;
 }
+
+.form-control:focus {
+    border-color: none;
+    box-shadow: none;
+}

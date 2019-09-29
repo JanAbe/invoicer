@@ -85,6 +85,8 @@ class InvoiceChannelManager {
     initSubmit() {
         const listenChannel = 'submit-invoice-channel';
         const replyChannel = 'submit-invoice-reply-channel';
+        //todo: look into valid and invalid dayPrice values
+        // i entered something and it made it crash, i forgot what i entered though :c 
         // but how do i pass correct error messages back to the user?
         // or should that happen client-side during the entering of the info?
         this.ipcMain.on(listenChannel, (_, args) => {

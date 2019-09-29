@@ -4,6 +4,88 @@ ipcRenderer.on('submit-invoice-reply-channel', (event, args) => {
     console.log(args);
 });
 
+
+
+const validate = (node, regex) => {
+    node.addEventListener('keyup', () => {
+        regex.test(node.value) ? node.style.borderColor = '#2ecc71' : node.style.borderColor = '#FF796C';
+    });
+}
+
+const emailValidator = () => {
+    const validationRegex = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+    const emailInput = document.querySelector('#email-input > input');
+    emailInput.addEventListener('keyup', () => {
+        const val = emailInput.value;
+        validationRegex.test(val) ? emailInput.style.borderColor = '#2ecc71' : emailInput.style.borderColor = '#FF796C';
+    });
+}
+
+validate(
+    document.querySelector('#iban-input'),
+    // todo: need regex for iban
+);
+
+validate(
+    document.querySelector('#client-first-name'),
+    /^[a-zA-Z][^\s]*[\s|a-zA-Z]*?$/
+);
+
+validate(
+    document.querySelector('#client-last-name'),
+    /^[a-zA-Z][^\s]*[\s|a-zA-Z]*?$/
+);
+
+validate(
+    document.querySelector('#client-email'),
+    /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+);
+
+validate(
+    document.querySelector('#city'),
+    /^[a-zA-Z][^\s]*[\s|a-zA-Z]*?$/
+);
+
+validate(
+    document.querySelector('#zipcode'),
+    /^\d{4}\s*[a-zA-z]{2}$/
+);
+
+validate(
+    document.querySelector('#street'),
+    /^[a-zA-Z][^\s]*[\s|a-zA-Z]*?$/
+);
+
+validate(
+    document.querySelector('#house-number'),
+    /^[0-9][^\s]*$/
+);
+
+validate(
+    document.querySelector('#job-description'),
+    /^[a-zA-Z][^\s]*[\s|a-zA-Z]*?$/
+);
+
+validate(
+    document.querySelector('#job-location'),
+    /^[a-zA-Z][^\s]*[\s|a-zA-Z]*?$/
+);
+
+validate(
+    document.querySelector('#job-directed-by'),
+    /^[a-zA-Z][^\s]*[\s|a-zA-Z]*?$/
+);
+
+validate(
+    document.querySelector('#job-start-date'),
+    /^[0-9]{4}-[0-9]{2}-[0-9]{2}/
+)
+
+validate(
+    document.querySelector('#job-end-date'),
+    /^[0-9]{4}-[0-9]{2}-[0-9]{2}/
+)
+
 // fetch submitted form data and send to the main process
 const createInvoiceBtn = document.querySelector('#create-invoice-btn');
 createInvoiceBtn.addEventListener('click', () => {
@@ -70,7 +152,7 @@ const equipmentItemHtmlSegment = `
 <div class="equipment-item">
     <div class="form-group">
         <span style="display: inherit;">
-            <button type="button" class="btn btn-default equipment-item-rm-btn">&#8722;</button>
+            <button type="button" class="btn btn-default equipment-item-rm-btn icon icon-trash"></button>
         </span>
         <label>Naam</label>
         <input name="equipmentItemName" type="text" class="form-control" placeholder="Naam">
@@ -101,6 +183,8 @@ extraEquipmentItemBtn.addEventListener('click', () => {
     const equipmentItemRemoveBtns = document.querySelectorAll('.equipment-item-rm-btn');
 
     const { jobStartDateVal, jodbEndDateVal } = getJobDateVals();
+    const equipmentItemNames = document.querySelectorAll('input[name="equipmentItemName"]');
+    const equipmentItemDayPrices = document.querySelectorAll('input[name="equipmentItemDayPrice"]');
     const equipmentItemStartDates = document.querySelectorAll('input[name="equipmentItemStartDate"]');
     const equipmentItemEndDates = document.querySelectorAll('input[name="equipmentItemEndDate"]');
     for (let i=0; i < equipmentItemEndDates.length; i++) {
@@ -108,6 +192,25 @@ extraEquipmentItemBtn.addEventListener('click', () => {
         equipmentItemEndDates[i].value = jodbEndDateVal;
 
         removeEquipmentItemFieldsEvent(equipmentItemRemoveBtns[i]);
+        validate(
+            equipmentItemNames[i],
+            /^[a-zA-Z][^\s]*[\s|a-zA-Z]*?$/
+        );
+
+        validate(
+            equipmentItemDayPrices[i],
+            /^[0-9][^\s]*$/
+        )
+
+        validate(
+            equipmentItemStartDates[i],
+            /^[0-9]{4}-[0-9]{2}-[0-9]{2}/
+        )
+
+        validate(
+            equipmentItemEndDates[i],
+            /^[0-9]{4}-[0-9]{2}-[0-9]{2}/
+        )
     }
 
     syncJobDatesWith('input[name="equipmentItemStartDate"]', 'input[name="equipmentItemEndDate"]');
@@ -133,7 +236,7 @@ const cameremanHtmlSegment = `
 
         <div class="form-group">
             <span style="display: inherit;">
-                <button id="cameraman-rm-btn" type="button" class="btn btn-default">&#8722;</button>
+                <button id="cameraman-rm-btn" type="button" class="btn btn-default icon icon-trash"></button>
             </span>
             <label>Achternaam</label>
             <input id="cameraman-lastName-input" name="lastName" type="text" class="form-control" placeholder="Achternaam" readonly>
@@ -142,18 +245,18 @@ const cameremanHtmlSegment = `
 
     <div class="form-group">
         <label>Dagprijs</label>
-        <input name="dayPrice" type="number" class="form-control" placeholder="Dagprijs">
+        <input id="cameraman-dayPrice" name="dayPrice" type="number" class="form-control" placeholder="Dagprijs">
     </div>
 
     <div class="two-input-fields">
         <div class="form-group">
             <label>Begindatum</label>
-            <input name="startDate" type="date" class="form-control" placeholder="Begindatum">
+            <input id="cameraman-startDate" name="startDate" type="date" class="form-control" placeholder="Begindatum">
         </div>
 
         <div class="form-group">
             <label>Einddatum</label>
-            <input name="endDate" type="date" class="form-control" placeholder="Einddatum">
+            <input id="cameraman-endDate" name="endDate" type="date" class="form-control" placeholder="Einddatum">
         </div>
     </div>
 `;
@@ -165,6 +268,31 @@ cameramanBtn.addEventListener('click', () => {
 
     const cameremanRemoveBtn = document.querySelector('#cameraman-rm-btn');
     removeCameraFieldsEvent(cameremanRemoveBtn);
+
+    validate(
+        document.querySelector('#cameraman-firstName-input'),
+        /^[a-zA-Z][^\s]*[\s|a-zA-Z]*?$/
+    )
+
+    validate(
+        document.querySelector('#cameraman-lastName-input'),
+        /^[a-zA-Z][^\s]*[\s|a-zA-Z]*?$/
+    )
+
+    validate(
+        document.querySelector('#cameraman-dayPrice'),
+        /^[0-9][^\s]*$/
+    )
+
+    validate(
+        document.querySelector('#cameraman-startDate'),
+        /^[0-9]{4}-[0-9]{2}-[0-9]{2}/
+    )
+
+    validate(
+        document.querySelector('#cameraman-endDate'),
+        /^[0-9]{4}-[0-9]{2}-[0-9]{2}/
+    )
 
     const cameramanFirstNameInput = document.querySelector('#cameraman-firstName-input');
     const cameramanLastNameInput = document.querySelector('#cameraman-lastName-input');

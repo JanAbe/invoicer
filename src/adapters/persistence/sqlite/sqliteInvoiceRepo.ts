@@ -35,7 +35,7 @@ export class SqliteInvoiceRepo implements InvoiceRepo {
     }
 
     public async invoices(): Promise<Invoice[]> {
-        const query: string = 'SELECT id from Invoice;';
+        const query: string = 'SELECT id FROM Invoice ORDER BY invoice_number DESC;';
         let invoices: Invoice[] = [];
         let invoicdeIDs: InvoiceID[] = [];
 
