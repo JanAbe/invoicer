@@ -57,6 +57,7 @@ describe('InvoiceService', () => {
     });
     describe('createInvoice', () => {
         it('should create a new invoice without problems', () => __awaiter(void 0, void 0, void 0, function* () {
+            // it fails because i don't know how to mock / use memory db
             yield assert.doesNotReject(() => __awaiter(void 0, void 0, void 0, function* () {
                 return yield invoiceService.createInvoice(invoiceProps);
             }));
@@ -71,6 +72,25 @@ describe('InvoiceService', () => {
             invoiceProps['iban'] = undefined;
             yield assert.rejects(() => __awaiter(void 0, void 0, void 0, function* () {
                 return yield invoiceService.createInvoice(invoiceProps);
+            }));
+        }));
+    });
+    describe('fetchAllInvoices', () => {
+        it('should be executed with no problems', () => __awaiter(void 0, void 0, void 0, function* () {
+            yield assert.doesNotReject(() => __awaiter(void 0, void 0, void 0, function* () {
+                return yield invoiceService.fetchAllInvoices();
+            }));
+        }));
+    });
+    describe('fetchInvoiceByID', () => {
+        it('should reject when an invoiceID is entered that does not exist', () => __awaiter(void 0, void 0, void 0, function* () {
+            yield assert.rejects(() => __awaiter(void 0, void 0, void 0, function* () {
+                return yield invoiceService.fetchInvoiceByID('4a3630c1-2706-47f1-8d00-a04e29b4b130');
+            }));
+        }));
+        it('should reject when an invalid id is passed', () => __awaiter(void 0, void 0, void 0, function* () {
+            yield assert.rejects(() => __awaiter(void 0, void 0, void 0, function* () {
+                return yield invoiceService.fetchInvoiceByID('');
             }));
         }));
     });

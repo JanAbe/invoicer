@@ -37,9 +37,6 @@ street.value = localStorage.getItem('street');
 houseNr.value = localStorage.getItem('houseNr');
 id.value = localStorage.getItem('id');
 
-// todo: fix it keeps adding new users, instead of updating
-    // it doesn't set the value of #user-input when a new user is created
-    // which results in always creating a new user instead of updating
 btn.addEventListener('click', () => {
     localStorage.setItem('firstName', firstName.value);
     localStorage.setItem('lastName', lastName.value);
@@ -83,5 +80,5 @@ btn.addEventListener('click', () => {
 });
 
 ipcRenderer.on('submit-user-reply-channel', (_, userID) => {
-    id.value = userID;
+    localStorage.setItem('id', userID);
 });

@@ -56,10 +56,12 @@ export class SqliteInvoiceRepo implements InvoiceRepo {
 
     public async invoiceOfID(invoiceID: InvoiceID): Promise<Invoice> {
         const query = 'SELECT id, creation_date, invoice_number, iban, ref_job FROM Invoice WHERE id=?'; 
-
-        // how does this work?
-        // how is this a promise? it was suggested by vscode to change it into this
         const row = await this._db.get(query, [invoiceID.toString()]);
+
+        if (row === undefined) {
+            throw new Error(`Invoice not found. There is no invoice with id: ${invoiceID.toString()}`);
+        }
+
         return new Invoice(new InvoiceID(row.id), row.invoice_number, new JobID(row.ref_job), row.iban, moment(row.creation_date, 'DD/MM/YYYY').toDate());
     }
 

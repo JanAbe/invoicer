@@ -103,7 +103,7 @@ export class InvoiceService {
         for (const invoice of invoices) {
             const invoiceDTO = new InvoiceDTO();
             invoiceDTO.id = invoice.invoiceID.toString();
-            invoiceDTO.invoiceNumber = 'some number';
+            invoiceDTO.invoiceNumber = invoice.invoiceNumber;
             invoiceDTO.creationDate = invoice.creationDate;
 
             await this._jobRepo.jobOfID(invoice.jobID)

@@ -1,4 +1,5 @@
 import { isNullOrUndefined } from "util";
+import { isEmpty } from "../../util/helpers";
 
 export class InvoiceID {
     private _id!: string;
@@ -14,6 +15,10 @@ export class InvoiceID {
     private setID(id: string): void {
         if (isNullOrUndefined(id)) {
             throw new Error("Provided id can not be null or undefined");
+        }
+
+        if (isEmpty(id)) {
+            throw new Error("Provided id can not be empty");
         }
 
         this._id = id;

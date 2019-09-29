@@ -30,7 +30,7 @@ const createWindow = () => {
 
     });
 
-    mainWindow.loadURL(`file://${__dirname}/ui/home.html`);
+    mainWindow.loadURL(`file://${__dirname}/ui/invoices.html`);
 
     mainWindow.on('closed', () => {
         mainWindow = null;

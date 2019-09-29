@@ -1,6 +1,7 @@
 import { UserRepo } from "../domain/user/userRepo";
 import { UserDTO } from "../domain/dto/userDTO";
 import { isNullOrUndefined } from "util";
+import { isEmpty } from "../util/helpers";
 
 export class UserService {
     private readonly _userRepo: UserRepo;
@@ -40,6 +41,10 @@ export class UserService {
     public async fetchUserByID(userID: string): Promise<UserDTO> {
         if (isNullOrUndefined(userID) ) {
             throw new Error('Provided userID is null or undefined');
+        }
+
+        if (isEmpty(userID)) {
+            throw new Error('Provided userID is empty');
         }
 
         return await this._userRepo.userOfID(userID);

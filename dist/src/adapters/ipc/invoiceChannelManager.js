@@ -22,9 +22,6 @@ class InvoiceChannelManager {
         this.initGenerate();
         this.initSubmit();
     }
-    // todo: use nunjucks to render html. create templates and extend from other templates
-    // this will reduce code (html) duplication. Atm each file has the same navbar html
-    // which is just duplication and more error prone
     /**
      * fetchAll creates a channel for ipcMain to listen to the
      * fetch all invoices event and replies with all the rendered html of the fetched invoices
@@ -60,14 +57,8 @@ class InvoiceChannelManager {
         const invoiceLocation = `file://${__dirname}/../../ui/invoice.html`;
         this.ipcMain.on(listenChannel, (event, args) => {
             try {
-                const invoiceKey = 'invoiceID';
-                const userKey = 'userID';
-                if (args[invoiceKey] === "" || args[userKey] === "") {
-                    event.reply(replyChannel, "Invoice and user id need to be supplied");
-                    throw new Error("Invoice and User id need to be supplied");
-                }
-                const fetchInvoiceByIDPromise = this.invoiceService.fetchInvoiceByID(args[invoiceKey]);
-                const fetchUserByIDPromise = this.userService.fetchUserByID(args[userKey]);
+                const fetchInvoiceByIDPromise = this.invoiceService.fetchInvoiceByID(args['invoiceID']);
+                const fetchUserByIDPromise = this.userService.fetchUserByID(args['userID']);
                 Promise.all([fetchInvoiceByIDPromise, fetchUserByIDPromise])
                     .then(results => {
                     const invoiceDTO = results[0];
@@ -94,9 +85,6 @@ class InvoiceChannelManager {
     initSubmit() {
         const listenChannel = 'submit-invoice-channel';
         const replyChannel = 'submit-invoice-reply-channel';
-        // todo: maybe remove all checks to see if the key is empty
-        // and move these checks to the domain classes
-        // then just pass the args to the invoiceService method
         // but how do i pass correct error messages back to the user?
         // or should that happen client-side during the entering of the info?
         this.ipcMain.on(listenChannel, (_, args) => {
@@ -124,7 +112,7 @@ class InvoiceChannelManager {
     initChannel(listenChan, replyChan, succeedCallback, errorCallback) {
         this.ipcMain.on(listenChan, (event, args) => {
             try {
-                succeedCallback();
+                succeedCallback(args);
             }
             catch (e) {
                 errorCallback();

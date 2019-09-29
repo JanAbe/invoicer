@@ -68,27 +68,28 @@ const extraEquipmentItemBtn = document.querySelector('#equipment-item-add-btn');
 const equipmentItemSegment = document.querySelector('#equipment-item-segment');
 const equipmentItemHtmlSegment = `
 <div class="equipment-item">
-    <div class="two-input-fields">
-        <div class="form-group">
-            <label>Name</label>
-            <input name="equipmentItemName" type="text" class="form-control" placeholder="Name">
-        </div>
-        
-        <div class="form-group">
-            <label>Day Price</label>
-            <input name="equipmentItemDayPrice" type="number" class="form-control" placeholder="Day Price">
-        </div>
+    <div class="form-group">
+        <span style="display: inherit;">
+            <button type="button" class="btn btn-default equipment-item-rm-btn">&#8722;</button>
+        </span>
+        <label>Naam</label>
+        <input name="equipmentItemName" type="text" class="form-control" placeholder="Naam">
+    </div>
+    
+    <div class="form-group">
+        <label>Dagprijs</label>
+        <input name="equipmentItemDayPrice" type="number" class="form-control" placeholder="Dagprijs">
     </div>
 
     <div class="two-input-fields">
         <div class="form-group">
-            <label>Start Date</label>
-            <input name="equipmentItemStartDate" type="date" class="form-control" placeholder="Start Date">
+            <label>Begindatum</label>
+            <input name="equipmentItemStartDate" type="date" class="form-control" placeholder="Startdatum">
         </div>
 
         <div class="form-group">
-            <label>End Date</label>
-            <input name="equipmentItemEndDate" type="date" class="form-control" placeholder="End Date">
+            <label>Einddatum</label>
+            <input name="equipmentItemEndDate" type="date" class="form-control" placeholder="Einddatum">
         </div>
     </div>
 </div>
@@ -97,52 +98,62 @@ const equipmentItemHtmlSegment = `
 extraEquipmentItemBtn.addEventListener('click', () => {
     equipmentItemSegment.insertAdjacentHTML("beforeend", equipmentItemHtmlSegment);
     
+    const equipmentItemRemoveBtns = document.querySelectorAll('.equipment-item-rm-btn');
+
     const { jobStartDateVal, jodbEndDateVal } = getJobDateVals();
     const equipmentItemStartDates = document.querySelectorAll('input[name="equipmentItemStartDate"]');
     const equipmentItemEndDates = document.querySelectorAll('input[name="equipmentItemEndDate"]');
     for (let i=0; i < equipmentItemEndDates.length; i++) {
         equipmentItemStartDates[i].value = jobStartDateVal;
         equipmentItemEndDates[i].value = jodbEndDateVal;
+
+        removeEquipmentItemFieldsEvent(equipmentItemRemoveBtns[i]);
     }
 
     syncJobDatesWith('input[name="equipmentItemStartDate"]', 'input[name="equipmentItemEndDate"]');
 });
 
+const removeEquipmentItemFieldsEvent = (btn) => {
+    const parent = btn.parentElement.parentElement.parentElement;
+    btn.addEventListener('click', () => {
+        parent.remove();
+    });
+}
+
 // to add cameraman input fields
 let cameremanCounter = 0;
 const cameramanBtn = document.querySelector('#cameraman-add-btn');
-const cameremanRemoveBtn = document.querySelector('#cameraman-rm-btn');
 const cameramanSegment = document.querySelector('#cameraman-segment');
 const cameremanHtmlSegment = `
     <div class="two-input-fields">
         <div class="form-group">
-            <label>FirstName</label>
-            <input id="cameraman-firstName-input" name="firstName" type="text" class="form-control" placeholder="Name">
+            <label>Voornaam</label>
+            <input id="cameraman-firstName-input" name="firstName" type="text" class="form-control" placeholder="Voornaam" readonly>
         </div>
 
         <div class="form-group">
-            <label>LastName</label>
-            <input id="cameraman-lastName-input" name="lastName" type="text" class="form-control" placeholder="LastName">
+            <span style="display: inherit;">
+                <button id="cameraman-rm-btn" type="button" class="btn btn-default">&#8722;</button>
+            </span>
+            <label>Achternaam</label>
+            <input id="cameraman-lastName-input" name="lastName" type="text" class="form-control" placeholder="Achternaam" readonly>
         </div>
     </div>
 
     <div class="form-group">
-        <span style="display: inherit;">
-            <button id="cameraman-rm-btn" type="button" class="btn btn-default">&#8722;</button>
-            <label>Day Price</label>
-        </span>
-        <input name="dayPrice" type="number" class="form-control" placeholder="Day Price">
+        <label>Dagprijs</label>
+        <input name="dayPrice" type="number" class="form-control" placeholder="Dagprijs">
     </div>
 
     <div class="two-input-fields">
         <div class="form-group">
-            <label>Start Date</label>
-            <input name="startDate" type="date" class="form-control" placeholder="Start Date">
+            <label>Begindatum</label>
+            <input name="startDate" type="date" class="form-control" placeholder="Begindatum">
         </div>
 
         <div class="form-group">
-            <label>End Date</label>
-            <input name="endDate" type="date" class="form-control" placeholder="End Date">
+            <label>Einddatum</label>
+            <input name="endDate" type="date" class="form-control" placeholder="Einddatum">
         </div>
     </div>
 `;
@@ -151,6 +162,10 @@ cameramanBtn.addEventListener('click', () => {
     if (++cameremanCounter == 1) {
         cameramanSegment.insertAdjacentHTML("beforeend", cameremanHtmlSegment);
     } 
+
+    const cameremanRemoveBtn = document.querySelector('#cameraman-rm-btn');
+    removeCameraFieldsEvent(cameremanRemoveBtn);
+
     const cameramanFirstNameInput = document.querySelector('#cameraman-firstName-input');
     const cameramanLastNameInput = document.querySelector('#cameraman-lastName-input');
     cameramanFirstNameInput.value = localStorage.getItem('firstName');
@@ -164,6 +179,19 @@ cameramanBtn.addEventListener('click', () => {
 
     syncJobDatesWith('input[name="startDate"]', 'input[name="endDate"]');
 });
+
+/**
+ * binds a click event to the provided button to remove the child nodes
+ * of the cameramansegment
+ */
+const removeCameraFieldsEvent = (btn) => {
+    btn.addEventListener('click', () => {
+        cameremanCounter--;
+        while(cameramanSegment.hasChildNodes()) {
+            cameramanSegment.removeChild(cameramanSegment.firstChild);
+        }
+    });
+}
 
 /**
  * SyncJobDatesWith syncs the jobDates input fields with the inputfields

@@ -52,6 +52,7 @@ describe('InvoiceService', () => {
 
     describe('createInvoice', () => {
         it('should create a new invoice without problems', async () => {
+            // it fails because i don't know how to mock / use memory db
             await assert.doesNotReject(async () => {
                 return await invoiceService.createInvoice(invoiceProps);
             });
@@ -70,5 +71,27 @@ describe('InvoiceService', () => {
                 return await invoiceService.createInvoice(invoiceProps);
             });
         })
+    });
+
+    describe('fetchAllInvoices', () => {
+        it('should be executed with no problems', async () => {
+            await assert.doesNotReject(async () => {
+                return await invoiceService.fetchAllInvoices();
+            });
+        });
+    });
+
+    describe('fetchInvoiceByID', () => {
+        it('should reject when an invoiceID is entered that does not exist', async () => {
+            await assert.rejects(async () => {
+                return await invoiceService.fetchInvoiceByID('4a3630c1-2706-47f1-8d00-a04e29b4b130');
+            });
+        });
+
+        it('should reject when an invalid id is passed', async () => {
+            await assert.rejects(async () => {
+                return await invoiceService.fetchInvoiceByID('');
+            });
+        });
     });
 });

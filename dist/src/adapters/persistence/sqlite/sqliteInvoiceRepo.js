@@ -58,9 +58,10 @@ class SqliteInvoiceRepo {
     invoiceOfID(invoiceID) {
         return __awaiter(this, void 0, void 0, function* () {
             const query = 'SELECT id, creation_date, invoice_number, iban, ref_job FROM Invoice WHERE id=?';
-            // how does this work?
-            // how is this a promise? it was suggested by vscode to change it into this
             const row = yield this._db.get(query, [invoiceID.toString()]);
+            if (row === undefined) {
+                throw new Error(`Invoice not found. There is no invoice with id: ${invoiceID.toString()}`);
+            }
             return new invoice_1.Invoice(new invoiceID_1.InvoiceID(row.id), row.invoice_number, new jobID_1.JobID(row.ref_job), row.iban, moment_1.default(row.creation_date, 'DD/MM/YYYY').toDate());
         });
     }

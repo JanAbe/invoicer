@@ -31,10 +31,7 @@ export class InvoiceChannelManager implements ChannelManager {
         this.initGenerate();
         this.initSubmit();
     }
-    
-    // todo: use nunjucks to render html. create templates and extend from other templates
-    // this will reduce code (html) duplication. Atm each file has the same navbar html
-    // which is just duplication and more error prone
+
     /**
      * fetchAll creates a channel for ipcMain to listen to the
      * fetch all invoices event and replies with all the rendered html of the fetched invoices
@@ -72,16 +69,8 @@ export class InvoiceChannelManager implements ChannelManager {
 
         this.ipcMain.on(listenChannel, (event, args) => {
             try {
-                const invoiceKey = 'invoiceID';
-                const userKey = 'userID';
-
-                if (args[invoiceKey] === "" || args[userKey] === "") {
-                    event.reply(replyChannel, "Invoice and user id need to be supplied");
-                    throw new Error("Invoice and User id need to be supplied");
-                }
-
-                const fetchInvoiceByIDPromise = this.invoiceService.fetchInvoiceByID(args[invoiceKey])
-                const fetchUserByIDPromise = this.userService.fetchUserByID(args[userKey]);
+                const fetchInvoiceByIDPromise = this.invoiceService.fetchInvoiceByID(args['invoiceID'])
+                const fetchUserByIDPromise = this.userService.fetchUserByID(args['userID']);
 
                 Promise.all([fetchInvoiceByIDPromise, fetchUserByIDPromise])
                 .then(results => {
@@ -110,6 +99,9 @@ export class InvoiceChannelManager implements ChannelManager {
     private initSubmit(): void {
         const listenChannel = 'submit-invoice-channel';
         const replyChannel = 'submit-invoice-reply-channel';
+
+        //todo: look into valid and invalid dayPrice values
+        // i entered something and it made it crash, i forgot what i entered though :c 
 
         // but how do i pass correct error messages back to the user?
         // or should that happen client-side during the entering of the info?
@@ -140,10 +132,10 @@ export class InvoiceChannelManager implements ChannelManager {
     // where succeedCallback and errorCallback are two functions, one wil run in the try block
     // and the other will run in the catchblock
     // todo: replace any type with a better function describing type
-    private initChannel(listenChan: string, replyChan: string, succeedCallback: () => void, errorCallback: () => void) {
+    private initChannel(listenChan: string, replyChan: string, succeedCallback: (args: any) => void, errorCallback: () => void) {
         this.ipcMain.on(listenChan, (event, args) => {
             try {
-                succeedCallback();
+                succeedCallback(args);
             } catch (e) {
                 errorCallback();
             }

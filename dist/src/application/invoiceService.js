@@ -66,7 +66,7 @@ class InvoiceService {
             for (const invoice of invoices) {
                 const invoiceDTO = new InvoiceDTO_1.InvoiceDTO();
                 invoiceDTO.id = invoice.invoiceID.toString();
-                invoiceDTO.invoiceNumber = 'some number';
+                invoiceDTO.invoiceNumber = invoice.invoiceNumber;
                 invoiceDTO.creationDate = invoice.creationDate;
                 yield this._jobRepo.jobOfID(invoice.jobID)
                     .then(job => {

@@ -28,12 +28,12 @@
                     <nav class="nav-group">
                         <h3 class="nav-group-title">Menu</h3>
 
-                        <a href="./home.html">
+                        <!-- <a href="./home.html">
                             <span class="nav-group-item">
                                 <span class="icon icon-home"></span>
                                 Home
                             </span>
-                        </a>
+                        </a> -->
 
                         <a href="./invoices.html">
                             <span class="nav-group-item">
@@ -45,19 +45,13 @@
                         <a href="./generalInfo.html">
                             <span class="nav-group-item">
                                 <span class="icon icon-vcard"></span>
-                                General Info
+                                Gebruikergegevens
                             </span>
                         </a>
                     </nav>
                 </div>
 
                 <!-- 
-            een start-eind datum toevoegen aan Job-segment
-            als de data van de verschillende equipment-items worden
-            leeggelaten -> wordt de data van de Job gebruikt.
-            Hierdoor voorkom je dat de gebruiker, bijv. 3x dezelfde
-            start-eind datum moet invullen voor alle 3 de appartuur items
-
             een drag n drop feature maken
             gebruiker kan een .pdf bestand in de applicatie slepen
             de gebruiker kan dan de gegenereerde pdf inzien in de app
@@ -70,7 +64,7 @@
                             </div>
 
                             <div id="bank-account-segment-title">
-                                <h5><strong>Bank Account</strong></h5>
+                                <h5><strong>IBAN</strong></h5>
                             </div>
                             <div id="bank-account-segment">
                                 <div class="form-group">
@@ -81,18 +75,18 @@
                             </div>
 
                             <div id="client-segment-title">
-                                <h5><strong>Client info</strong></h5>
+                                <h5><strong>Klantgegevens</strong></h5>
                             </div>
                             <div id="client-segment">
                                 <div class="two-input-fields">
                                     <div class="form-group">
-                                        <label>FirstName</label>
+                                        <label>Voornaam</label>
                                         <input name="firstName" type="text" class="form-control"
-                                            placeholder="FirstName">
+                                            placeholder="Voornaam">
                                     </div>
                                     <div class="form-group">
-                                        <label>LastName</label>
-                                        <input name="lastName" type="text" class="form-control" placeholder="LastName">
+                                        <label>Achternaam</label>
+                                        <input name="lastName" type="text" class="form-control" placeholder="Achternaam">
                                     </div>
                                 </div>
 
@@ -103,64 +97,64 @@
 
                                 <div class="two-input-fields">
                                     <div class="form-group">
-                                        <label>City</label>
-                                        <input name="city" type="text" class="form-control" placeholder="City">
+                                        <label>Stad</label>
+                                        <input name="city" type="text" class="form-control" placeholder="Stad">
                                     </div>
                                     <div class="form-group">
-                                        <label>Zipcode</label>
-                                        <input name="zipcode" type="text" class="form-control" placeholder="Zipcode">
+                                        <label>Postcode</label>
+                                        <input name="zipcode" type="text" class="form-control" placeholder="Postcode">
                                     </div>
                                 </div>
 
                                 <div class="two-input-fields">
                                     <div class="form-group">
-                                        <label>Street</label>
-                                        <input name="street" type="text" class="form-control" placeholder="Street">
+                                        <label>Straatnaam</label>
+                                        <input name="street" type="text" class="form-control" placeholder="Straatnaam">
                                     </div>
                                     <div class="form-group">
-                                        <label>HouseNumber</label>
+                                        <label>Huisnummer</label>
                                         <input name="houseNumber" type="number" class="form-control"
-                                            placeholder="HouseNumber">
+                                            placeholder="Huisnummer">
                                     </div>
                                 </div>
                             </div>
 
                             <div id="job-segment-title">
-                                <h5><strong>Job info</strong></h5>
+                                <h5><strong>Werk/Opdracht gegevens</strong></h5>
                             </div>
 
                             <div id="job-segment">
                                 <div class="form-group">
-                                    <label>Description</label>
+                                    <label>Omschrijving</label>
                                     <input name="description" type="text" class="form-control"
-                                        placeholder="Description">
+                                        placeholder="Omschrijving">
                                 </div>
 
                                 <div class="two-input-fields">
                                     <div class="form-group">
-                                        <label>Location</label>
-                                        <input name="location" type="text" class="form-control" placeholder="Location">
+                                        <label>Locatie</label>
+                                        <input name="location" type="text" class="form-control" placeholder="Locatie">
                                     </div>
 
                                     <div class="form-group">
-                                        <label>Directed By</label>
+                                        <label>Regie</label>
                                         <input name="directedBy" type="text" class="form-control"
-                                            placeholder="Directed By">
+                                            placeholder="Regie">
                                     </div>
                                 </div>
 
                                 <div class="two-input-fields">
                                     <div class="form-group">
-                                        <label>Start Date</label>
+                                        <label>Begindatum</label>
                                         <input id="job-start-date" name="jobStartDate" type="date" class="form-control"
-                                            placeholder="Start Date">
+                                            placeholder="Begindatum">
                                     </div>
 
                                     <!-- todo: change front-end date input field format to DD/MM/YYYY from MM/DD/YYYY -->
                                     <div class="form-group">
-                                        <label>End Date</label>
+                                        <label>Einddatum</label>
                                         <input id="job-end-date" name="jobEndDate" type="date" class="form-control"
-                                            placeholder="End Date">
+                                            placeholder="Einddatum">
                                     </div>
                                 </div>
                             </div>
@@ -180,7 +174,7 @@
                                 <span style="display: inherit;">
                                     <button id="equipment-item-add-btn" type="button"
                                         class="btn btn-default icon icon-right"></button>
-                                    <h5><strong>Equipment Items</strong></h5>
+                                    <h5><strong>Apparatuur</strong></h5>
                                 </span>
                             </div>
 
