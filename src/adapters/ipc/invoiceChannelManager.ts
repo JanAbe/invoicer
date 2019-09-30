@@ -3,6 +3,7 @@ import { InvoiceService } from '../../application/invoiceService';
 import { ChannelManager } from "./channelManager";
 import { HtmlService } from "../../application/htmlService";
 import { UserService } from "../../application/userService";
+import { isNullOrUndefined } from "util";
 
 /**
  * InvoiceChannel manages all invoice related channels
@@ -106,6 +107,10 @@ export class InvoiceChannelManager implements ChannelManager {
         // but how do i pass correct error messages back to the user?
         // or should that happen client-side during the entering of the info?
         this.ipcMain.on(listenChannel, (_, args) => {
+            if (isNullOrUndefined(args)) {
+                throw new Error('args is null or undefined');
+            }
+
             const invoiceProps: any = {};
             const { iban, firstName, lastName, 
                     email, city, zipcode, street, 

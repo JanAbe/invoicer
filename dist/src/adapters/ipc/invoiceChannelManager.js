@@ -1,6 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const htmlService_1 = require("../../application/htmlService");
+const util_1 = require("util");
 /**
  * InvoiceChannel manages all invoice related channels
  * used by IPC for communicating with the renderer process of electron
@@ -90,6 +91,9 @@ class InvoiceChannelManager {
         // but how do i pass correct error messages back to the user?
         // or should that happen client-side during the entering of the info?
         this.ipcMain.on(listenChannel, (_, args) => {
+            if (util_1.isNullOrUndefined(args)) {
+                throw new Error('args is null or undefined');
+            }
             const invoiceProps = {};
             const { iban, firstName, lastName, email, city, zipcode, street, houseNumber, description, location, directedBy, cameraman, equipmentItems } = args;
             invoiceProps['iban'] = iban;

@@ -2,14 +2,31 @@
 class InvoiceFormComponent {
     constructor() {
         this.parentID = 'invoice-form-parent';
+        this.ibanID = 'iban';
+        this.clientFirstNameID = 'client-first-name';
+        this.clientLastNameID = 'client-last-name';
+        this.clientEmailID = 'client-email';
+        this.clientCityID = 'client-city';
+        this.clientZipcodeID = 'client-zipcode';
+        this.clientStreetID = 'client-street';
+        this.clientHouseNumberID = 'client-house-number';
+        this.jobDescriptionID = 'job-description';
+        this.jobLocationID = 'job-location';
+        this.jobDirectedByID = 'job-directed-by';
+        this.jobStartDateID = 'job-start-date';
+        this.jobEndDateID = 'job-end-date';
         this.addCameramanID = 'cameraman-add-btn';
         this.addEquipmentItemID = 'equipment-item-add-btn';
+        this.createInvoiceID = 'create-invoice-btn';
+        this.cancelID = 'cancel-btn';
         this.cameramanComponent = new CameramanComponent();
         this.equipmentItemComponent = new EquipmentItemComponent();
     }
 
     init() {
         this.add();
+        this.validateFields();
+        this.preFillIBAN();
         this.addCameramanSegment();
         this.addEquipmentItemSegment();
     }
@@ -37,6 +54,93 @@ class InvoiceFormComponent {
         });
     }
 
+    create() {
+        // const createBtn = document.querySelector(`#${this.createInvoiceID}`);
+        let vals = {};
+        // createBtn.addEventListener('click', () => {
+            let equipmentItems = [];
+            let cameraman = {};
+            const bankSegment = document.querySelector('#bank-account-segment');
+            const clientSegment = document.querySelector('#client-segment');
+            const jobSegment = document.querySelector('#job-segment');
+            const cameramanSegment = document.querySelector('#cameraman-segment');
+            const equipmentItemSegments = document.querySelectorAll('.equipment-item');
+
+            const bankInputs = bankSegment.querySelectorAll('input');
+            for (const input of bankInputs) {
+                vals[input.name] = input.value;
+            }
+
+            const clientInputs = clientSegment.querySelectorAll('input');
+            for (const input of clientInputs) {
+                vals[input.name] = input.value;
+            }
+
+            const jobInputs = jobSegment.querySelectorAll('input');
+            for (const input of jobInputs) {
+                vals[input.name] = input.value;
+            }
+
+            const cameraInputs = cameramanSegment.querySelectorAll('input');
+            for (const input of cameraInputs) {
+                cameraman[input.name] = input.value;
+            }
+
+            for (const item of equipmentItemSegments) {
+                let equipmentItem = {}
+                inputFields = item.querySelectorAll('input');
+                for (const input of inputFields) {
+                    equipmentItem[input.name] = input.value;
+                }
+                equipmentItems.push(equipmentItem);
+            }
+
+            if (Object.keys(cameraman).length !== 0) {
+                vals['cameraman'] = cameraman;
+            }
+
+            if (Object.keys(equipmentItems).length !== 0) {
+                vals['equipmentItems'] = equipmentItems;
+            }
+        // });
+        return vals;
+    }
+
+    preFillIBAN() {
+        const iban = document.querySelector(`#${this.ibanID}`);
+        iban.value = localStorage.getItem('iban');
+    }
+
+    validateFields() {
+        const iban = document.querySelector(`#${this.ibanID}`);
+        const clientFirstName = document.querySelector(`#${this.clientFirstNameID}`);
+        const clientLastName = document.querySelector(`#${this.clientLastNameID}`);
+        const clientEmail = document.querySelector(`#${this.clientEmailID}`);
+        const clientCity = document.querySelector(`#${this.clientCityID}`);
+        const clientZipcode = document.querySelector(`#${this.clientZipcodeID}`);
+        const clientStreet = document.querySelector(`#${this.clientStreetID}`);
+        const clientHouseNumber = document.querySelector(`#${this.clientHouseNumberID}`);
+        const jobDescription = document.querySelector(`#${this.jobDescriptionID}`);
+        const jobLocation = document.querySelector(`#${this.jobLocationID}`);
+        const jobDirectedBy = document.querySelector(`#${this.jobDirectedByID}`);
+        const jobStartDate = document.querySelector(`#${this.jobStartDateID}`);
+        const jobEndDate = document.querySelector(`#${this.jobEndDateID}`);
+
+        validate(iban, );
+        validate(clientFirstName, /^[a-zA-Z][^\s]*[\s|a-zA-Z]*?$/);
+        validate(clientLastName, /^[a-zA-Z][^\s]*[\s|a-zA-Z]*?$/);
+        validate(clientEmail, /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/);
+        validate(clientCity, /^[a-zA-Z][^\s]*[\s|a-zA-Z]*?$/);
+        validate(clientZipcode, /^\d{4}\s*[a-zA-z]{2}$/);
+        validate(clientStreet, /^[a-zA-Z][^\s]*[\s|a-zA-Z]*?$/);
+        validate(clientHouseNumber, /^[0-9][^\s]*$/);
+        validate(jobDescription, /^[a-zA-Z][^\s]*[\s|a-zA-Z]*?$/);
+        validate(jobLocation, /^[a-zA-Z][^\s]*[\s|a-zA-Z]*?$/);
+        validate(jobDirectedBy, /^[a-zA-Z][^\s]*[\s|a-zA-Z]*?$/);
+        validate(jobStartDate, /^[0-9]{4}-[0-9]{2}-[0-9]{2}/);
+        validate(jobEndDate, /^[0-9]{4}-[0-9]{2}-[0-9]{2}/);
+    }
+
     setHTML() {
         this.html = `
             <form>
@@ -51,7 +155,7 @@ class InvoiceFormComponent {
                     <div id="bank-account-segment">
                         <div class="form-group">
                             <label>IBAN</label>
-                            <input id="iban-input" name='iban' type="text" class="form-control"
+                            <input id="${this.ibanID}" name='iban' type="text" class="form-control"
                                 placeholder="IBAN">
                         </div>
                     </div>
@@ -63,39 +167,39 @@ class InvoiceFormComponent {
                         <div class="two-input-fields">
                             <div class="form-group">
                                 <label>Voornaam</label>
-                                <input id="client-first-name" name="firstName" type="text" class="form-control"
+                                <input id="${this.clientFirstNameID}" name="firstName" type="text" class="form-control"
                                     placeholder="Voornaam">
                             </div>
                             <div class="form-group">
                                 <label>Achternaam</label>
-                                <input id="client-last-name" name="lastName" type="text" class="form-control" placeholder="Achternaam">
+                                <input id="${this.clientLastNameID}" name="lastName" type="text" class="form-control" placeholder="Achternaam">
                             </div>
                         </div>
 
                         <div id="email-input" class="form-group">
                             <label>Email</label>
-                            <input id="client-email" name="email" type="email" class="form-control" placeholder="email">
+                            <input id="${this.clientEmailID}" name="email" type="email" class="form-control" placeholder="email">
                         </div>
 
                         <div class="two-input-fields">
                             <div class="form-group">
                                 <label>Stad</label>
-                                <input id="city" name="city" type="text" class="form-control" placeholder="Stad">
+                                <input id="${this.clientCityID}" name="city" type="text" class="form-control" placeholder="Stad">
                             </div>
                             <div class="form-group">
                                 <label>Postcode</label>
-                                <input id="zipcode" name="zipcode" type="text" class="form-control" placeholder="Postcode">
+                                <input id="${this.clientZipcodeID}" name="zipcode" type="text" class="form-control" placeholder="Postcode">
                             </div>
                         </div>
 
                         <div class="two-input-fields">
                             <div class="form-group">
                                 <label>Straatnaam</label>
-                                <input id="street" name="street" type="text" class="form-control" placeholder="Straatnaam">
+                                <input id="${this.clientStreetID}" name="street" type="text" class="form-control" placeholder="Straatnaam">
                             </div>
                             <div class="form-group">
                                 <label>Huisnummer</label>
-                                <input id="house-number" name="houseNumber" type="number" class="form-control"
+                                <input id="${this.clientHouseNumberID}" name="houseNumber" type="number" class="form-control"
                                     placeholder="Huisnummer">
                             </div>
                         </div>
@@ -108,19 +212,19 @@ class InvoiceFormComponent {
                     <div id="job-segment">
                         <div class="form-group">
                             <label>Omschrijving</label>
-                            <input id="job-description" name="description" type="text" class="form-control"
+                            <input id="${this.jobDescriptionID}" name="description" type="text" class="form-control"
                                 placeholder="Omschrijving">
                         </div>
 
                         <div class="two-input-fields">
                             <div class="form-group">
                                 <label>Locatie</label>
-                                <input id="job-location" name="location" type="text" class="form-control" placeholder="Locatie">
+                                <input id="${this.jobLocationID}" name="location" type="text" class="form-control" placeholder="Locatie">
                             </div>
 
                             <div class="form-group">
                                 <label>Regie</label>
-                                <input id="job-directed-by" name="directedBy" type="text" class="form-control"
+                                <input id="${this.jobDirectedByID}" name="directedBy" type="text" class="form-control"
                                     placeholder="Regie">
                             </div>
                         </div>
@@ -128,14 +232,14 @@ class InvoiceFormComponent {
                         <div class="two-input-fields">
                             <div class="form-group">
                                 <label>Begindatum</label>
-                                <input id="job-start-date" name="jobStartDate" type="date" class="form-control"
+                                <input id="${this.jobStartDateID}" name="jobStartDate" type="date" class="form-control"
                                     placeholder="Begindatum">
                             </div>
 
                             <!-- todo: change front-end date input field format to DD/MM/YYYY from MM/DD/YYYY -->
                             <div class="form-group">
                                 <label>Einddatum</label>
-                                <input id="job-end-date" name="jobEndDate" type="date" class="form-control"
+                                <input id="${this.jobEndDateID}" name="jobEndDate" type="date" class="form-control"
                                     placeholder="Einddatum">
                             </div>
                         </div>
@@ -143,7 +247,7 @@ class InvoiceFormComponent {
 
                     <div id="cameraman-segment-title">
                         <span style="display: inherit;">
-                            <button id="cameraman-add-btn" type="button"
+                            <button id="${this.addCameramanID}" type="button"
                                 class="btn btn-default icon icon-right"></button>
                             <h5><strong>Cameraman</strong></h5>
                         </span>
@@ -154,7 +258,7 @@ class InvoiceFormComponent {
 
                     <div id="equipment-item-segment-title">
                         <span style="display: inherit;">
-                            <button id="equipment-item-add-btn" type="button"
+                            <button id="${this.addEquipmentItemID}" type="button"
                                 class="btn btn-default icon icon-right"></button>
                             <h5><strong>Apparatuur</strong></h5>
                         </span>
@@ -166,8 +270,8 @@ class InvoiceFormComponent {
                     <div id="button-segment">
                         <div class="form-group">
                             <div id="btn-wrapper" class="form-actions">
-                                <a href="./invoices.html" id="cancel-btn" type="submit" class="btn btn-form btn-default">Cancel</a>
-                                <a href="./invoices.html" id="create-invoice-btn" 
+                                <a href="./invoices.html" id="${this.cancelID}" type="submit" class="btn btn-form btn-default">Cancel</a>
+                                <a href="./invoices.html" id="${this.createInvoiceID}" 
                                     class="btn btn-form btn-primary">Create</a>
                             </div>
                         </div>
@@ -262,7 +366,7 @@ class CameramanComponent {
             <div class="two-input-fields">
                 <div class="form-group">
                     <label>Voornaam</label>
-                    <input id=${this.firstNameFieldID} name="firstName" type="text" class="form-control" placeholder="Voornaam" readonly>
+                    <input id="${this.firstNameFieldID}" name="firstName" type="text" class="form-control" placeholder="Voornaam" readonly>
                 </div>
 
                 <div class="form-group">

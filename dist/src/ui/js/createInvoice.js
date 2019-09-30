@@ -3,7 +3,9 @@ const { ipcRenderer } = require('electron');
 const invoiceForm = new InvoiceFormComponent();
 invoiceForm.init();
 
-
+document.querySelector(`#${invoiceForm.createInvoiceID}`).addEventListener('click', () => {
+    ipcRenderer.send('submit-invoice-channel', invoiceForm.create());
+})
 
 ipcRenderer.on('submit-invoice-reply-channel', (event, args) => {
     console.log(args);
@@ -11,137 +13,137 @@ ipcRenderer.on('submit-invoice-reply-channel', (event, args) => {
 
 
 
-const validate = (node, regex) => {
-    node.addEventListener('keyup', () => {
-        regex.test(node.value) ? node.style.borderColor = '#2ecc71' : node.style.borderColor = '#FF796C';
-    });
-}
+// const validate = (node, regex) => {
+//     node.addEventListener('keyup', () => {
+//         regex.test(node.value) ? node.style.borderColor = '#2ecc71' : node.style.borderColor = '#FF796C';
+//     });
+// }
 
-const emailValidator = () => {
-    const validationRegex = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
-    const emailInput = document.querySelector('#email-input > input');
-    emailInput.addEventListener('keyup', () => {
-        const val = emailInput.value;
-        validationRegex.test(val) ? emailInput.style.borderColor = '#2ecc71' : emailInput.style.borderColor = '#FF796C';
-    });
-}
+// const emailValidator = () => {
+//     const validationRegex = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+//     const emailInput = document.querySelector('#email-input > input');
+//     emailInput.addEventListener('keyup', () => {
+//         const val = emailInput.value;
+//         validationRegex.test(val) ? emailInput.style.borderColor = '#2ecc71' : emailInput.style.borderColor = '#FF796C';
+//     });
+// }
 
-validate(
-    document.querySelector('#iban-input'),
-    // todo: need regex for iban
-);
+// validate(
+//     document.querySelector('#iban-input'),
+//     // todo: need regex for iban
+// );
 
-validate(
-    document.querySelector('#client-first-name'),
-    /^[a-zA-Z][^\s]*[\s|a-zA-Z]*?$/
-);
+// validate(
+//     document.querySelector('#client-first-name'),
+//     /^[a-zA-Z][^\s]*[\s|a-zA-Z]*?$/
+// );
 
-validate(
-    document.querySelector('#client-last-name'),
-    /^[a-zA-Z][^\s]*[\s|a-zA-Z]*?$/
-);
+// validate(
+//     document.querySelector('#client-last-name'),
+//     /^[a-zA-Z][^\s]*[\s|a-zA-Z]*?$/
+// );
 
-validate(
-    document.querySelector('#client-email'),
-    /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
-);
+// validate(
+//     document.querySelector('#client-email'),
+//     /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+// );
 
-validate(
-    document.querySelector('#city'),
-    /^[a-zA-Z][^\s]*[\s|a-zA-Z]*?$/
-);
+// validate(
+//     document.querySelector('#city'),
+//     /^[a-zA-Z][^\s]*[\s|a-zA-Z]*?$/
+// );
 
-validate(
-    document.querySelector('#zipcode'),
-    /^\d{4}\s*[a-zA-z]{2}$/
-);
+// validate(
+//     document.querySelector('#zipcode'),
+//     /^\d{4}\s*[a-zA-z]{2}$/
+// );
 
-validate(
-    document.querySelector('#street'),
-    /^[a-zA-Z][^\s]*[\s|a-zA-Z]*?$/
-);
+// validate(
+//     document.querySelector('#street'),
+//     /^[a-zA-Z][^\s]*[\s|a-zA-Z]*?$/
+// );
 
-validate(
-    document.querySelector('#house-number'),
-    /^[0-9][^\s]*$/
-);
+// validate(
+//     document.querySelector('#house-number'),
+//     /^[0-9][^\s]*$/
+// );
 
-validate(
-    document.querySelector('#job-description'),
-    /^[a-zA-Z][^\s]*[\s|a-zA-Z]*?$/
-);
+// validate(
+//     document.querySelector('#job-description'),
+//     /^[a-zA-Z][^\s]*[\s|a-zA-Z]*?$/
+// );
 
-validate(
-    document.querySelector('#job-location'),
-    /^[a-zA-Z][^\s]*[\s|a-zA-Z]*?$/
-);
+// validate(
+//     document.querySelector('#job-location'),
+//     /^[a-zA-Z][^\s]*[\s|a-zA-Z]*?$/
+// );
 
-validate(
-    document.querySelector('#job-directed-by'),
-    /^[a-zA-Z][^\s]*[\s|a-zA-Z]*?$/
-);
+// validate(
+//     document.querySelector('#job-directed-by'),
+//     /^[a-zA-Z][^\s]*[\s|a-zA-Z]*?$/
+// );
 
-validate(
-    document.querySelector('#job-start-date'),
-    /^[0-9]{4}-[0-9]{2}-[0-9]{2}/
-)
+// validate(
+//     document.querySelector('#job-start-date'),
+//     /^[0-9]{4}-[0-9]{2}-[0-9]{2}/
+// )
 
-validate(
-    document.querySelector('#job-end-date'),
-    /^[0-9]{4}-[0-9]{2}-[0-9]{2}/
-)
+// validate(
+//     document.querySelector('#job-end-date'),
+//     /^[0-9]{4}-[0-9]{2}-[0-9]{2}/
+// )
 
-// fetch submitted form data and send to the main process
-const createInvoiceBtn = document.querySelector('#create-invoice-btn');
-createInvoiceBtn.addEventListener('click', () => {
-    let vals = {};
-    let equipmentItems = [];
-    let cameraman = {};
-    const bankSegment = document.querySelector('#bank-account-segment');
-    const clientSegment = document.querySelector('#client-segment');
-    const jobSegment = document.querySelector('#job-segment');
-    const cameramanSegment = document.querySelector('#cameraman-segment');
-    const equipmentItemSegments = document.querySelectorAll('.equipment-item');
+// // fetch submitted form data and send to the main process
+// const createInvoiceBtn = document.querySelector('#create-invoice-btn');
+// createInvoiceBtn.addEventListener('click', () => {
+//     let vals = {};
+//     let equipmentItems = [];
+//     let cameraman = {};
+//     const bankSegment = document.querySelector('#bank-account-segment');
+//     const clientSegment = document.querySelector('#client-segment');
+//     const jobSegment = document.querySelector('#job-segment');
+//     const cameramanSegment = document.querySelector('#cameraman-segment');
+//     const equipmentItemSegments = document.querySelectorAll('.equipment-item');
 
-    const bankInputs = bankSegment.querySelectorAll('input');
-    for (input of bankInputs) {
-        vals[input.name] = input.value;
-    }
+//     const bankInputs = bankSegment.querySelectorAll('input');
+//     for (input of bankInputs) {
+//         vals[input.name] = input.value;
+//     }
 
-    const clientInputs = clientSegment.querySelectorAll('input');
-    for (input of clientInputs) {
-        vals[input.name] = input.value;
-    }
+//     const clientInputs = clientSegment.querySelectorAll('input');
+//     for (input of clientInputs) {
+//         vals[input.name] = input.value;
+//     }
 
-    const jobInputs = jobSegment.querySelectorAll('input');
-    for (input of jobInputs) {
-        vals[input.name] = input.value;
-    }
+//     const jobInputs = jobSegment.querySelectorAll('input');
+//     for (input of jobInputs) {
+//         vals[input.name] = input.value;
+//     }
 
-    const cameraInputs = cameramanSegment.querySelectorAll('input');
-    for (input of cameraInputs) {
-        cameraman[input.name] = input.value;
-    }
+//     const cameraInputs = cameramanSegment.querySelectorAll('input');
+//     for (input of cameraInputs) {
+//         cameraman[input.name] = input.value;
+//     }
 
-    for (item of equipmentItemSegments) {
-        let equipmentItem = {}
-        inputFields = item.querySelectorAll('input');
-        for (input of inputFields) {
-            equipmentItem[input.name] = input.value;
-        }
-        equipmentItems.push(equipmentItem);
-    }
+//     for (item of equipmentItemSegments) {
+//         let equipmentItem = {}
+//         inputFields = item.querySelectorAll('input');
+//         for (input of inputFields) {
+//             equipmentItem[input.name] = input.value;
+//         }
+//         equipmentItems.push(equipmentItem);
+//     }
 
-    if (Object.keys(cameraman).length !== 0) {
-        vals['cameraman'] = cameraman;
-    }
+//     if (Object.keys(cameraman).length !== 0) {
+//         vals['cameraman'] = cameraman;
+//     }
 
-    if (Object.keys(equipmentItems).length !== 0) {
-        vals['equipmentItems'] = equipmentItems;
-    }
+//     if (Object.keys(equipmentItems).length !== 0) {
+//         vals['equipmentItems'] = equipmentItems;
+//     }
 
-    ipcRenderer.send('submit-invoice-channel', vals);
-});
+//     ipcRenderer.send('submit-invoice-channel', vals);
+// });
 
 const getJobDateVals = () => {
     const jobStartDateVal = document.querySelector('#job-start-date').value;
@@ -350,5 +352,5 @@ const syncJobDatesWith = (startDateID, endDateID) => {
 }
 
 
-const iban = document.querySelector('#iban-input');
-iban.value = localStorage.getItem('iban');
+// const iban = document.querySelector('#iban-input');
+// iban.value = localStorage.getItem('iban');
