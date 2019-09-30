@@ -1,6 +1,6 @@
 const { ipcRenderer } = require('electron');
 
-const invoiceForm = new InvoiceForm();
+const invoiceForm = new InvoiceFormComponent();
 invoiceForm.init();
 
 
@@ -151,82 +151,82 @@ const getJobDateVals = () => {
 }
 
 // to add extra equipmentItem input fields
-const extraEquipmentItemBtn = document.querySelector('#equipment-item-add-btn');
-const equipmentItemSegment = document.querySelector('#equipment-item-segment');
-const equipmentItemHtmlSegment = `
-<div class="equipment-item">
-    <div class="form-group">
-        <span style="display: inherit;">
-            <button type="button" class="btn btn-default equipment-item-rm-btn icon icon-trash"></button>
-        </span>
-        <label>Naam</label>
-        <input name="equipmentItemName" type="text" class="form-control" placeholder="Naam">
-    </div>
+// const extraEquipmentItemBtn = document.querySelector('#equipment-item-add-btn');
+// const equipmentItemSegment = document.querySelector('#equipment-item-segment');
+// const equipmentItemHtmlSegment = `
+// <div class="equipment-item">
+//     <div class="form-group">
+//         <span style="display: inherit;">
+//             <button type="button" class="btn btn-default equipment-item-rm-btn icon icon-trash"></button>
+//         </span>
+//         <label>Naam</label>
+//         <input name="equipmentItemName" type="text" class="form-control" placeholder="Naam">
+//     </div>
     
-    <div class="form-group">
-        <label>Dagprijs</label>
-        <input name="equipmentItemDayPrice" type="number" class="form-control" placeholder="Dagprijs">
-    </div>
+//     <div class="form-group">
+//         <label>Dagprijs</label>
+//         <input name="equipmentItemDayPrice" type="number" class="form-control" placeholder="Dagprijs">
+//     </div>
 
-    <div class="two-input-fields">
-        <div class="form-group">
-            <label>Begindatum</label>
-            <input name="equipmentItemStartDate" type="date" class="form-control" placeholder="Startdatum">
-        </div>
+//     <div class="two-input-fields">
+//         <div class="form-group">
+//             <label>Begindatum</label>
+//             <input name="equipmentItemStartDate" type="date" class="form-control" placeholder="Startdatum">
+//         </div>
 
-        <div class="form-group">
-            <label>Einddatum</label>
-            <input name="equipmentItemEndDate" type="date" class="form-control" placeholder="Einddatum">
-        </div>
-    </div>
-</div>
-`;
+//         <div class="form-group">
+//             <label>Einddatum</label>
+//             <input name="equipmentItemEndDate" type="date" class="form-control" placeholder="Einddatum">
+//         </div>
+//     </div>
+// </div>
+// `;
 
-extraEquipmentItemBtn.addEventListener('click', () => {
-    equipmentItemSegment.insertAdjacentHTML("beforeend", equipmentItemHtmlSegment);
+// extraEquipmentItemBtn.addEventListener('click', () => {
+//     equipmentItemSegment.insertAdjacentHTML("beforeend", equipmentItemHtmlSegment);
     
-    const equipmentItemRemoveBtns = document.querySelectorAll('.equipment-item-rm-btn');
+//     const equipmentItemRemoveBtns = document.querySelectorAll('.equipment-item-rm-btn');
 
-    const { jobStartDateVal, jodbEndDateVal } = getJobDateVals();
-    const equipmentItemNames = document.querySelectorAll('input[name="equipmentItemName"]');
-    const equipmentItemDayPrices = document.querySelectorAll('input[name="equipmentItemDayPrice"]');
-    const equipmentItemStartDates = document.querySelectorAll('input[name="equipmentItemStartDate"]');
-    const equipmentItemEndDates = document.querySelectorAll('input[name="equipmentItemEndDate"]');
-    for (let i=0; i < equipmentItemEndDates.length; i++) {
-        equipmentItemStartDates[i].value = jobStartDateVal;
-        equipmentItemEndDates[i].value = jodbEndDateVal;
+//     const { jobStartDateVal, jodbEndDateVal } = getJobDateVals();
+//     const equipmentItemNames = document.querySelectorAll('input[name="equipmentItemName"]');
+//     const equipmentItemDayPrices = document.querySelectorAll('input[name="equipmentItemDayPrice"]');
+//     const equipmentItemStartDates = document.querySelectorAll('input[name="equipmentItemStartDate"]');
+//     const equipmentItemEndDates = document.querySelectorAll('input[name="equipmentItemEndDate"]');
+//     for (let i=0; i < equipmentItemEndDates.length; i++) {
+//         equipmentItemStartDates[i].value = jobStartDateVal;
+//         equipmentItemEndDates[i].value = jodbEndDateVal;
 
-        removeEquipmentItemFieldsEvent(equipmentItemRemoveBtns[i]);
-        validate(
-            equipmentItemNames[i],
-            /^[a-zA-Z][^\s]*[\s|a-zA-Z]*?$/
-        );
+//         removeEquipmentItemFieldsEvent(equipmentItemRemoveBtns[i]);
+//         validate(
+//             equipmentItemNames[i],
+//             /^[a-zA-Z][^\s]*[\s|a-zA-Z]*?$/
+//         );
 
-        validate(
-            equipmentItemDayPrices[i],
-            /^[0-9][^\s]*$/
-        )
+//         validate(
+//             equipmentItemDayPrices[i],
+//             /^[0-9][^\s]*$/
+//         )
 
-        validate(
-            equipmentItemStartDates[i],
-            /^[0-9]{4}-[0-9]{2}-[0-9]{2}/
-        )
+//         validate(
+//             equipmentItemStartDates[i],
+//             /^[0-9]{4}-[0-9]{2}-[0-9]{2}/
+//         )
 
-        validate(
-            equipmentItemEndDates[i],
-            /^[0-9]{4}-[0-9]{2}-[0-9]{2}/
-        )
-    }
+//         validate(
+//             equipmentItemEndDates[i],
+//             /^[0-9]{4}-[0-9]{2}-[0-9]{2}/
+//         )
+//     }
 
-    syncJobDatesWith('input[name="equipmentItemStartDate"]', 'input[name="equipmentItemEndDate"]');
-});
+//     syncJobDatesWith('input[name="equipmentItemStartDate"]', 'input[name="equipmentItemEndDate"]');
+// });
 
-const removeEquipmentItemFieldsEvent = (btn) => {
-    const parent = btn.parentElement.parentElement.parentElement;
-    btn.addEventListener('click', () => {
-        parent.remove();
-    });
-}
+// const removeEquipmentItemFieldsEvent = (btn) => {
+//     const parent = btn.parentElement.parentElement.parentElement;
+//     btn.addEventListener('click', () => {
+//         parent.remove();
+//     });
+// }
 
 // to add cameraman input fields
 // let cameremanCounter = 0;

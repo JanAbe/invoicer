@@ -1,21 +1,17 @@
 
-class InvoiceForm {
+class InvoiceFormComponent {
     constructor() {
         this.parentID = 'invoice-form-parent';
         this.addCameramanID = 'cameraman-add-btn';
+        this.addEquipmentItemID = 'equipment-item-add-btn';
         this.cameramanComponent = new CameramanComponent();
+        this.equipmentItemComponent = new EquipmentItemComponent();
     }
 
     init() {
         this.add();
         this.addCameramanSegment();
-    }
-
-    addCameramanSegment() {
-        const addCameramanBtn = document.querySelector(`#${this.addCameramanID}`);
-        addCameramanBtn.addEventListener('click', () => {
-            this.cameramanComponent.init();
-        })
+        this.addEquipmentItemSegment();
     }
 
     /**
@@ -25,6 +21,20 @@ class InvoiceForm {
         this.setHTML();
         const parent = document.querySelector(`#${this.parentID}`);
         parent.insertAdjacentHTML('afterbegin', this.html);
+    }
+
+    addCameramanSegment() {
+        const addCameramanBtn = document.querySelector(`#${this.addCameramanID}`);
+        addCameramanBtn.addEventListener('click', () => {
+            this.cameramanComponent.init();
+        });
+    }
+
+    addEquipmentItemSegment() {
+        const addEquipmentItemBtn = document.querySelector(`#${this.addEquipmentItemID}`);
+        addEquipmentItemBtn.addEventListener('click', () => {
+            this.equipmentItemComponent.init();
+        });
     }
 
     setHTML() {
@@ -207,8 +217,8 @@ class CameramanComponent {
     /**
      * Prefills the firstName and lastName fields
      * with the values present in localstorage
-     * @param {localstorage key of firstname} firstname 
-     * @param {localstorage key of lastname} lastName 
+     * @param {localstorage key of firstname} key1 
+     * @param {localstorage key of lastname} key2 
      */
     preFillNameFields(key1, key2) {
         document.querySelector(`#${this.firstNameFieldID}`).value = localStorage.getItem(key1);
@@ -282,4 +292,100 @@ class CameramanComponent {
             </div>
         `
     }
+}
+
+class EquipmentItemComponent {
+    constructor() {
+        this.counter = 0; // to keep track how many equipment-items there are
+        this.id = 'equipment-item-segment';
+        this.nameID = 'equipment-item-name';
+        this.dayPriceID = 'equipment-item-day-price';
+        this.startDateID = 'equipment-item-start-date';
+        this.endDateID =  'equipment-item-end-date';
+        this.removeButtonID = 'equipment-item-rm-btn';
+    }
+
+    init() {
+        this.add();
+        this.validateFields();
+        this.remove();
+    }
+
+    add() {
+        this.setHTML();
+        const equipmentItemSegment = document.querySelector(`#${this.id}`);
+        equipmentItemSegment.insertAdjacentHTML('afterbegin', this.html);
+        this.counter++;
+    }
+
+    /**
+     * Binds a click event to all remove equipment items
+     * respectively and removes this equipmentItem when clicked
+     */
+    remove() {
+        const { removeButtons } = this.getAllElements();
+        for(let i=0; i<this.counter; i++) {
+            const parent = removeButtons[i].parentElement.parentElement.parentElement;
+            removeButtons[i].addEventListener('click', () => {
+                parent.remove();
+                this.counter--;
+            });
+        }
+    }
+
+    validateFields() {
+        const { names, dayPrices, startDates, endDates } = this.getAllElements();
+        for (let i=0; i<this.counter; i++) {
+            validate(names[i], /^[a-zA-Z][^\s]*[\s|a-zA-Z]*?$/);
+            validate(dayPrices[i], /^[0-9][^\s]*$/);
+            validate(startDates[i], /^[0-9]{4}-[0-9]{2}-[0-9]{2}/);
+            validate(endDates[i], /^[0-9]{4}-[0-9]{2}-[0-9]{2}/);
+        }
+    }
+
+    /**
+     * Gets all the elements present in the equipmentItemSegment
+     */
+    getAllElements() {
+        const names = document.querySelectorAll(`.${this.nameID}`);
+        const dayPrices = document.querySelectorAll(`.${this.dayPriceID}`);
+        const startDates = document.querySelectorAll(`.${this.startDateID}`);
+        const endDates = document.querySelectorAll(`.${this.endDateID}`);
+        const removeButtons = document.querySelectorAll(`.${this.removeButtonID}`);
+
+        return { names, dayPrices, startDates, endDates, removeButtons };
+    }
+
+    setHTML() {
+        this.html = `
+            <div class="equipment-item">
+                <div class="form-group">
+                    <span style="display: inherit;">
+                        <button type="button" class="btn btn-default equipment-item-rm-btn icon icon-trash"></button>
+                    </span>
+                    <label>Naam</label>
+                    <input name="equipmentItemName" type="text" class="form-control equipment-item-name" placeholder="Naam">
+                </div>
+                
+                <div class="form-group">
+                    <label>Dagprijs</label>
+                    <input name="equipmentItemDayPrice" type="number" class="form-control equipment-item-day-price" placeholder="Dagprijs">
+                </div>
+
+                <div class="two-input-fields">
+                    <div class="form-group">
+                        <label>Begindatum</label>
+                        <input name="equipmentItemStartDate" type="date" class="form-control equipment-item-start-date" placeholder="Startdatum">
+                    </div>
+
+                    <div class="form-group">
+                        <label>Einddatum</label>
+                        <input name="equipmentItemEndDate" type="date" class="form-control equipment-item-end-date" placeholder="Einddatum">
+                    </div>
+                </div>
+            </div>
+        `
+        
+    }
+
 }
