@@ -1,10 +1,9 @@
-// const { validate } = require("../util");
 
 class InvoiceForm {
     constructor() {
-        this.parentID = '#invoice-form-parent';
-        this.addCameramanID = '#cameraman-add-btn';
-        this.cameramanComponent = new cameramanComponent();
+        this.parentID = 'invoice-form-parent';
+        this.addCameramanID = 'cameraman-add-btn';
+        this.cameramanComponent = new CameramanComponent();
     }
 
     init() {
@@ -13,18 +12,18 @@ class InvoiceForm {
     }
 
     addCameramanSegment() {
-        const addCameramanBtn = document.querySelector(this.addCameramanID);
+        const addCameramanBtn = document.querySelector(`#${this.addCameramanID}`);
         addCameramanBtn.addEventListener('click', () => {
             this.cameramanComponent.init();
         })
     }
 
     /**
-     * adds the invoice form to the parent
+     * Adds the invoice form to the parent
      */
     add() {
         this.setHTML();
-        const parent = document.querySelector(this.parentID);
+        const parent = document.querySelector(`#${this.parentID}`);
         parent.insertAdjacentHTML('afterbegin', this.html);
     }
 
@@ -169,21 +168,20 @@ class InvoiceForm {
     }
 }
 
-class cameramanComponent {
-
+class CameramanComponent {
     constructor() {
         this.counter = 0; // necessary to make sure only one cameraman segment is present at max
-        this.id = '#cameraman-segment';
-        this.firstNameFieldID = '#cameraman-first-name';
-        this.lastNameFieldID = '#cameraman-last-name';
-        this.dayPriceFieldID = '#cameraman-day-price';
-        this.startDateFieldID = '#cameraman-start-date';
-        this.endDateFieldID = '#cameraman-end-date';
-        this.removeButtonID = '#cameraman-rm-btn';
+        this.id = 'cameraman-segment';
+        this.firstNameFieldID = 'cameraman-first-name';
+        this.lastNameFieldID = 'cameraman-last-name';
+        this.dayPriceFieldID = 'cameraman-day-price';
+        this.startDateFieldID = 'cameraman-start-date';
+        this.endDateFieldID = 'cameraman-end-date';
+        this.removeButtonID = 'cameraman-rm-btn';
     }
 
     /**
-     * readies the component. Should be executed when the 
+     * Readies the component. Should be executed when the 
      * invoice form is already added to the page. 
      */
     init() {
@@ -194,7 +192,7 @@ class cameramanComponent {
     }
 
     /**
-     * adds the cameraman component html to the cameraman segment,
+     * Adds the cameraman component html to the cameraman segment,
      * if it isn't already present on the page.
      */
     add() {
@@ -202,7 +200,7 @@ class cameramanComponent {
             return;
         }
         this.setHTML();
-        const cameramanSegment = document.querySelector(this.id);
+        const cameramanSegment = document.querySelector(`#${this.id}`);
         cameramanSegment.insertAdjacentHTML('beforeend', this.html);
     }
 
@@ -212,20 +210,20 @@ class cameramanComponent {
      * @param {localstorage key of firstname} firstname 
      * @param {localstorage key of lastname} lastName 
      */
-    preFillNameFields(firstname, lastName) {
-        document.querySelector(this.firstNameFieldID).value = localStorage.getItem(firstname);
-        document.querySelector(this.lastNameFieldID).value = elocalStorage.getItem(lastName);
+    preFillNameFields(key1, key2) {
+        document.querySelector(`#${this.firstNameFieldID}`).value = localStorage.getItem(key1);
+        document.querySelector(`#${this.lastNameFieldID}`).value = localStorage.getItem(key2);
     }
 
     /**
-     * removes all fields within the cameramanSegment when the remove cameraman
+     * Removes all fields within the cameramanSegment when the remove cameraman
      * button is pressed.
      */
     remove() {
-        removeButton = document.querySelector(this.removeButtonID);
+        const removeButton = document.querySelector(`#${this.removeButtonID}`);
         removeButton.addEventListener('click', () => {
             this.counter--;
-            const cameramanSegment = document.querySelector(this.id);
+            const cameramanSegment = document.querySelector(`#${this.id}`);
             while (cameramanSegment.hasChildNodes()) {
                 cameramanSegment.removeChild(cameramanSegment.firstChild);
             }
@@ -233,14 +231,14 @@ class cameramanComponent {
     }
 
     /**
-     * validates input fields of the cameraman component
+     * Validates input fields of the cameraman component
      */
     validateFields() {
-        const firstName = document.querySelector(this.firstNameFieldID);
-        const lastName = document.querySelector(this.lastNameFieldID);
-        const dayPrice = document.querySelector(this.dayPriceFieldID);
-        const startDate = document.querySelector(this.startDateFieldID);
-        const endDate = document.querySelector(this.endDateFieldID);
+        const firstName = document.querySelector(`#${this.firstNameFieldID}`);
+        const lastName = document.querySelector(`#${this.lastNameFieldID}`);
+        const dayPrice = document.querySelector(`#${this.dayPriceFieldID}`);
+        const startDate = document.querySelector(`#${this.startDateFieldID}`);
+        const endDate = document.querySelector(`#${this.endDateFieldID}`);
 
         validate(firstName, /^[a-zA-Z][^\s]*[\s|a-zA-Z]*?$/);
         validate(lastName, /^[a-zA-Z][^\s]*[\s|a-zA-Z]*?$/);
@@ -254,7 +252,7 @@ class cameramanComponent {
             <div class="two-input-fields">
                 <div class="form-group">
                     <label>Voornaam</label>
-                    <input id="${this.firstNameFieldID}" name="firstName" type="text" class="form-control" placeholder="Voornaam" readonly>
+                    <input id=${this.firstNameFieldID} name="firstName" type="text" class="form-control" placeholder="Voornaam" readonly>
                 </div>
 
                 <div class="form-group">
