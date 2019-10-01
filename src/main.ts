@@ -29,7 +29,7 @@ const createWindow = () => {
         }
 
     });
-
+    
     mainWindow.loadURL(`file://${__dirname}/ui/invoices.html`);
 
     mainWindow.on('closed', () => {
@@ -37,8 +37,14 @@ const createWindow = () => {
     });
 };
 
+app.on('ready', createWindow);
 app.on('ready', () => {
-    createWindow();
+
+    // todo: find fix for this bug!!!
+    // hacky way to make sure that first invoice selected can be viewed
+    mainWindow.webContents.once('did-finish-load', () => {
+        mainWindow.reload();
+    })
 
     const dbLocation = `${__dirname}/../db/Invoice.db`;
     const db = new DB(dbLocation);

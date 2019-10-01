@@ -68,18 +68,20 @@ export class InvoiceChannelManager implements ChannelManager {
         const replyChannel = 'generate-invoice-reply-channel';
         const invoiceLocation = `file://${__dirname}/../../ui/invoice.html`;
 
+        // there's a bug where the first invoice selected doesn't get shown.
+        // All subsequent requests do work. solution: It seems the page needs to be refreshed in order to work
         this.ipcMain.on(listenChannel, (event, args) => {
             try {
                 const fetchInvoiceByIDPromise = this.invoiceService.fetchInvoiceByID(args['invoiceID'])
                 const fetchUserByIDPromise = this.userService.fetchUserByID(args['userID']);
 
-                this.window.webContents.loadURL(invoiceLocation);
                 Promise.all([fetchInvoiceByIDPromise, fetchUserByIDPromise])
                 .then(results => {
                     const invoiceDTO = results[0];
                     const userDTO = results[1];
                     const renderedHTML = HtmlService.generateInvoiceTemplate(invoiceDTO, userDTO);
 
+                    this.window.webContents.loadURL(invoiceLocation);
                     this.window.webContents.on('did-finish-load', () => {
                         event.reply(replyChannel, renderedHTML);
                     });

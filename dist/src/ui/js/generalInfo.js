@@ -81,4 +81,5 @@ btn.addEventListener('click', () => {
 
 ipcRenderer.on('submit-user-reply-channel', (_, userID) => {
     localStorage.setItem('id', userID);
+    id.value = userID;
 });

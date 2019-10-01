@@ -60,13 +60,14 @@ class InvoiceChannelManager {
             try {
                 const fetchInvoiceByIDPromise = this.invoiceService.fetchInvoiceByID(args['invoiceID']);
                 const fetchUserByIDPromise = this.userService.fetchUserByID(args['userID']);
-                this.window.webContents.loadURL(invoiceLocation);
+                // het probleem zit vgm bij userservice
                 Promise.all([fetchInvoiceByIDPromise, fetchUserByIDPromise])
                     .then(results => {
                     const invoiceDTO = results[0];
                     const userDTO = results[1];
                     const renderedHTML = htmlService_1.HtmlService.generateInvoiceTemplate(invoiceDTO, userDTO);
-                    this.window.webContents.on('did-frame-finish-load', () => {
+                    this.window.webContents.loadURL(invoiceLocation);
+                    this.window.webContents.on('did-finish-load', () => {
                         event.reply(replyChannel, renderedHTML);
                     });
                 })

@@ -26,13 +26,22 @@ const createWindow = () => {
             nodeIntegration: true
         }
     });
+    // this doesn't work for some reason.
+    // a button MUST be pressed (doesn't matter which one) to make sure generateInvoice works
+    // mainWindow.loadURL(`file://${__dirname}/ui/invoices.html`);
+    // by starting on home.html, the user must press a button to go to invoices.html
     mainWindow.loadURL(`file://${__dirname}/ui/invoices.html`);
     mainWindow.on('closed', () => {
         mainWindow = null;
     });
 };
+electron_1.app.on('ready', createWindow);
 electron_1.app.on('ready', () => {
-    createWindow();
+    // todo: find fix for this bug!!!
+    // hacky way to make sure that first invoice selected can be viewed
+    mainWindow.webContents.once('did-finish-load', () => {
+        mainWindow.reload();
+    });
     const dbLocation = `${__dirname}/../db/Invoice.db`;
     const db = new db_1.DB(dbLocation);
     db.createTables();
