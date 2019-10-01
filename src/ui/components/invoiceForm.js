@@ -54,55 +54,54 @@ class InvoiceFormComponent {
         });
     }
 
+    // problems: it only works when no cameraman and equipmentitems are made
     create() {
-        // const createBtn = document.querySelector(`#${this.createInvoiceID}`);
         let vals = {};
-        // createBtn.addEventListener('click', () => {
-            let equipmentItems = [];
-            let cameraman = {};
-            const bankSegment = document.querySelector('#bank-account-segment');
-            const clientSegment = document.querySelector('#client-segment');
-            const jobSegment = document.querySelector('#job-segment');
-            const cameramanSegment = document.querySelector('#cameraman-segment');
-            const equipmentItemSegments = document.querySelectorAll('.equipment-item');
+        let equipmentItems = [];
+        let cameraman = {};
+        const bankSegment = document.querySelector('#bank-account-segment');
+        const clientSegment = document.querySelector('#client-segment');
+        const jobSegment = document.querySelector('#job-segment');
+        const cameramanSegment = document.querySelector('#cameraman-segment');
+        const equipmentItemSegments = document.querySelectorAll('.equipment-item');
 
-            const bankInputs = bankSegment.querySelectorAll('input');
-            for (const input of bankInputs) {
-                vals[input.name] = input.value;
-            }
+        const bankInputs = bankSegment.querySelectorAll('input');
+        for (const input of bankInputs) {
+            vals[input.name] = input.value;
+        }
 
-            const clientInputs = clientSegment.querySelectorAll('input');
-            for (const input of clientInputs) {
-                vals[input.name] = input.value;
-            }
+        const clientInputs = clientSegment.querySelectorAll('input');
+        for (const input of clientInputs) {
+            vals[input.name] = input.value;
+        }
 
-            const jobInputs = jobSegment.querySelectorAll('input');
-            for (const input of jobInputs) {
-                vals[input.name] = input.value;
-            }
+        const jobInputs = jobSegment.querySelectorAll('input');
+        for (const input of jobInputs) {
+            vals[input.name] = input.value;
+        }
 
-            const cameraInputs = cameramanSegment.querySelectorAll('input');
-            for (const input of cameraInputs) {
-                cameraman[input.name] = input.value;
-            }
+        const cameraInputs = cameramanSegment.querySelectorAll('input');
+        for (const input of cameraInputs) {
+            cameraman[input.name] = input.value;
+        }
 
-            for (const item of equipmentItemSegments) {
-                let equipmentItem = {}
-                inputFields = item.querySelectorAll('input');
-                for (const input of inputFields) {
-                    equipmentItem[input.name] = input.value;
-                }
-                equipmentItems.push(equipmentItem);
+        for (const item of equipmentItemSegments) {
+            let equipmentItem = {}
+            const inputFields = item.querySelectorAll('input');
+            for (const input of inputFields) {
+                equipmentItem[input.name] = input.value;
             }
+            equipmentItems.push(equipmentItem);
+        }
 
-            if (Object.keys(cameraman).length !== 0) {
-                vals['cameraman'] = cameraman;
-            }
+        if (Object.keys(cameraman).length !== 0) {
+            vals['cameraman'] = cameraman;
+        }
 
-            if (Object.keys(equipmentItems).length !== 0) {
-                vals['equipmentItems'] = equipmentItems;
-            }
-        // });
+        if (Object.keys(equipmentItems).length !== 0) {
+            vals['equipmentItems'] = equipmentItems;
+        }
+
         return vals;
     }
 
