@@ -1,6 +1,6 @@
 #### Invoicer helps you to create and manage your invoices.
 
-A tool for (dutch) cameramen to create invoices and manage their invoices without needing excel or some other program.
+A tool for (dutch) cameramen to create and manage invoices without needing excel or some other program.
 
 Written with the **MEST** 🐮 stack:
 - **M**ocha, **E**lectron, **S**QLite3, **T**ypeScript 
