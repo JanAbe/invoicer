@@ -1,5 +1,4 @@
-
-class InvoiceFormComponent {
+class InvoiceComponent {
     constructor() {
         this.parentID = 'invoice-form-parent';
         this.ibanID = 'iban';
@@ -23,6 +22,9 @@ class InvoiceFormComponent {
         this.equipmentItemComponent = new EquipmentItemComponent();
     }
 
+    /**
+     * initializes the invoiceForm component
+     */
     init() {
         this.add();
         this.validateFields();
@@ -40,23 +42,33 @@ class InvoiceFormComponent {
         parent.insertAdjacentHTML('afterbegin', this.html);
     }
 
+    /**
+     * Adds the cameraman segment when the addCameramanButton is pressed
+     */
     addCameramanSegment() {
         const addCameramanBtn = document.querySelector(`#${this.addCameramanID}`);
         addCameramanBtn.addEventListener('click', () => {
             this.cameramanComponent.init();
+            this.cameramanComponent.syncDatesWith(`#${this.jobStartDateID}`, `#${this.jobEndDateID}`);
         });
     }
 
+    /**
+     * Adds the equipmentItem segment when the addEquipmentItemButton is pressed
+     */
     addEquipmentItemSegment() {
         const addEquipmentItemBtn = document.querySelector(`#${this.addEquipmentItemID}`);
         addEquipmentItemBtn.addEventListener('click', () => {
             this.equipmentItemComponent.init();
+            this.equipmentItemComponent.syncDatesWith(`#${this.jobStartDateID}`, `#${this.jobEndDateID}`);
         });
     }
 
-    // problems: it only works when no cameraman and equipmentitems are made
+    /**
+     * Creates an object containing all necessary invoice data 
+     */
     create() {
-        let vals = {};
+        let invoice = {};
         let equipmentItems = [];
         let cameraman = {};
         const bankSegment = document.querySelector('#bank-account-segment');
@@ -67,17 +79,17 @@ class InvoiceFormComponent {
 
         const bankInputs = bankSegment.querySelectorAll('input');
         for (const input of bankInputs) {
-            vals[input.name] = input.value;
+            invoice[input.name] = input.value;
         }
 
         const clientInputs = clientSegment.querySelectorAll('input');
         for (const input of clientInputs) {
-            vals[input.name] = input.value;
+            invoice[input.name] = input.value;
         }
 
         const jobInputs = jobSegment.querySelectorAll('input');
         for (const input of jobInputs) {
-            vals[input.name] = input.value;
+            invoice[input.name] = input.value;
         }
 
         const cameraInputs = cameramanSegment.querySelectorAll('input');
@@ -95,21 +107,27 @@ class InvoiceFormComponent {
         }
 
         if (Object.keys(cameraman).length !== 0) {
-            vals['cameraman'] = cameraman;
+            invoice['cameraman'] = cameraman;
         }
 
         if (Object.keys(equipmentItems).length !== 0) {
-            vals['equipmentItems'] = equipmentItems;
+            invoice['equipmentItems'] = equipmentItems;
         }
 
-        return vals;
+        return invoice;
     }
 
+    /**
+     * Prefills the iban field
+     */
     preFillIBAN() {
         const iban = document.querySelector(`#${this.ibanID}`);
         iban.value = localStorage.getItem('iban');
     }
 
+    /**
+     * Validates the input fields of the invoice component
+     */
     validateFields() {
         const iban = document.querySelector(`#${this.ibanID}`);
         const clientFirstName = document.querySelector(`#${this.clientFirstNameID}`);
@@ -140,6 +158,9 @@ class InvoiceFormComponent {
         validate(jobEndDate, /^[0-9]{4}-[0-9]{2}-[0-9]{2}/);
     }
 
+    /**
+     * Sets the html of this component
+     */
     setHTML() {
         this.html = `
             <form>
@@ -279,216 +300,4 @@ class InvoiceFormComponent {
             </form>
         `
     }
-}
-
-class CameramanComponent {
-    constructor() {
-        this.counter = 0; // necessary to make sure only one cameraman segment is present at max
-        this.id = 'cameraman-segment';
-        this.firstNameFieldID = 'cameraman-first-name';
-        this.lastNameFieldID = 'cameraman-last-name';
-        this.dayPriceFieldID = 'cameraman-day-price';
-        this.startDateFieldID = 'cameraman-start-date';
-        this.endDateFieldID = 'cameraman-end-date';
-        this.removeButtonID = 'cameraman-rm-btn';
-    }
-
-    /**
-     * Readies the component. Should be executed when the 
-     * invoice form is already added to the page. 
-     */
-    init() {
-        this.add();
-        this.preFillNameFields('firstName', 'lastName');
-        this.validateFields();
-        this.remove();
-    }
-
-    /**
-     * Adds the cameraman component html to the cameraman segment,
-     * if it isn't already present on the page.
-     */
-    add() {
-        if (++this.counter !== 1) {
-            return;
-        }
-        this.setHTML();
-        const cameramanSegment = document.querySelector(`#${this.id}`);
-        cameramanSegment.insertAdjacentHTML('beforeend', this.html);
-    }
-
-    /**
-     * Prefills the firstName and lastName fields
-     * with the values present in localstorage
-     * @param {localstorage key of firstname} key1 
-     * @param {localstorage key of lastname} key2 
-     */
-    preFillNameFields(key1, key2) {
-        document.querySelector(`#${this.firstNameFieldID}`).value = localStorage.getItem(key1);
-        document.querySelector(`#${this.lastNameFieldID}`).value = localStorage.getItem(key2);
-    }
-
-    /**
-     * Removes all fields within the cameramanSegment when the remove cameraman
-     * button is pressed.
-     */
-    remove() {
-        const removeButton = document.querySelector(`#${this.removeButtonID}`);
-        removeButton.addEventListener('click', () => {
-            this.counter--;
-            const cameramanSegment = document.querySelector(`#${this.id}`);
-            while (cameramanSegment.hasChildNodes()) {
-                cameramanSegment.removeChild(cameramanSegment.firstChild);
-            }
-        });
-    }
-
-    /**
-     * Validates input fields of the cameraman component
-     */
-    validateFields() {
-        const firstName = document.querySelector(`#${this.firstNameFieldID}`);
-        const lastName = document.querySelector(`#${this.lastNameFieldID}`);
-        const dayPrice = document.querySelector(`#${this.dayPriceFieldID}`);
-        const startDate = document.querySelector(`#${this.startDateFieldID}`);
-        const endDate = document.querySelector(`#${this.endDateFieldID}`);
-
-        validate(firstName, /^[a-zA-Z][^\s]*[\s|a-zA-Z]*?$/);
-        validate(lastName, /^[a-zA-Z][^\s]*[\s|a-zA-Z]*?$/);
-        validate(dayPrice, /^[0-9][^\s]*$/);
-        validate(startDate, /^[0-9]{4}-[0-9]{2}-[0-9]{2}/);
-        validate(endDate, /^[0-9]{4}-[0-9]{2}-[0-9]{2}/);
-    }
-
-    setHTML() {
-        this.html = `
-            <div class="two-input-fields">
-                <div class="form-group">
-                    <label>Voornaam</label>
-                    <input id="${this.firstNameFieldID}" name="firstName" type="text" class="form-control" placeholder="Voornaam" readonly>
-                </div>
-
-                <div class="form-group">
-                    <span style="display: inherit;">
-                        <button id="${this.removeButtonID}" type="button" class="btn btn-default icon icon-trash"></button>
-                    </span>
-                    <label>Achternaam</label>
-                    <input id="${this.lastNameFieldID}" name="lastName" type="text" class="form-control" placeholder="Achternaam" readonly>
-                </div>
-            </div>
-
-            <div class="form-group">
-                <label>Dagprijs</label>
-                <input id="${this.dayPriceFieldID}" name="dayPrice" type="number" class="form-control" placeholder="Dagprijs">
-            </div>
-
-            <div class="two-input-fields">
-                <div class="form-group">
-                    <label>Begindatum</label>
-                    <input id="${this.startDateFieldID}" name="startDate" type="date" class="form-control" placeholder="Begindatum">
-                </div>
-
-                <div class="form-group">
-                    <label>Einddatum</label>
-                    <input id="${this.endDateFieldID}" name="endDate" type="date" class="form-control" placeholder="Einddatum">
-                </div>
-            </div>
-        `
-    }
-}
-
-class EquipmentItemComponent {
-    constructor() {
-        this.counter = 0; // to keep track how many equipment-items there are
-        this.id = 'equipment-item-segment';
-        this.nameID = 'equipment-item-name';
-        this.dayPriceID = 'equipment-item-day-price';
-        this.startDateID = 'equipment-item-start-date';
-        this.endDateID =  'equipment-item-end-date';
-        this.removeButtonID = 'equipment-item-rm-btn';
-    }
-
-    init() {
-        this.add();
-        this.validateFields();
-        this.remove();
-    }
-
-    add() {
-        this.setHTML();
-        const equipmentItemSegment = document.querySelector(`#${this.id}`);
-        equipmentItemSegment.insertAdjacentHTML('afterbegin', this.html);
-        this.counter++;
-    }
-
-    /**
-     * Binds a click event to all remove equipment items
-     * respectively and removes this equipmentItem when clicked
-     */
-    remove() {
-        const { removeButtons } = this.getAllElements();
-        for(let i=0; i<this.counter; i++) {
-            const parent = removeButtons[i].parentElement.parentElement.parentElement;
-            removeButtons[i].addEventListener('click', () => {
-                parent.remove();
-                this.counter--;
-            });
-        }
-    }
-
-    validateFields() {
-        const { names, dayPrices, startDates, endDates } = this.getAllElements();
-        for (let i=0; i<this.counter; i++) {
-            validate(names[i], /^[a-zA-Z][^\s]*[\s|a-zA-Z]*?$/);
-            validate(dayPrices[i], /^[0-9][^\s]*$/);
-            validate(startDates[i], /^[0-9]{4}-[0-9]{2}-[0-9]{2}/);
-            validate(endDates[i], /^[0-9]{4}-[0-9]{2}-[0-9]{2}/);
-        }
-    }
-
-    /**
-     * Gets all the elements present in the equipmentItemSegment
-     */
-    getAllElements() {
-        const names = document.querySelectorAll(`.${this.nameID}`);
-        const dayPrices = document.querySelectorAll(`.${this.dayPriceID}`);
-        const startDates = document.querySelectorAll(`.${this.startDateID}`);
-        const endDates = document.querySelectorAll(`.${this.endDateID}`);
-        const removeButtons = document.querySelectorAll(`.${this.removeButtonID}`);
-
-        return { names, dayPrices, startDates, endDates, removeButtons };
-    }
-
-    setHTML() {
-        this.html = `
-            <div class="equipment-item">
-                <div class="form-group">
-                    <span style="display: inherit;">
-                        <button type="button" class="btn btn-default equipment-item-rm-btn icon icon-trash"></button>
-                    </span>
-                    <label>Naam</label>
-                    <input name="equipmentItemName" type="text" class="form-control equipment-item-name" placeholder="Naam">
-                </div>
-                
-                <div class="form-group">
-                    <label>Dagprijs</label>
-                    <input name="equipmentItemDayPrice" type="number" class="form-control equipment-item-day-price" placeholder="Dagprijs">
-                </div>
-
-                <div class="two-input-fields">
-                    <div class="form-group">
-                        <label>Begindatum</label>
-                        <input name="equipmentItemStartDate" type="date" class="form-control equipment-item-start-date" placeholder="Startdatum">
-                    </div>
-
-                    <div class="form-group">
-                        <label>Einddatum</label>
-                        <input name="equipmentItemEndDate" type="date" class="form-control equipment-item-end-date" placeholder="Einddatum">
-                    </div>
-                </div>
-            </div>
-        `
-        
-    }
-
 }
