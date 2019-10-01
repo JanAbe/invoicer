@@ -17,7 +17,6 @@ class Invoice {
      * @param nrOfInvoices the nr of invoices that are already made this year
      * @param creationDate the date this invoice is being made
      */
-    // todo: rewrite so it isn't the slowest thing ever
     static generateInvoiceNumber(nrOfInvoices, creationDate) {
         const maxSize = 2; // max 99 invoiceNumbers can be made each year === enough room for growth
         if (nrOfInvoices === 99) {

@@ -15,7 +15,7 @@ export class Job {
     private _clientID?: ClientID;
     private _cameraman?: Cameraman;
     private _equipmentItems?: EquipmentItem[];
-    private _comment?: string; // todo: add code for comment in this class and others
+    private _comment?: string;
 
     constructor(id?: JobID,
                 description?: string, 

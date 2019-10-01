@@ -6,7 +6,7 @@ import { isEmpty } from "../../util/helpers";
 
 export class Invoice {
     private _invoiceID!: InvoiceID;
-    private _invoiceNumber!: string; // maybe/probably give this its own type
+    private _invoiceNumber!: string; 
     private _jobID!: JobID;
     private _iban!: string;
     private _creationDate: Date;
@@ -25,7 +25,6 @@ export class Invoice {
      * @param nrOfInvoices the nr of invoices that are already made this year
      * @param creationDate the date this invoice is being made
      */
-    // todo: rewrite so it isn't the slowest thing ever
     public static generateInvoiceNumber(nrOfInvoices: number, creationDate: Date): string {
         const maxSize = 2; // max 99 invoiceNumbers can be made each year === enough room for growth
         if (nrOfInvoices === 99) {

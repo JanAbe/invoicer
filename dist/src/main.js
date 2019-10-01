@@ -10,12 +10,9 @@ const sqliteUserRepo_1 = require("./adapters/persistence/sqlite/sqliteUserRepo")
 const invoiceChannelManager_1 = require("./adapters/ipc/invoiceChannelManager");
 const userChannelManager_1 = require("./adapters/ipc/userChannelManager");
 const userService_1 = require("./application/userService");
-// Handle creating/removing shortcuts on Windows when installing/uninstalling.
 if (require('electron-squirrel-startup')) { // eslint-disable-line global-require
     electron_1.app.quit();
 }
-// Keep a global reference of the window object, if you don't, the window will
-// be closed automatically when the JavaScript object is garbage collected.
 let mainWindow;
 const createWindow = () => {
     mainWindow = new electron_1.BrowserWindow({
@@ -26,10 +23,6 @@ const createWindow = () => {
             nodeIntegration: true
         }
     });
-    // this doesn't work for some reason.
-    // a button MUST be pressed (doesn't matter which one) to make sure generateInvoice works
-    // mainWindow.loadURL(`file://${__dirname}/ui/invoices.html`);
-    // by starting on home.html, the user must press a button to go to invoices.html
     mainWindow.loadURL(`file://${__dirname}/ui/invoices.html`);
     mainWindow.on('closed', () => {
         mainWindow = null;
@@ -37,8 +30,6 @@ const createWindow = () => {
 };
 electron_1.app.on('ready', createWindow);
 electron_1.app.on('ready', () => {
-    // todo: find fix for this bug!!!
-    // hacky way to make sure that first invoice selected can be viewed
     mainWindow.webContents.once('did-finish-load', () => {
         mainWindow.reload();
     });
@@ -66,6 +57,4 @@ electron_1.app.on('activate', () => {
         createWindow();
     }
 });
-// In this file you can include the rest of your app's specific main process
-// code. You can also put them in separate files and import them here.
 //# sourceMappingURL=main.js.map

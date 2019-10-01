@@ -79,7 +79,7 @@ export class Address {
             throw new Error("Provided zipcode is invalid.");
         }
 
-        // remove all whitespaces
+        // removes all whitespaces
         zipcode = zipcode.replace(/\s/g, '');
         zipcode = zipcode.toUpperCase();
         this._zipcode = zipcode;

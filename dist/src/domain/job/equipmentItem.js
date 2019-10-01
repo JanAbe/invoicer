@@ -3,14 +3,6 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const util_1 = require("util");
 const ezmoney = require("ezmoney");
 const helpers_1 = require("../../util/helpers");
-// vgm is dit nu een soort value object
-// het heeft wel een aparte tabel in de database denk ik
-// maar het is onderdeel van Job
-// Dit betekent dat er meerdere entries van een zelfde apparatuurItem kunnen zijn
-// ik kan dus niet een select list geven met apparatuurItems waar uit gekozen kan worden
-// wat ik wel kan doen is misschien alle unieke namen uit de tabel halen
-// met dagprijs -> dit sturen naar de front-end. De front-end kan dit dan gebruiken
-// om suggesties te geven aan de gebruiker tijdens het typen.
 class EquipmentItem {
     constructor(name, dayPrice, period) {
         this.setName(name);

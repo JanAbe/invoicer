@@ -9,13 +9,10 @@ import { InvoiceChannelManager } from './adapters/ipc/invoiceChannelManager';
 import { UserChannelManager } from './adapters/ipc/userChannelManager';
 import { UserService } from './application/userService';
 
-// Handle creating/removing shortcuts on Windows when installing/uninstalling.
 if (require('electron-squirrel-startup')) { // eslint-disable-line global-require
     app.quit();
 }
 
-// Keep a global reference of the window object, if you don't, the window will
-// be closed automatically when the JavaScript object is garbage collected.
 let mainWindow: any;
 
 const createWindow = () => {
@@ -40,8 +37,6 @@ const createWindow = () => {
 app.on('ready', createWindow);
 app.on('ready', () => {
 
-    // todo: find fix for this bug!!!
-    // hacky way to make sure that first invoice selected can be viewed
     mainWindow.webContents.once('did-finish-load', () => {
         mainWindow.reload();
     })
@@ -76,6 +71,3 @@ app.on('activate', () => {
         createWindow();
     }
 });
-
-// In this file you can include the rest of your app's specific main process
-// code. You can also put them in separate files and import them here.

@@ -60,7 +60,6 @@ class InvoiceChannelManager {
             try {
                 const fetchInvoiceByIDPromise = this.invoiceService.fetchInvoiceByID(args['invoiceID']);
                 const fetchUserByIDPromise = this.userService.fetchUserByID(args['userID']);
-                // het probleem zit vgm bij userservice
                 Promise.all([fetchInvoiceByIDPromise, fetchUserByIDPromise])
                     .then(results => {
                     const invoiceDTO = results[0];
@@ -87,10 +86,6 @@ class InvoiceChannelManager {
     initSubmit() {
         const listenChannel = 'submit-invoice-channel';
         const replyChannel = 'submit-invoice-reply-channel';
-        //todo: look into valid and invalid dayPrice values
-        // i entered something and it made it crash, i forgot what i entered though :c 
-        // but how do i pass correct error messages back to the user?
-        // or should that happen client-side during the entering of the info?
         this.ipcMain.on(listenChannel, (_, args) => {
             if (util_1.isNullOrUndefined(args)) {
                 throw new Error('args is null or undefined');
@@ -111,10 +106,6 @@ class InvoiceChannelManager {
             this.invoiceService.createInvoice(invoiceProps);
         });
     }
-    // todo: look into the possibility of making a general/abstract initChannel function
-    // it takes. initChannel(listenChan, replyChan, succeedCallback, errorCallback)
-    // where succeedCallback and errorCallback are two functions, one wil run in the try block
-    // and the other will run in the catchblock
     initChannel(listenChan, replyChan, succeedCallback, errorCallback) {
         this.ipcMain.on(listenChan, (event, args) => {
             try {

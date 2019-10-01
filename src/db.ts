@@ -1,6 +1,5 @@
 import sqlite3 = require("sqlite3");
 
-// TODO: make this api better or justpass sqlite3.Database to the repositories
 export class DB {
     private _db: sqlite3.Database;
 
@@ -17,7 +16,7 @@ export class DB {
     // for running insert, update and delete statements
     public run(query: string, params: any = []): Promise<any> {
         return new Promise((resolve, reject) => {
-            this.db.run(query, params, function (err) { // needs to be `function (err)` and not the arrow syntax because otherwise there won't be a 'this'
+            this.db.run(query, params, function (err) {
                 if (err) {
                     console.log(`${err} running SQL query: ${query}`);
                     reject(err);
@@ -73,11 +72,6 @@ export class DB {
             );
         `;
 
-        // going to add iban here aswell, this value can be used to prefill
-        // the iban value when creating an invoice. Invoice also keeps an iban
-        // column so it's value doesn't get overwridden when looking it up at a later date
-        // and the iban of the user has changed
-        // what is a VAR/ number
         const createTableUser = `
             CREATE TABLE IF NOT EXISTS User (
                 id TEXT PRIMARY KEY,

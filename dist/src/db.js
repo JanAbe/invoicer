@@ -1,7 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const sqlite3 = require("sqlite3");
-// TODO: make this api better or justpass sqlite3.Database to the repositories
 class DB {
     constructor(dbFilepath) {
         this._db = new sqlite3.Database(dbFilepath, (err) => {
@@ -69,11 +68,6 @@ class DB {
                 zipcode TEXT
             );
         `;
-        // going to add iban here aswell, this value can be used to prefill
-        // the iban value when creating an invoice. Invoice also keeps an iban
-        // column so it's value doesn't get overwridden when looking it up at a later date
-        // and the iban of the user has changed
-        // what is a VAR/ number
         const createTableUser = `
             CREATE TABLE IF NOT EXISTS User (
                 id TEXT PRIMARY KEY,

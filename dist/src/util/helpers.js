@@ -1,5 +1,4 @@
 "use strict";
-// Validate contains helper functions related to validating input
 Object.defineProperty(exports, "__esModule", { value: true });
 /**
  * Checks if the string is empty or not

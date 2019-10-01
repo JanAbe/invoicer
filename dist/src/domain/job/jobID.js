@@ -4,7 +4,6 @@ const util_1 = require("util");
 const helpers_1 = require("../../util/helpers");
 class JobID {
     constructor(id) {
-        // needs check to see if incoming string is a UUID4
         this.setID(id);
     }
     toString() {

@@ -26,8 +26,6 @@ class SqliteJobRepo {
     nextID() {
         return new jobID_1.JobID(uuid());
     }
-    // can also check to see if the queries can be rewritten so only 1 query is neccessary
-    // gotta look into different type of joins i think
     jobOfID(jobID) {
         return __awaiter(this, void 0, void 0, function* () {
             const jobDTO = new jobDTO_1.JobDTO();

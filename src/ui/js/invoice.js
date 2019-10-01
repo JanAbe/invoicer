@@ -1,9 +1,5 @@
 const { ipcRenderer } = require('electron');
 
-// todo: refactor client-side js code by using classes
-// todo: mirror back-end domain by creating dto's.
-    // these can be sent over ipcRender instead of unnamed js-objects
-
 const invoiceSection = document.querySelector('#invoice-section');
 ipcRenderer.on('generate-invoice-reply-channel', (_, html) => {
     while (invoiceSection.hasChildNodes()) {
@@ -21,10 +17,6 @@ ipcRenderer.on('generate-invoice-reply-channel', (_, html) => {
  * fire the print command by typing ctrl+p or command+p
  * or by pressing the print-button
  */
-// todo: fix this. It only works if someone presses ctrl+p
-    // and saves the document.
-    // If cancel is pressed ctrl+p doesn't work anymore
-    // and the sidebar doesn't get shown again
 const listenForPrintEvent = () => {
     listenForPrintButtonPressed('#print-btn');
     listenForCtrlPKeysPressed();

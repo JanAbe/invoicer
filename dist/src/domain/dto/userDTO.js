@@ -1,7 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 class UserDTO {
-    // todo: create a user domain object with correct value objects and stuff.
     constructor(id, firstName, lastName, iban, companyName, jobTitle, bankAccountNr, phoneNr, mobileNr, email, chamberOfCommerceNr, vatNr, varNr, city, zipcode, street, houseNr) {
         this.id = id;
         this.firstName = firstName;

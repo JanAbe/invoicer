@@ -4,9 +4,6 @@ import { isNullOrUndefined } from "util";
 import ezmoney = require('ezmoney');
 import { isEmpty } from "../../util/helpers";
 
-// vgm is dit nu een soort value object
-// het heeft wel een aparte tabel in de database denk ik
-// maar het is onderdeel van Job
 export class Cameraman implements Rentable {
     private _firstName!: string;
     private _lastName!: string;

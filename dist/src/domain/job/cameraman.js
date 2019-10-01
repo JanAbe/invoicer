@@ -3,9 +3,6 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const util_1 = require("util");
 const ezmoney = require("ezmoney");
 const helpers_1 = require("../../util/helpers");
-// vgm is dit nu een soort value object
-// het heeft wel een aparte tabel in de database denk ik
-// maar het is onderdeel van Job
 class Cameraman {
     constructor(firstName, lastName, dayPrice, period) {
         this.setFirstName(firstName);

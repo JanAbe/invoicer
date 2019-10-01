@@ -1,6 +1,4 @@
 
-// Validate contains helper functions related to validating input
-
 /**
  * Checks if the string is empty or not
  * @param s the string to validate

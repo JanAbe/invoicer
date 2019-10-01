@@ -68,8 +68,6 @@ export class InvoiceChannelManager implements ChannelManager {
         const replyChannel = 'generate-invoice-reply-channel';
         const invoiceLocation = `file://${__dirname}/../../ui/invoice.html`;
 
-        // there's a bug where the first invoice selected doesn't get shown.
-        // All subsequent requests do work. solution: It seems the page needs to be refreshed in order to work
         this.ipcMain.on(listenChannel, (event, args) => {
             try {
                 const fetchInvoiceByIDPromise = this.invoiceService.fetchInvoiceByID(args['invoiceID'])
@@ -103,11 +101,6 @@ export class InvoiceChannelManager implements ChannelManager {
         const listenChannel = 'submit-invoice-channel';
         const replyChannel = 'submit-invoice-reply-channel';
 
-        //todo: look into valid and invalid dayPrice values
-        // i entered something and it made it crash, i forgot what i entered though :c 
-
-        // but how do i pass correct error messages back to the user?
-        // or should that happen client-side during the entering of the info?
         this.ipcMain.on(listenChannel, (_, args) => {
             if (isNullOrUndefined(args)) {
                 throw new Error('args is null or undefined');
@@ -134,10 +127,6 @@ export class InvoiceChannelManager implements ChannelManager {
         });
     }
 
-    // todo: look into the possibility of making a general/abstract initChannel function
-    // it takes. initChannel(listenChan, replyChan, succeedCallback, errorCallback)
-    // where succeedCallback and errorCallback are two functions, one wil run in the try block
-    // and the other will run in the catchblock
     private initChannel(listenChan: string, replyChan: string, succeedCallback: (args: any) => void, errorCallback: () => void) {
         this.ipcMain.on(listenChan, (event, args) => {
             try {

@@ -4,9 +4,6 @@ import { Address } from "./address";
 import { isNullOrUndefined } from "util";
 import { ClientID } from "./clientID";
 
-// moet rekeningnummer worden toegevoegd aan Client?
-// is het zo dat de opdrachtgever van de klus ook 
-// degene is aan wie de rekening verzonden moet worden.
 export class Client {
     private _id: ClientID;
     private _fullName: FullName;

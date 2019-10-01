@@ -1,9 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const util_1 = require("util");
-// moet rekeningnummer worden toegevoegd aan Client?
-// is het zo dat de opdrachtgever van de klus ook 
-// degene is aan wie de rekening verzonden moet worden.
 class Client {
     constructor(id, fullName, email, address) {
         this._id = id;

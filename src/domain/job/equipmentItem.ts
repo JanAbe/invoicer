@@ -4,14 +4,6 @@ import { isNullOrUndefined } from "util";
 import ezmoney = require('ezmoney');
 import { isEmpty } from "../../util/helpers";
 
-// vgm is dit nu een soort value object
-// het heeft wel een aparte tabel in de database denk ik
-// maar het is onderdeel van Job
-// Dit betekent dat er meerdere entries van een zelfde apparatuurItem kunnen zijn
-// ik kan dus niet een select list geven met apparatuurItems waar uit gekozen kan worden
-// wat ik wel kan doen is misschien alle unieke namen uit de tabel halen
-// met dagprijs -> dit sturen naar de front-end. De front-end kan dit dan gebruiken
-// om suggesties te geven aan de gebruiker tijdens het typen.
 export class EquipmentItem implements Rentable {
     private _name!: string;
     private _dayPrice!: number;
