@@ -1,6 +1,6 @@
 import { DB } from "../../src/db";
 import { InvoiceRepo } from "../../src/domain/invoice/invoiceRepo";
-import { JobRepo } from "../../src/domain/invoice/job/jobRepo";
+import { JobRepo } from "../../src/domain/job/jobRepo";
 import { ClientRepo } from "../../src/domain/client/clientRepo";
 import { SqliteInvoiceRepo } from "../../src/adapters/persistence/sqlite/sqliteInvoiceRepo";
 import { SqliteClientRepo } from "../../src/adapters/persistence/sqlite/sqliteClientRepo";

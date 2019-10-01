@@ -1,8 +1,8 @@
-import { Job } from "../../src/domain/invoice/job/job";
-import { JobID } from "../../src/domain/invoice/job/jobID";
-import { Cameraman } from "../../src/domain/invoice/job/cameraman";
-import { EquipmentItem } from "../../src/domain/invoice/job/equipmentItem";
-import { Period } from "../../src/domain/invoice/job/period";
+import { Job } from "../../src/domain/job/job";
+import { JobID } from "../../src/domain/job/jobID";
+import { Cameraman } from "../../src/domain/job/cameraman";
+import { EquipmentItem } from "../../src/domain/job/equipmentItem";
+import { Period } from "../../src/domain/job/period";
 
 describe('Job', () => {
 

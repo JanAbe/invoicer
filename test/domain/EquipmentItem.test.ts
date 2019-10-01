@@ -1,5 +1,5 @@
-import { EquipmentItem } from "../../src/domain/invoice/job/equipmentItem";
-import { Period } from "../../src/domain/invoice/job/period";
+import { EquipmentItem } from "../../src/domain/job/equipmentItem";
+import { Period } from "../../src/domain/job/period";
 import assert = require("assert");
 
 describe('EquipmentItem', () => {

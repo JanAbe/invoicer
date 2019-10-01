@@ -1,10 +1,10 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-const job_1 = require("../../src/domain/invoice/job/job");
-const jobID_1 = require("../../src/domain/invoice/job/jobID");
-const cameraman_1 = require("../../src/domain/invoice/job/cameraman");
-const equipmentItem_1 = require("../../src/domain/invoice/job/equipmentItem");
-const period_1 = require("../../src/domain/invoice/job/period");
+const job_1 = require("../../src/domain/job/job");
+const jobID_1 = require("../../src/domain/job/jobID");
+const cameraman_1 = require("../../src/domain/job/cameraman");
+const equipmentItem_1 = require("../../src/domain/job/equipmentItem");
+const period_1 = require("../../src/domain/job/period");
 describe('Job', () => {
     let job;
     before(() => {

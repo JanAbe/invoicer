@@ -1,6 +1,6 @@
 import { InvoiceID } from "./invoiceID";
 import { Invoice } from "./invoice";
-import { Job } from "./job/job";
+import { Job } from "../job/job";
 
 export interface InvoiceRepo {
 

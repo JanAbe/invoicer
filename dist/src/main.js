@@ -31,8 +31,8 @@ const createWindow = () => {
         mainWindow = null;
     });
 };
-electron_1.app.on('ready', createWindow);
 electron_1.app.on('ready', () => {
+    createWindow();
     const dbLocation = `${__dirname}/../db/Invoice.db`;
     const db = new db_1.DB(dbLocation);
     db.createTables();

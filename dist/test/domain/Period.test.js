@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-const period_1 = require("../../src/domain/invoice/job/period");
+const period_1 = require("../../src/domain/job/period");
 describe('Period', () => {
     describe('getDays', () => {
         it('should give the correct nr of days worked', () => {

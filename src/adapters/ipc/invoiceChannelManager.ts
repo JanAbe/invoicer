@@ -73,13 +73,13 @@ export class InvoiceChannelManager implements ChannelManager {
                 const fetchInvoiceByIDPromise = this.invoiceService.fetchInvoiceByID(args['invoiceID'])
                 const fetchUserByIDPromise = this.userService.fetchUserByID(args['userID']);
 
+                this.window.webContents.loadURL(invoiceLocation);
                 Promise.all([fetchInvoiceByIDPromise, fetchUserByIDPromise])
                 .then(results => {
                     const invoiceDTO = results[0];
                     const userDTO = results[1];
                     const renderedHTML = HtmlService.generateInvoiceTemplate(invoiceDTO, userDTO);
 
-                    this.window.loadURL(invoiceLocation);
                     this.window.webContents.on('did-finish-load', () => {
                         event.reply(replyChannel, renderedHTML);
                     });
@@ -136,7 +136,6 @@ export class InvoiceChannelManager implements ChannelManager {
     // it takes. initChannel(listenChan, replyChan, succeedCallback, errorCallback)
     // where succeedCallback and errorCallback are two functions, one wil run in the try block
     // and the other will run in the catchblock
-    // todo: replace any type with a better function describing type
     private initChannel(listenChan: string, replyChan: string, succeedCallback: (args: any) => void, errorCallback: () => void) {
         this.ipcMain.on(listenChan, (event, args) => {
             try {

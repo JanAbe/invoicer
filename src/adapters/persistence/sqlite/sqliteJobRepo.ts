@@ -1,12 +1,12 @@
-import { JobRepo } from "../../../domain/invoice/job/jobRepo";
+import { JobRepo } from "../../../domain/job/jobRepo";
 import uuid = require("uuid/v4");
-import { Job } from "../../../domain/invoice/job/job";
-import { JobID } from "../../../domain/invoice/job/jobID";
+import { Job } from "../../../domain/job/job";
+import { JobID } from "../../../domain/job/jobID";
 import { DB } from "../../../db";
 import { ClientID } from "../../../domain/client/clientID";
-import { EquipmentItem } from "../../../domain/invoice/job/equipmentItem";
-import { Period } from "../../../domain/invoice/job/period";
-import { Cameraman } from "../../../domain/invoice/job/cameraman";
+import { EquipmentItem } from "../../../domain/job/equipmentItem";
+import { Period } from "../../../domain/job/period";
+import { Cameraman } from "../../../domain/job/cameraman";
 import { JobDTO } from "../../../domain/dto/jobDTO";
 import { isNullOrUndefined } from "util";
 import moment = require("moment");

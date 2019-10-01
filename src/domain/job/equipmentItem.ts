@@ -2,7 +2,7 @@ import { Rentable } from "./rentable";
 import { Period } from "./period";
 import { isNullOrUndefined } from "util";
 import ezmoney = require('ezmoney');
-import { isEmpty } from "../../../util/helpers";
+import { isEmpty } from "../../util/helpers";
 
 // vgm is dit nu een soort value object
 // het heeft wel een aparte tabel in de database denk ik

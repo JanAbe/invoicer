@@ -45,7 +45,7 @@ class EquipmentItemComponent {
     
     /**
      * Syncs the equipment item dates with the value of the provided date fields
-     * @param {} startDateID 
+     * @param {*} startDateID 
      * @param {*} endDateID 
      */
     syncDatesWith(startDateID, endDateID) {

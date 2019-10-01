@@ -37,8 +37,9 @@ const createWindow = () => {
     });
 };
 
-app.on('ready', createWindow);
 app.on('ready', () => {
+    createWindow();
+
     const dbLocation = `${__dirname}/../db/Invoice.db`;
     const db = new DB(dbLocation);
     db.createTables();

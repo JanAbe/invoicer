@@ -14,7 +14,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const invoiceID_1 = require("../../../domain/invoice/invoiceID");
 const invoice_1 = require("../../../domain/invoice/invoice");
-const jobID_1 = require("../../../domain/invoice/job/jobID");
+const jobID_1 = require("../../../domain/job/jobID");
 const uuid = require("uuid/v4");
 const moment_1 = __importDefault(require("moment"));
 class SqliteInvoiceRepo {

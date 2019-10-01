@@ -10,12 +10,12 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const uuid = require("uuid/v4");
-const job_1 = require("../../../domain/invoice/job/job");
-const jobID_1 = require("../../../domain/invoice/job/jobID");
+const job_1 = require("../../../domain/job/job");
+const jobID_1 = require("../../../domain/job/jobID");
 const clientID_1 = require("../../../domain/client/clientID");
-const equipmentItem_1 = require("../../../domain/invoice/job/equipmentItem");
-const period_1 = require("../../../domain/invoice/job/period");
-const cameraman_1 = require("../../../domain/invoice/job/cameraman");
+const equipmentItem_1 = require("../../../domain/job/equipmentItem");
+const period_1 = require("../../../domain/job/period");
+const cameraman_1 = require("../../../domain/job/cameraman");
 const jobDTO_1 = require("../../../domain/dto/jobDTO");
 const util_1 = require("util");
 const moment = require("moment");

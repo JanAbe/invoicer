@@ -1,7 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-const cameraman_1 = require("../../src/domain/invoice/job/cameraman");
-const period_1 = require("../../src/domain/invoice/job/period");
+const cameraman_1 = require("../../src/domain/job/cameraman");
+const period_1 = require("../../src/domain/job/period");
 const assert = require("assert");
 describe('Cameraman', () => {
     let period;

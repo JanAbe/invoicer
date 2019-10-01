@@ -1,5 +1,5 @@
 import { Invoice } from "../../src/domain/invoice/invoice";
-import { JobID } from "../../src/domain/invoice/job/jobID";
+import { JobID } from "../../src/domain/job/jobID";
 import { InvoiceID } from "../../src/domain/invoice/invoiceID";
 import assert = require("assert");
 

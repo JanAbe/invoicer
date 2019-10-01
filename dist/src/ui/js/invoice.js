@@ -6,6 +6,7 @@ const { ipcRenderer } = require('electron');
 
 const invoiceSection = document.querySelector('#invoice-section');
 ipcRenderer.on('generate-invoice-reply-channel', (_, html) => {
+    console.log(html);
     while (invoiceSection.hasChildNodes()) {
         if (invoiceSection.firstChild.id === 'print-btn-wrapper') {
             break;
