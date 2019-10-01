@@ -2,8 +2,8 @@
 
 A tool for (dutch) cameramen to create invoices and manage their invoices without needing excel or some other program.
 
-Written with the following technologies:
-- Electron, SQLite3, TypeScript, Mocha 
+Written with the **MEST** 🐮 stack:
+- **M**ocha, **E**lectron, **S**QLite3, **T**ypeScript 
 
 
 ---
