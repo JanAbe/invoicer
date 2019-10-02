@@ -13,3 +13,8 @@ So when, how and where do you use DTO's. Do you change incoming data into a DTO,
 a domain object, which then gets persisted? 
 Do you create a domain object from the db, which later gets transformed into a DTO, which gets sent back to
 the user? Or do you create a DTO immediately when fetching data from the database?
+
+How to deal with the fact that if user-info changes, and a user of the app
+views an older invoice, the displayed information of this old invoice is actually not
+the same as it was when it was created. Because invoice has a connection to a user table
+and it doesn't have the user-info as part of its own table.
