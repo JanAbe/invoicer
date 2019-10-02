@@ -31,6 +31,7 @@ export class InvoiceChannelManager implements ChannelManager {
         this.initFetchAll();
         this.initGenerate();
         this.initSubmit();
+        this.initDelete();
     }
 
     /**
@@ -124,6 +125,22 @@ export class InvoiceChannelManager implements ChannelManager {
             invoiceProps['cameraman'] = cameraman;
             invoiceProps['equipmentItems'] = equipmentItems;
             this.invoiceService.createInvoice(invoiceProps);
+        });
+    }
+
+    /**
+     * delete creates a channel for ipcMain to listen to the 
+     * delete invoice event
+     */
+    private initDelete(): void {
+        const listenChannel = 'delete-invoice-channel';
+
+        this.ipcMain.on(listenChannel, (_, args) => {
+            try {
+                this.invoiceService.deleteInvoice(args['invoiceID']);
+            } catch (e) {
+                console.log(e);
+            }
         });
     }
 

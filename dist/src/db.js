@@ -148,7 +148,8 @@ class DB {
                 FOREIGN KEY(ref_job) REFERENCES Job(id) ON DELETE CASCADE
             );
         `;
-        this.db.run('PRAGMA foreign_keys = ON'); // to enable foreign-keys
+        // maybe this query needs to be run every time the app loads and not just 1 time
+        this.db.run('PRAGMA foreign_keys = ON;'); // to enable foreign-keys
         this.db.run(createTableAddress);
         this.db.run(createTableUser);
         this.db.run(createTableCameraman);

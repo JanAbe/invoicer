@@ -22,6 +22,7 @@ class InvoiceChannelManager {
         this.initFetchAll();
         this.initGenerate();
         this.initSubmit();
+        this.initDelete();
     }
     /**
      * fetchAll creates a channel for ipcMain to listen to the
@@ -104,6 +105,21 @@ class InvoiceChannelManager {
             invoiceProps['cameraman'] = cameraman;
             invoiceProps['equipmentItems'] = equipmentItems;
             this.invoiceService.createInvoice(invoiceProps);
+        });
+    }
+    /**
+     * delete creates a channel for ipcMain to listen to the
+     * delete invoice event
+     */
+    initDelete() {
+        const listenChannel = 'delete-invoice-channel';
+        this.ipcMain.on(listenChannel, (_, args) => {
+            try {
+                this.invoiceService.deleteInvoice(args['invoiceID']);
+            }
+            catch (e) {
+                console.log(e);
+            }
         });
     }
     initChannel(listenChan, replyChan, succeedCallback, errorCallback) {

@@ -116,6 +116,9 @@ class InvoiceService {
             return invoiceDTO;
         });
     }
+    deleteInvoice(invoiceID) {
+        this._invoiceRepo.delete(new invoiceID_1.InvoiceID(invoiceID));
+    }
 }
 exports.InvoiceService = InvoiceService;
 //# sourceMappingURL=invoiceService.js.map

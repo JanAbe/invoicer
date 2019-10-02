@@ -6,6 +6,7 @@ const { ipcRenderer } = require('electron');
 const readyPage = () => {
     fetchAllInvoices('fetch-all-invoices-channel');
     bindViewInvoiceEventToButton('generate-invoice-channel');
+    bindDeleteInvoiceEventToButton('delete-invoice-channel');
     fetchAllInvoicesHTMLAndInsert('fetch-all-invoices-reply-channel');
 }
 
@@ -17,6 +18,15 @@ const fetchAllInvoices = (chan) => {
     ipcRenderer.send(chan);
 }
 
+const bindDeleteInvoiceEventToButton = (chan) => {
+    const deleteInvoiceBtn = document.querySelector('#delete-invoice-btn');
+    deleteInvoiceBtn.addEventListener('click', () => {
+        const { id, element } = getSelectedInvoice();
+        ipcRenderer.send(chan, {'invoiceID': id});
+        element.style.display = 'none';
+    });
+}
+
 /**
  * bindViewInvoiceEventToButton binds a click event to the 'view invoice' button.
  * When clicked, the invoice will be displayed so the user can look at it.
@@ -25,18 +35,18 @@ const bindViewInvoiceEventToButton = (chan) => {
     const viewInvoiceBtn = document.querySelector('#view-invoice-btn');
     viewInvoiceBtn.addEventListener('click', () => {
         const userID = localStorage.getItem('id');
-        ipcRenderer.send(chan, {'invoiceID': getSelectedInvoiceID(), 'userID': userID});
+        ipcRenderer.send(chan, {'invoiceID': getSelectedInvoice()['id'], 'userID': userID});
     });
 }
 
 /**
- * getSelectedInvoiceID returns the value, the id, of the selected invoice.
+ * getSelectedInvoice gets the the selected invoice id and element
  */
-const getSelectedInvoiceID = () => {
+const getSelectedInvoice = () => {
     const radioBtns = document.querySelectorAll('input[name="invoice-radio-btn"]');
     for (const btn of radioBtns) {
         if (btn.checked) {
-            return btn.value;
+            return { id: btn.value, element: btn.parentElement.parentElement };
         }
     }
 }

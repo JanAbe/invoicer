@@ -159,7 +159,7 @@ export class DB {
             );
         `;
 
-        this.db.run('PRAGMA foreign_keys = ON'); // to enable foreign-keys
+        this.db.run('PRAGMA foreign_keys = ON;'); // to enable foreign-keys in sqlite
         this.db.run(createTableAddress);
         this.db.run(createTableUser);
         this.db.run(createTableCameraman);

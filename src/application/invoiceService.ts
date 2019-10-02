@@ -195,4 +195,7 @@ export class InvoiceService {
         return invoiceDTO;
     }
 
+    public deleteInvoice(invoiceID: string): void {
+        this._invoiceRepo.delete(new InvoiceID(invoiceID));
+    }
 }

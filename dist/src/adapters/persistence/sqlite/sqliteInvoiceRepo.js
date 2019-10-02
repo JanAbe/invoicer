@@ -77,11 +77,11 @@ class SqliteInvoiceRepo {
         ]);
     }
     delete(invoiceID) {
-        const jobIDQuery = 'SELECT ref_job FROM Invoice WHERE id = ?';
-        const jobIDPromise = this._db.get(jobIDQuery, invoiceID.toString());
-        const deleteQuery = 'DELETE FROM Job WHERE id = ?';
-        jobIDPromise.then((jobID) => {
-            this._db.run(deleteQuery, jobID);
+        const jobIDQuery = 'SELECT ref_job FROM Invoice WHERE id = ?;';
+        const jobIDPromise = this._db.get(jobIDQuery, [invoiceID.toString()]);
+        jobIDPromise.then((row) => {
+            const deleteQuery = 'DELETE FROM Job WHERE id = ?;';
+            this._db.run(deleteQuery, [row.ref_job]);
         })
             .catch((err) => {
             console.log(err);
