@@ -135,7 +135,5 @@ export class SqliteJobRepo implements JobRepo {
                 equipmentItemID
             ]);
         }
-        // job.equipmentItems.forEach(async e => {
-        // });
     }
 }
