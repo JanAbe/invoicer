@@ -29,4 +29,10 @@ export interface InvoiceRepo {
      * @param job 
      */
     save(invoice: Invoice, job: Job): void;
+
+    /**
+     * delete an invoice
+     * @param invoiceID id of the invoice to delete
+     */
+    delete(invoiceID: InvoiceID): void;
 }

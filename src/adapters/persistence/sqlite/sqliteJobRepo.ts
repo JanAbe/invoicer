@@ -81,7 +81,7 @@ export class SqliteJobRepo implements JobRepo {
         });
     }
 
-    public save(job: Job): void {
+    public async save(job: Job): Promise<void> {
         const jobQuery = 'INSERT INTO Job (id, description, location, directed_by, ref_client) VALUES (?, ?, ?, ?, ?);';
         this._db.run(jobQuery, [
             job.id!.toString(),
@@ -96,14 +96,14 @@ export class SqliteJobRepo implements JobRepo {
         if (!isNullOrUndefined(job.cameraman)) {
             const cameramanQuery = 'INSERT INTO Cameraman (id, firstName, lastName) VALUES (?, ?, ?);';
             const cameramanID = uuid();
-            this._db.run(cameramanQuery, [
+            await this._db.run(cameramanQuery, [
                 cameramanID,
                 job.cameraman.firstName,
                 job.cameraman.lastName
             ]);
 
             const rentedEntityID = uuid();
-            this._db.run(rentedEntityQuery, [
+            await this._db.run(rentedEntityQuery, [
                 rentedEntityID,
                 job.cameraman.period.startDate.toLocaleDateString('nl'),
                 job.cameraman.period.endDate.toLocaleDateString('nl'),
@@ -117,15 +117,15 @@ export class SqliteJobRepo implements JobRepo {
         const equipmentItemQuery = 'INSERT INTO Equipment_Item (id, name) VALUES (?, ?);';
         let equipmentItemID: string;
         let rentedEntityID: string;
-        job.equipmentItems.forEach(e => {
+        job.equipmentItems.forEach(async e => {
             equipmentItemID = uuid();
-            this._db.run(equipmentItemQuery, [
+            await this._db.run(equipmentItemQuery, [
                 equipmentItemID,
                 e.name
             ]);
 
             rentedEntityID = uuid();
-            this._db.run(rentedEntityQuery, [
+            await this._db.run(rentedEntityQuery, [
                 rentedEntityID,
                 e.period.startDate.toLocaleDateString('nl'),
                 e.period.endDate.toLocaleDateString('nl'),

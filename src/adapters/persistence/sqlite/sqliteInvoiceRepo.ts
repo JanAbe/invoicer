@@ -76,4 +76,16 @@ export class SqliteInvoiceRepo implements InvoiceRepo {
             invoice.jobID.toString()
         ]);
     }
+
+    public delete(invoiceID: InvoiceID): void {
+        const jobIDQuery = 'SELECT ref_job FROM Invoice WHERE id = ?';
+        const jobIDPromise = this._db.get(jobIDQuery, invoiceID.toString());
+        const deleteQuery = 'DELETE FROM Job WHERE id = ?';
+        jobIDPromise.then((jobID) => {
+            this._db.run(deleteQuery, jobID);
+        })
+        .catch((err) => {
+            console.log(err);
+        });
+    }
 }

@@ -142,7 +142,7 @@ export class DB {
                 ref_job TEXT,
                 ref_cameraman TEXT,
                 ref_equipment_item TEXT,
-                FOREIGN KEY(ref_job) REFERENCES Job(id),
+                FOREIGN KEY(ref_job) REFERENCES Job(id) ON DELETE CASCADE,
                 FOREIGN KEY(ref_cameraman) REFERENCES Cameraman(id),
                 FOREIGN KEY(ref_equipment_item) REFERENCES Equipment_Item(id)
             );
@@ -155,10 +155,11 @@ export class DB {
                 iban TEXT,
                 creation_date TEXT,
                 ref_job TEXT,
-                FOREIGN KEY(ref_job) REFERENCES Job(id)
+                FOREIGN KEY(ref_job) REFERENCES Job(id) ON DELETE CASCADE
             );
         `;
 
+        this.db.run('PRAGMA foreign_keys = ON'); // to enable foreign-keys
         this.db.run(createTableAddress);
         this.db.run(createTableUser);
         this.db.run(createTableCameraman);

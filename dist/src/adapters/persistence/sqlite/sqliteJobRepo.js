@@ -86,53 +86,55 @@ class SqliteJobRepo {
         });
     }
     save(job) {
-        const jobQuery = 'INSERT INTO Job (id, description, location, directed_by, ref_client) VALUES (?, ?, ?, ?, ?);';
-        this._db.run(jobQuery, [
-            job.id.toString(),
-            job.description,
-            job.location,
-            job.directedBy,
-            job.clientID.toString()
-        ]);
-        const rentedEntityQuery = 'INSERT INTO Rented_Entity (id, start_date, end_date, day_price, ref_job, ref_cameraman, ref_equipment_item) VALUES (?, ?, ?, ?, ?, ?, ?);';
-        if (!util_1.isNullOrUndefined(job.cameraman)) {
-            const cameramanQuery = 'INSERT INTO Cameraman (id, firstName, lastName) VALUES (?, ?, ?);';
-            const cameramanID = uuid();
-            this._db.run(cameramanQuery, [
-                cameramanID,
-                job.cameraman.firstName,
-                job.cameraman.lastName
-            ]);
-            const rentedEntityID = uuid();
-            this._db.run(rentedEntityQuery, [
-                rentedEntityID,
-                job.cameraman.period.startDate.toLocaleDateString('nl'),
-                job.cameraman.period.endDate.toLocaleDateString('nl'),
-                job.cameraman.dayPrice,
+        return __awaiter(this, void 0, void 0, function* () {
+            const jobQuery = 'INSERT INTO Job (id, description, location, directed_by, ref_client) VALUES (?, ?, ?, ?, ?);';
+            this._db.run(jobQuery, [
                 job.id.toString(),
-                cameramanID,
-                null
+                job.description,
+                job.location,
+                job.directedBy,
+                job.clientID.toString()
             ]);
-        }
-        const equipmentItemQuery = 'INSERT INTO Equipment_Item (id, name) VALUES (?, ?);';
-        let equipmentItemID;
-        let rentedEntityID;
-        job.equipmentItems.forEach(e => {
-            equipmentItemID = uuid();
-            this._db.run(equipmentItemQuery, [
-                equipmentItemID,
-                e.name
-            ]);
-            rentedEntityID = uuid();
-            this._db.run(rentedEntityQuery, [
-                rentedEntityID,
-                e.period.startDate.toLocaleDateString('nl'),
-                e.period.endDate.toLocaleDateString('nl'),
-                e.dayPrice,
-                job.id.toString(),
-                null,
-                equipmentItemID
-            ]);
+            const rentedEntityQuery = 'INSERT INTO Rented_Entity (id, start_date, end_date, day_price, ref_job, ref_cameraman, ref_equipment_item) VALUES (?, ?, ?, ?, ?, ?, ?);';
+            if (!util_1.isNullOrUndefined(job.cameraman)) {
+                const cameramanQuery = 'INSERT INTO Cameraman (id, firstName, lastName) VALUES (?, ?, ?);';
+                const cameramanID = uuid();
+                yield this._db.run(cameramanQuery, [
+                    cameramanID,
+                    job.cameraman.firstName,
+                    job.cameraman.lastName
+                ]);
+                const rentedEntityID = uuid();
+                yield this._db.run(rentedEntityQuery, [
+                    rentedEntityID,
+                    job.cameraman.period.startDate.toLocaleDateString('nl'),
+                    job.cameraman.period.endDate.toLocaleDateString('nl'),
+                    job.cameraman.dayPrice,
+                    job.id.toString(),
+                    cameramanID,
+                    null
+                ]);
+            }
+            const equipmentItemQuery = 'INSERT INTO Equipment_Item (id, name) VALUES (?, ?);';
+            let equipmentItemID;
+            let rentedEntityID;
+            job.equipmentItems.forEach((e) => __awaiter(this, void 0, void 0, function* () {
+                equipmentItemID = uuid();
+                yield this._db.run(equipmentItemQuery, [
+                    equipmentItemID,
+                    e.name
+                ]);
+                rentedEntityID = uuid();
+                yield this._db.run(rentedEntityQuery, [
+                    rentedEntityID,
+                    e.period.startDate.toLocaleDateString('nl'),
+                    e.period.endDate.toLocaleDateString('nl'),
+                    e.dayPrice,
+                    job.id.toString(),
+                    null,
+                    equipmentItemID
+                ]);
+            }));
         });
     }
 }
