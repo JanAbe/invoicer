@@ -23,3 +23,14 @@ Get visual feedback while typing. Know when, for example, an entered emailaddres
 View of a created invoice.
 Press the print button to print the invoice to pdf.
 ![View of an invoice](./resources/images/invoice-view-example.png)
+
+---
+#### Documentation
+
+The project has a hexagonal architecture:
+![Hexagonal architecture](./resources/images/hexagonal_architecture.png)
+
+##### Class diagram
+Parameters, constructors, getters, setters and types have been left out, as they clutter the diagram.
+
+![class diagram](./resources/images/invoicer.jpg)
