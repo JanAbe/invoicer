@@ -19,11 +19,14 @@ const fetchAllInvoices = (chan) => {
 }
 
 const bindDeleteInvoiceEventToButton = (chan) => {
+    const confirmMessage = 'Verwijder de rekening? Dit kan niet ongedaan worden.';
     const deleteInvoiceBtn = document.querySelector('#delete-invoice-btn');
     deleteInvoiceBtn.addEventListener('click', () => {
-        const { id, element } = getSelectedInvoice();
-        ipcRenderer.send(chan, {'invoiceID': id});
-        element.style.display = 'none';
+        if (confirm(confirmMessage)) {
+            const { id, element } = getSelectedInvoice();
+            ipcRenderer.send(chan, {'invoiceID': id});
+            element.style.display = 'none';
+        }
     });
 }
 

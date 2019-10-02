@@ -135,8 +135,6 @@ class SqliteJobRepo {
                     equipmentItemID
                 ]);
             }
-            // job.equipmentItems.forEach(async e => {
-            // });
         });
     }
 }
