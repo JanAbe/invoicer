@@ -117,7 +117,7 @@ export class SqliteJobRepo implements JobRepo {
         const equipmentItemQuery = 'INSERT INTO Equipment_Item (id, name) VALUES (?, ?);';
         let equipmentItemID: string;
         let rentedEntityID: string;
-        job.equipmentItems.forEach(async e => {
+        for (const e of job.equipmentItems) {
             equipmentItemID = uuid();
             await this._db.run(equipmentItemQuery, [
                 equipmentItemID,
@@ -134,6 +134,8 @@ export class SqliteJobRepo implements JobRepo {
                 null,
                 equipmentItemID
             ]);
-        });
+        }
+        // job.equipmentItems.forEach(async e => {
+        // });
     }
 }

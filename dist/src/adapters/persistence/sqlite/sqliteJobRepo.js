@@ -118,7 +118,7 @@ class SqliteJobRepo {
             const equipmentItemQuery = 'INSERT INTO Equipment_Item (id, name) VALUES (?, ?);';
             let equipmentItemID;
             let rentedEntityID;
-            job.equipmentItems.forEach((e) => __awaiter(this, void 0, void 0, function* () {
+            for (const e of job.equipmentItems) {
                 equipmentItemID = uuid();
                 yield this._db.run(equipmentItemQuery, [
                     equipmentItemID,
@@ -134,7 +134,9 @@ class SqliteJobRepo {
                     null,
                     equipmentItemID
                 ]);
-            }));
+            }
+            // job.equipmentItems.forEach(async e => {
+            // });
         });
     }
 }
