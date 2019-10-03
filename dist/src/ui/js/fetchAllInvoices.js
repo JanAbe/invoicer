@@ -7,6 +7,7 @@ const readyPage = () => {
     fetchAllInvoices('fetch-all-invoices-channel');
     bindViewInvoiceEventToButton('generate-invoice-channel');
     bindDeleteInvoiceEventToButton('delete-invoice-channel');
+    bindEditInvoiceEventToButton('fetch-one-invoice-channel');
     fetchAllInvoicesHTMLAndInsert('fetch-all-invoices-reply-channel');
 }
 
@@ -39,6 +40,17 @@ const bindViewInvoiceEventToButton = (chan) => {
     viewInvoiceBtn.addEventListener('click', () => {
         const userID = localStorage.getItem('id');
         ipcRenderer.send(chan, {'invoiceID': getSelectedInvoice()['id'], 'userID': userID});
+    });
+}
+
+/**
+ * bindEditInvoiceEventToButton binds a click event to the 'edit invoice' button.
+ * When clicked, the invoice will be displayed so the user can edit it. 
+ */
+const bindEditInvoiceEventToButton = (chan) => {
+    const editInvoiceBtn = document.querySelector('#edit-invoice-btn');
+    editInvoiceBtn.addEventListener('click', () => {
+        ipcRenderer.send(chan, {'invoiceID': getSelectedInvoice()['id']});
     });
 }
 

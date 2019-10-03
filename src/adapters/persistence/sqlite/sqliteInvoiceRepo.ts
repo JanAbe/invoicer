@@ -7,6 +7,7 @@ import { JobID } from "../../../domain/job/jobID";
 import { Job } from "../../../domain/job/job";
 import uuid = require("uuid/v4");
 import moment from "moment";
+import { Client } from "../../../domain/client/client";
 
 export class SqliteInvoiceRepo implements InvoiceRepo {
     private _db: DB;
@@ -65,10 +66,10 @@ export class SqliteInvoiceRepo implements InvoiceRepo {
         return new Invoice(new InvoiceID(row.id), row.invoice_number, new JobID(row.ref_job), row.iban, moment(row.creation_date, 'DD/MM/YYYY').toDate());
     }
 
-    public save(invoice: Invoice, job: Job): void {
+    public async save(invoice: Invoice, job: Job): Promise<void> {
         this._jobRepo.save(job);
         const invoiceQuery = 'INSERT INTO Invoice (id, invoice_number, iban, creation_date, ref_job) VALUES (?, ?, ?, ?, ?);';
-        this._db.run(invoiceQuery, [
+        await this._db.run(invoiceQuery, [
             invoice.invoiceID.toString(),
             invoice.invoiceNumber,
             invoice.iban,
@@ -77,15 +78,30 @@ export class SqliteInvoiceRepo implements InvoiceRepo {
         ]);
     }
 
-    public delete(invoiceID: InvoiceID): void {
+    public async delete(invoiceID: InvoiceID): Promise<void> {
         const jobIDQuery = 'SELECT ref_job FROM Invoice WHERE id = ?;';
-        const jobIDPromise = this._db.get(jobIDQuery, [invoiceID.toString()]);
-        jobIDPromise.then((row) => {
-            const deleteQuery = 'DELETE FROM Job WHERE id = ?;';
-            this._db.run(deleteQuery, [row.ref_job]);
-        })
-        .catch((err) => {
-            console.log(err);
-        });
+        const row = await this._db.get(jobIDQuery, [invoiceID.toString()]);
+        if (row === undefined) {
+            throw new Error(`No invoice with id: ${invoiceID.toString()}`);
+        }
+        const deleteQuery = 'DELETE FROM Job WHERE id = ?;';
+        await this._db.run(deleteQuery, [row.ref_job]);
+    }
+
+    public async update(invoiceID: InvoiceID, invoice: Invoice, job: Job, client: Client) {
+        const updateClientQuery = 'UPDATE Client SET firstName=?, lastName=?, email=?, city=?, street=?, houseNumber=?, zipcode=? WHERE id=?;';
+        await this._db.run(updateClientQuery, [
+            client.fullName.firstName,
+            client.fullName.lastName,
+            client.email.emailAddress,
+            client.address.city,
+            client.address.street,
+            client.address.houseNumber,
+            client.address.zipcode,
+            client.id.toString()
+        ]);
+
+        await this.delete(invoiceID);
+        await this.save(invoice, job);
     }
 }

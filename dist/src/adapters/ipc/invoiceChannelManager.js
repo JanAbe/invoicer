@@ -23,6 +23,8 @@ class InvoiceChannelManager {
         this.initGenerate();
         this.initSubmit();
         this.initDelete();
+        this.initFetchOne();
+        this.initUpdate();
     }
     /**
      * fetchAll creates a channel for ipcMain to listen to the
@@ -74,6 +76,54 @@ class InvoiceChannelManager {
                     .catch(err => {
                     console.log(err);
                 });
+            }
+            catch (e) {
+                console.log(e);
+            }
+        });
+    }
+    initFetchOne() {
+        const listenChannel = 'fetch-one-invoice-channel';
+        const replyChannel = 'fetch-one-invoice-reply-channel';
+        const editInvoiceLocation = `file://${__dirname}/../../ui/edit-invoice.html`;
+        this.ipcMain.on(listenChannel, (event, args) => {
+            try {
+                this.invoiceService.fetchInvoiceByID(args['invoiceID'])
+                    .then(invoiceDTO => {
+                    const renderedHTML = htmlService_1.HtmlService.generateEditInvoiceTemplate(invoiceDTO);
+                    this.window.webContents.loadURL(editInvoiceLocation);
+                    this.window.webContents.on('did-finish-load', () => {
+                        event.reply(replyChannel, renderedHTML);
+                    });
+                })
+                    .catch(err => console.log(err));
+            }
+            catch (e) {
+                console.log(e);
+            }
+        });
+    }
+    initUpdate() {
+        const listenChannel = 'update-invoice-channel';
+        this.ipcMain.on(listenChannel, (_, args) => {
+            try {
+                if (util_1.isNullOrUndefined(args)) {
+                    throw new Error('args is null or undefined');
+                }
+                const invoiceProps = {};
+                const { invoiceID, invoiceNumber, clientID, iban, firstName, lastName, email, city, zipcode, street, houseNumber, description, location, directedBy, cameraman, equipmentItems } = args;
+                invoiceProps['iban'] = iban;
+                invoiceProps['client'] = { 'clientFirstName': firstName,
+                    'clientLastName': lastName,
+                    'email': email,
+                    'city': city,
+                    'zipcode': zipcode,
+                    'street': street,
+                    'houseNumber': Number(houseNumber) };
+                invoiceProps['job'] = { 'description': description, 'location': location, 'directedBy': directedBy };
+                invoiceProps['cameraman'] = cameraman;
+                invoiceProps['equipmentItems'] = equipmentItems;
+                this.invoiceService.updateInvoice(invoiceID, invoiceNumber, clientID, invoiceProps);
             }
             catch (e) {
                 console.log(e);

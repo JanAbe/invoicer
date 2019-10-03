@@ -24,6 +24,7 @@ const jobDTOx_1 = require("../domain/dto/jobDTOx");
 const clientDTO_1 = require("../domain/dto/clientDTO");
 const cameramanDTO_1 = require("../domain/dto/cameramanDTO");
 const equipmentItemDTO_1 = require("../domain/dto/equipmentItemDTO");
+const clientID_1 = require("../domain/client/clientID");
 // InvoiceService contains all services a user can call regarding invoices
 class InvoiceService {
     constructor(invoiceRepo, jobRepo, clientRepo) {
@@ -58,6 +59,38 @@ class InvoiceService {
             this._clientRepo.save(newClient);
             this._invoiceRepo.save(newInvoice, newJob);
         });
+    }
+    /**
+     *
+     * @param invoiceID invoiceID of invoice to delete
+     * @param invoiceNumber old invoiceNumber, which is also the number that gets assigned to the newly updated invoice
+     * @param clientID
+     * @param invoiceProps
+     */
+    updateInvoice(invoiceID, invoiceNumber, clientID, invoiceProps) {
+        // todo: refactor code to reduce duplication (almost same code as createInvoice)
+        const { iban, client, job, cameraman, equipmentItems } = invoiceProps;
+        const { clientFirstName, clientLastName, email, city, street, zipcode, houseNumber } = client;
+        const { description, location, directedBy } = job;
+        const newClient = new client_1.Client(new clientID_1.ClientID(clientID), new fullName_1.FullName(clientFirstName, clientLastName), new email_1.Email(email), new address_1.Address(city, street, houseNumber, zipcode));
+        let newCameraman;
+        if (cameraman !== undefined) {
+            const { firstName, lastName, dayPrice, startDate, endDate } = cameraman;
+            newCameraman = new cameraman_1.Cameraman(firstName, lastName, dayPrice, new period_1.Period(new Date(startDate), new Date(endDate)));
+        }
+        let newEquipmentItems = [];
+        if (equipmentItems !== undefined) {
+            equipmentItems.forEach((e) => {
+                const { equipmentItemName, equipmentItemDayPrice, equipmentItemStartDate, equipmentItemEndDate } = e;
+                newEquipmentItems.push(new equipmentItem_1.EquipmentItem(equipmentItemName, equipmentItemDayPrice, new period_1.Period(new Date(equipmentItemStartDate), new Date(equipmentItemEndDate))));
+            });
+        }
+        const jobID = this._jobRepo.nextID();
+        const newJob = new job_1.Job(jobID, description, location, directedBy, new clientID_1.ClientID(clientID), newCameraman, newEquipmentItems);
+        const creationDate = new Date();
+        const newInvoice = new invoice_1.Invoice(this._invoiceRepo.nextID(), invoiceNumber, jobID, iban, creationDate);
+        // this._invoiceRepo.delete(new InvoiceID(invoiceID));
+        this._invoiceRepo.update(new invoiceID_1.InvoiceID(invoiceID), newInvoice, newJob, newClient);
     }
     fetchAllInvoices() {
         return __awaiter(this, void 0, void 0, function* () {
@@ -97,6 +130,7 @@ class InvoiceService {
             invoiceDTO.id = invoice.invoiceID.toString();
             invoiceDTO.invoiceNumber = invoice.invoiceNumber;
             invoiceDTO.projectNumber = 'project-number';
+            invoiceDTO.iban = invoice.iban;
             invoiceDTO.creationDate = invoice.creationDate;
             invoiceDTO.vatPercentage = 21;
             invoiceDTO.clientDTO = new clientDTO_1.ClientDTO(client.fullName.firstName, client.fullName.lastName, client.email.emailAddress, client.address.city, client.address.street, client.address.houseNumber, client.address.zipcode, client.id.toString());
@@ -118,6 +152,32 @@ class InvoiceService {
     }
     deleteInvoice(invoiceID) {
         this._invoiceRepo.delete(new invoiceID_1.InvoiceID(invoiceID));
+    }
+    transformInvoiceProps(invoiceProps) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const { iban, client, job, cameraman, equipmentItems } = invoiceProps;
+            const { clientFirstName, clientLastName, email, city, street, zipcode, houseNumber } = client;
+            const { description, location, directedBy } = job;
+            const clientID = this._clientRepo.nextID();
+            const newClient = new client_1.Client(clientID, new fullName_1.FullName(clientFirstName, clientLastName), new email_1.Email(email), new address_1.Address(city, street, houseNumber, zipcode));
+            let newCameraman;
+            if (cameraman !== undefined) {
+                const { firstName, lastName, dayPrice, startDate, endDate } = cameraman;
+                newCameraman = new cameraman_1.Cameraman(firstName, lastName, dayPrice, new period_1.Period(new Date(startDate), new Date(endDate)));
+            }
+            let newEquipmentItems = [];
+            if (equipmentItems !== undefined) {
+                equipmentItems.forEach((e) => {
+                    const { equipmentItemName, equipmentItemDayPrice, equipmentItemStartDate, equipmentItemEndDate } = e;
+                    newEquipmentItems.push(new equipmentItem_1.EquipmentItem(equipmentItemName, equipmentItemDayPrice, new period_1.Period(new Date(equipmentItemStartDate), new Date(equipmentItemEndDate))));
+                });
+            }
+            const jobID = this._jobRepo.nextID();
+            const newJob = new job_1.Job(jobID, description, location, directedBy, clientID, newCameraman, newEquipmentItems);
+            const creationDate = new Date();
+            const newInvoice = new invoice_1.Invoice(this._invoiceRepo.nextID(), yield this._invoiceRepo.nextInvoiceNumber(creationDate), jobID, iban, creationDate);
+            return { newClient, newJob, newInvoice };
+        });
     }
 }
 exports.InvoiceService = InvoiceService;

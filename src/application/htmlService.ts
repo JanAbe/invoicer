@@ -27,4 +27,13 @@ export class HtmlService {
 
         return html;
     }
+
+    public static generateEditInvoiceTemplate(invoiceDTO: InvoiceDTO): string {
+        nunjucks.configure('src/ui', { autoescape: true });
+        const html = nunjucks.render('edit-invoice-template.html', {
+            invoiceDTO: invoiceDTO
+        });
+
+        return html;
+    }
 }

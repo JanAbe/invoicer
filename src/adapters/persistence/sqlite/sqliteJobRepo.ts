@@ -83,7 +83,7 @@ export class SqliteJobRepo implements JobRepo {
 
     public async save(job: Job): Promise<void> {
         const jobQuery = 'INSERT INTO Job (id, description, location, directed_by, ref_client) VALUES (?, ?, ?, ?, ?);';
-        this._db.run(jobQuery, [
+        await this._db.run(jobQuery, [
             job.id!.toString(),
             job.description,
             job.location,

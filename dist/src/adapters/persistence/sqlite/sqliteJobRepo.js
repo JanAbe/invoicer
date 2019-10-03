@@ -88,7 +88,7 @@ class SqliteJobRepo {
     save(job) {
         return __awaiter(this, void 0, void 0, function* () {
             const jobQuery = 'INSERT INTO Job (id, description, location, directed_by, ref_client) VALUES (?, ?, ?, ?, ?);';
-            this._db.run(jobQuery, [
+            yield this._db.run(jobQuery, [
                 job.id.toString(),
                 job.description,
                 job.location,

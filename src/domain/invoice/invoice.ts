@@ -70,7 +70,7 @@ export class Invoice {
         this._invoiceID = invoiceID;
     }
 
-    private setInvoiceNumber(invoiceNumber: string) {
+    public setInvoiceNumber(invoiceNumber: string) {
         if (isNullOrUndefined(invoiceNumber)) {
             throw new Error("Provided invoiceNumber is null or undefined");
         }

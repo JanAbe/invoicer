@@ -21,6 +21,13 @@ class HtmlService {
         });
         return html;
     }
+    static generateEditInvoiceTemplate(invoiceDTO) {
+        nunjucks.configure('src/ui', { autoescape: true });
+        const html = nunjucks.render('edit-invoice-template.html', {
+            invoiceDTO: invoiceDTO
+        });
+        return html;
+    }
 }
 exports.HtmlService = HtmlService;
 //# sourceMappingURL=htmlService.js.map
