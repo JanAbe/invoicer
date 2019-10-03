@@ -66,6 +66,7 @@ const listenForUpdateButtonPressed = (btnID) => {
         }
 
         ipcRenderer.send('update-invoice-channel', vals);
+        window.location.href = `file://${__dirname}/invoices.html`;
     });
 }
 
