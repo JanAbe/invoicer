@@ -16,6 +16,7 @@ import { JobDTO } from "../domain/dto/jobDTOx";
 import { ClientDTO } from "../domain/dto/clientDTO";
 import { CameramanDTO } from "../domain/dto/cameramanDTO";
 import { EquipmentItemDTO } from "../domain/dto/equipmentItemDTO";
+import { ClientID } from "../domain/client/clientID";
 
 // InvoiceService contains all services a user can call regarding invoices
 export class InvoiceService {
@@ -96,6 +97,15 @@ export class InvoiceService {
         this._invoiceRepo.save(newInvoice, newJob);
     }
 
+    public async updateInvoice(invoiceID: string, invoiceNumber: string, clientID: string, invoiceProps: any): Promise<void> {
+        const { newClient, newJob, newInvoice } = await this.transformInvoiceProps(invoiceProps);
+        const client = new Client(new ClientID(clientID), newClient.fullName, newClient.email, newClient.address);
+        const job = new Job(newJob.id, newJob.description, newJob.location, newJob.directedBy, client.id, newJob.cameraman, newJob.equipmentItems);
+        const invoice = new Invoice(newInvoice.invoiceID, newInvoice.invoiceNumber, job.id!, newInvoice.iban, newInvoice.creationDate);
+        newInvoice.setInvoiceNumber(invoiceNumber);
+        this._invoiceRepo.update(new InvoiceID(invoiceID), invoice, job, client);
+    }
+
     public async fetchAllInvoices(): Promise<InvoiceDTO[]> {
         const invoiceDTOs: InvoiceDTO[] = [];
         const invoices = await this._invoiceRepo.invoices();
@@ -140,6 +150,7 @@ export class InvoiceService {
         invoiceDTO.id = invoice.invoiceID.toString();
         invoiceDTO.invoiceNumber = invoice.invoiceNumber;
         invoiceDTO.projectNumber = 'project-number';
+        invoiceDTO.iban = invoice.iban;
         invoiceDTO.creationDate = invoice.creationDate;
         invoiceDTO.vatPercentage = 21;
         invoiceDTO.clientDTO = new ClientDTO(
@@ -197,5 +208,70 @@ export class InvoiceService {
 
     public deleteInvoice(invoiceID: string): void {
         this._invoiceRepo.delete(new InvoiceID(invoiceID));
+    }
+
+    private async transformInvoiceProps(invoiceProps: any): Promise<{newClient: Client, newJob: Job, newInvoice: Invoice}> {
+        const { iban, client, job, cameraman, equipmentItems } = invoiceProps; 
+        const { clientFirstName, clientLastName, email, city, street, zipcode, houseNumber } = client;
+        const { description, location, directedBy } = job;
+
+        const clientID = this._clientRepo.nextID();
+        const newClient = new Client(
+            clientID,
+            new FullName(clientFirstName, clientLastName), 
+            new Email(email), 
+            new Address(city, street, houseNumber, zipcode)
+        );
+
+        let newCameraman: Cameraman;
+        if (cameraman !== undefined) {
+            const { firstName, lastName, dayPrice, startDate, endDate } = cameraman; 
+            newCameraman = new Cameraman(
+                firstName,
+                lastName,
+                dayPrice,
+                new Period(
+                    new Date(startDate), 
+                    new Date(endDate))
+            );
+        }
+
+        let newEquipmentItems: EquipmentItem[] = [];
+        if (equipmentItems !== undefined) {
+            equipmentItems.forEach((e: any) => {
+                const { equipmentItemName, equipmentItemDayPrice, equipmentItemStartDate, equipmentItemEndDate } = e; 
+                newEquipmentItems.push(
+                    new EquipmentItem(
+                        equipmentItemName,
+                        equipmentItemDayPrice,
+                        new Period(
+                            new Date(equipmentItemStartDate), 
+                            new Date(equipmentItemEndDate))
+                    )
+                );
+            });
+        }
+        
+        const jobID = this._jobRepo.nextID();
+        const newJob = new Job(
+            jobID,
+            description, 
+            location, 
+            directedBy,
+            clientID,
+            newCameraman!,
+            newEquipmentItems
+        );
+
+        const creationDate = new Date();
+        const newInvoice = new Invoice(
+            this._invoiceRepo.nextID(),
+            await this._invoiceRepo.nextInvoiceNumber(creationDate),
+            jobID,
+            iban,
+            creationDate
+        );
+
+        return { newClient, newJob, newInvoice }
     }
 }

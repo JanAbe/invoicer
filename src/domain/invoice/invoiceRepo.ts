@@ -1,6 +1,7 @@
 import { InvoiceID } from "./invoiceID";
 import { Invoice } from "./invoice";
 import { Job } from "../job/job";
+import { Client } from "../client/client";
 
 export interface InvoiceRepo {
 
@@ -35,4 +36,12 @@ export interface InvoiceRepo {
      * @param invoiceID id of the invoice to delete
      */
     delete(invoiceID: InvoiceID): void;
+
+    /**
+     * update an invoice
+     * @param invoice 
+     * @param job 
+     * @param client 
+     */
+    update(id: InvoiceID, invoice: Invoice, job: Job, client: Client): void;
 }

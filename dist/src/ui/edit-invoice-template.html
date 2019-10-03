@@ -1,0 +1,166 @@
+    {% macro input(id, class, type, name, value) %}
+        <input id="{{ id }}" class="{{ class }}" type="{{ type }}" name="{{ name }}" value="{{ value }}">
+    {% endmacro %}
+
+    {% macro hiddenInput(id, name, value, type) %}
+        <input id="{{ id }}" type="{{ type }}" name="{{ name }}" value="{{ value }}" hidden>
+    {% endmacro %}
+
+    <div id="form-title">
+        <h3>Pas rekening aan</h3>
+    </div>
+
+    <div id="bank-account-segment-title">
+        <h5><strong>IBAN</strong></h5>
+    </div>
+    <div id="bank-account-segment">
+        <div class="form-group">
+            <label>IBAN</label>
+            {{ input(id='iban', name='iban', value=invoiceDTO.iban, class='form-control', type='text') }}
+        </div>
+    </div>
+
+    <div id="client-segment-title">
+        <h5><strong>Klantgegevens</strong></h5>
+    </div>
+    <div id="client-segment">
+        <div class="two-input-fields">
+            <div class="form-group">
+                <label>Voornaam</label>
+                {{ input(id='client-first-name', name='firstName', value=invoiceDTO.clientDTO.firstName, class='form-control', type='text') }}
+            </div>
+            <div class="form-group">
+                <label>Achternaam</label>
+                {{ input(id='client-last-name', name='lastName', value=invoiceDTO.clientDTO.lastName, class='form-control', type='text') }}
+            </div>
+        </div>
+
+        <div id="email-input" class="form-group">
+            <label>Email</label>
+            {{ input(id='client-email', name='email', value=invoiceDTO.clientDTO.email, class='form-control', type='email') }}
+        </div>
+
+        <div class="two-input-fields">
+            <div class="form-group">
+                <label>Stad</label>
+                {{ input(id='client-city', name='city', value=invoiceDTO.clientDTO.city, class='form-control', type='text') }}
+            </div>
+            <div class="form-group">
+                <label>Postcode</label>
+                {{ input(id='client-zipcode', name='zipcode', value=invoiceDTO.clientDTO.zipcode, class='form-control', type='text') }}
+            </div>
+        </div>
+
+        <div class="two-input-fields">
+            <div class="form-group">
+                <label>Straatnaam</label>
+                {{ input(id='client-street', name='street', value=invoiceDTO.clientDTO.street, class='form-control', type='text') }}
+            </div>
+            <div class="form-group">
+                <label>Huisnummer</label>
+                {{ input(id='client-house-number', name='houseNumber', value=invoiceDTO.clientDTO.houseNumber, class='form-control', type='number') }}
+            </div>
+        </div>
+    </div>
+
+    <div id="job-segment-title">
+        <h5><strong>Werk/Opdracht gegevens</strong></h5>
+    </div>
+
+    <div id="job-segment">
+        <div class="form-group">
+            <label>Omschrijving</label>
+            {{ input(id='job-description', name='description', value=invoiceDTO.jobDTO.description, class='form-control', type='text') }}
+        </div>
+
+        <div class="two-input-fields">
+            <div class="form-group">
+                <label>Locatie</label>
+                {{ input(id='job-location', name='location', value=invoiceDTO.jobDTO.location, class='form-control', type='text') }}
+            </div>
+
+            <div class="form-group">
+                <label>Regie</label>
+                {{ input(id='job-directed-by', name='directedBy', value=invoiceDTO.jobDTO.directedBy, class='form-control', type='text') }}
+            </div>
+        </div>
+    </div>
+
+    <div id="cameraman-segment-title">
+        <span style="display: inherit;">
+            <h5><strong>Cameraman</strong></h5>
+        </span>
+    </div>
+
+    <div id="cameraman-segment">
+        {% if invoiceDTO.jobDTO.cameramanDTO !== undefined %}
+            <div class="two-input-fields">
+                <div class="form-group">
+                    <label>Voornaam</label>
+                    {{ input(id='cameraman-first-name', name='firstName', value=invoiceDTO.jobDTO.cameramanDTO.firstName, class='form-control', type='text') }}
+                </div>
+
+                <div class="form-group">
+                    <label>Achternaam</label>
+                    {{ input(id='cameraman-last-name', name='lastName', value=invoiceDTO.jobDTO.cameramanDTO.lastName, class='form-control', type='text') }}
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label>Dagprijs</label>
+                {{ input(id='cameraman-day-price', name='dayPrice', value=invoiceDTO.jobDTO.cameramanDTO.dayPrice, class='form-control', type='number') }}
+            </div>
+
+            <div class="two-input-fields">
+                <div class="form-group">
+                    <label>Begindatum</label>
+                    {{ input(id='cameraman-start-date', name='startDate', value=invoiceDTO.jobDTO.cameramanDTO.startDate.toISOString().split('T')[0], class='form-control', type='date') }}
+                </div>
+
+                <div class="form-group">
+                    <label>Einddatum</label>
+                    {{ input(id='cameraman-end-date', name='endDate', value=invoiceDTO.jobDTO.cameramanDTO.endDate.toISOString().split('T')[0], class='form-control', type='date') }}
+                </div>
+            </div>
+        {% endif %}
+    </div>
+
+    <div id="equipment-item-segment-title">
+        <span style="display: inherit;">
+            <h5><strong>Apparatuur</strong></h5>
+        </span>
+    </div>
+
+    <div id="equipment-item-segment">
+        {% if invoiceDTO.jobDTO.equipmentItemDTOs.length !== 0 %}
+            {% for item in invoiceDTO.jobDTO.equipmentItemDTOs %}
+                <div class="equipment-item">
+                    <div class="form-group">
+                        <label>Naam</label>
+                        {{ input(id='', name='equipmentItemName', value=item.name, class='form-control equipment-item-name', type='text') }}
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Dagprijs</label>
+                        {{ input(id='', name='equipmentItemDayPrice', value=item.dayPrice.toFixed(2), class='form-control equipment-item-day-price', type='text') }}
+                    </div>
+
+                    <div class="two-input-fields">
+                        <div class="form-group">
+                            <label>Begindatum</label>
+                            {{ input(id='', name='equipmentItemStartDate', value=item.startDate.toISOString().split('T')[0], class='form-control equipment-item-start-date', type='date') }}
+                        </div>
+
+                        <div class="form-group">
+                            <label>Einddatum</label>
+                            {{ input(id='', name='equipmentItemEndDate', value=item.endDate.toISOString().split('T')[0], class='form-control equipment-item-end-date', type='date') }}
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        {% endif %}
+    </div>
+
+    {{ hiddenInput(id='invoice-id', name='invoice-id', value=invoiceDTO.id, type='text') }}
+    {{ hiddenInput(id='invoice-number', name='invoice-number', value=invoiceDTO.invoiceNumber, type='text') }}
+    {{ hiddenInput(id='client-id', name='client-id', value=invoiceDTO.clientDTO.id, type='text') }}

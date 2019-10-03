@@ -114,7 +114,7 @@ class EquipmentItemComponent {
                     </span>
                     <label>Naam</label>
                     <input name="equipmentItemName" type="text" class="form-control equipment-item-name" placeholder="Naam">
-                </div>
+                </divfirstName>
                 
                 <div class="form-group">
                     <label>Dagprijs</label>

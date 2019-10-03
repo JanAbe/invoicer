@@ -87,6 +87,23 @@ class SqliteInvoiceRepo {
             console.log(err);
         });
     }
+    update(invoiceID, invoice, job, client) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const updateClientQuery = 'UPDATE Client SET firstName=?, lastName=?, email=?, city=?, street=?, houseNumber=?, zipcode=? WHERE id=?;';
+            yield this._db.run(updateClientQuery, [
+                client.fullName.firstName,
+                client.fullName.lastName,
+                client.email.emailAddress,
+                client.address.city,
+                client.address.street,
+                client.address.houseNumber,
+                client.address.zipcode,
+                client.id.toString()
+            ]);
+            this.delete(invoiceID);
+            this.save(invoice, job);
+        });
+    }
 }
 exports.SqliteInvoiceRepo = SqliteInvoiceRepo;
 //# sourceMappingURL=sqliteInvoiceRepo.js.map

@@ -7,6 +7,7 @@ import { JobID } from "../../../domain/job/jobID";
 import { Job } from "../../../domain/job/job";
 import uuid = require("uuid/v4");
 import moment from "moment";
+import { Client } from "../../../domain/client/client";
 
 export class SqliteInvoiceRepo implements InvoiceRepo {
     private _db: DB;
@@ -87,5 +88,22 @@ export class SqliteInvoiceRepo implements InvoiceRepo {
         .catch((err) => {
             console.log(err);
         });
+    }
+
+    public async update(invoiceID: InvoiceID, invoice: Invoice, job: Job, client: Client) {
+        const updateClientQuery = 'UPDATE Client SET firstName=?, lastName=?, email=?, city=?, street=?, houseNumber=?, zipcode=? WHERE id=?;';
+        await this._db.run(updateClientQuery, [
+            client.fullName.firstName,
+            client.fullName.lastName,
+            client.email.emailAddress,
+            client.address.city,
+            client.address.street,
+            client.address.houseNumber,
+            client.address.zipcode,
+            client.id.toString()
+        ]);
+
+        this.delete(invoiceID);
+        this.save(invoice, job);
     }
 }
