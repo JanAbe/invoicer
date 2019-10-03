@@ -89,7 +89,6 @@ class InvoiceService {
         const newJob = new job_1.Job(jobID, description, location, directedBy, new clientID_1.ClientID(clientID), newCameraman, newEquipmentItems);
         const creationDate = new Date();
         const newInvoice = new invoice_1.Invoice(this._invoiceRepo.nextID(), invoiceNumber, jobID, iban, creationDate);
-        // this._invoiceRepo.delete(new InvoiceID(invoiceID));
         this._invoiceRepo.update(new invoiceID_1.InvoiceID(invoiceID), newInvoice, newJob, newClient);
     }
     fetchAllInvoices() {

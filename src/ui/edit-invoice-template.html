@@ -108,7 +108,7 @@
 
             <div class="form-group">
                 <label>Dagprijs</label>
-                {{ input(id='cameraman-day-price', name='dayPrice', value=invoiceDTO.jobDTO.cameramanDTO.dayPrice, class='form-control', type='number') }}
+                {{ input(id='cameraman-day-price', name='dayPrice', value=invoiceDTO.jobDTO.cameramanDTO.dayPrice.toFixed(2), class='form-control', type='number') }}
             </div>
 
             <div class="two-input-fields">
