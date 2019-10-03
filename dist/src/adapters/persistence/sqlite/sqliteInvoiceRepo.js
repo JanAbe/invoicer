@@ -102,7 +102,7 @@ class SqliteInvoiceRepo {
                 client.address.zipcode,
                 client.id.toString()
             ]);
-            // await this.delete(invoiceID);
+            yield this.delete(invoiceID);
             yield this.save(invoice, job);
         });
     }

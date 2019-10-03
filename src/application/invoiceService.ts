@@ -104,12 +104,8 @@ export class InvoiceService {
      * @param clientID 
      * @param invoiceProps  
      */
-    public async updateInvoice(invoiceID: string, invoiceNumber: string, clientID: string, invoiceProps: any): Promise<void> {
-        // const { newClient, newJob, newInvoice } = await this.transformInvoiceProps(invoiceProps);
-        // const client = new Client(new ClientID(clientID), newClient.fullName, newClient.email, newClient.address);
-        // const job = new Job(newJob.id, newJob.description, newJob.location, newJob.directedBy, client.id, newJob.cameraman, newJob.equipmentItems);
-        // const invoice = new Invoice(newInvoice.invoiceID, invoiceNumber, job.id!, newInvoice.iban, newInvoice.creationDate);
-
+    public updateInvoice(invoiceID: string, invoiceNumber: string, clientID: string, invoiceProps: any): void {
+        // todo: refactor code to reduce duplication (almost same code as createInvoice)
         const { iban, client, job, cameraman, equipmentItems } = invoiceProps; 
         const { clientFirstName, clientLastName, email, city, street, zipcode, houseNumber } = client;
         const { description, location, directedBy } = job;
@@ -170,7 +166,6 @@ export class InvoiceService {
             creationDate
         );
         
-        this._invoiceRepo.delete(new InvoiceID(invoiceID));
         this._invoiceRepo.update(new InvoiceID(invoiceID), newInvoice, newJob, newClient);
     }
 

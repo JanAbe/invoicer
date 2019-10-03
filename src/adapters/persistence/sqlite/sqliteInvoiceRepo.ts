@@ -101,7 +101,7 @@ export class SqliteInvoiceRepo implements InvoiceRepo {
             client.id.toString()
         ]);
 
-        // await this.delete(invoiceID);
+        await this.delete(invoiceID);
         await this.save(invoice, job);
     }
 }
