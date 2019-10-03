@@ -106,23 +106,28 @@ class InvoiceChannelManager {
     initUpdate() {
         const listenChannel = 'update-invoice-channel';
         this.ipcMain.on(listenChannel, (_, args) => {
-            if (util_1.isNullOrUndefined(args)) {
-                throw new Error('args is null or undefined');
+            try {
+                if (util_1.isNullOrUndefined(args)) {
+                    throw new Error('args is null or undefined');
+                }
+                const invoiceProps = {};
+                const { invoiceID, invoiceNumber, clientID, iban, firstName, lastName, email, city, zipcode, street, houseNumber, description, location, directedBy, cameraman, equipmentItems } = args;
+                invoiceProps['iban'] = iban;
+                invoiceProps['client'] = { 'clientFirstName': firstName,
+                    'clientLastName': lastName,
+                    'email': email,
+                    'city': city,
+                    'zipcode': zipcode,
+                    'street': street,
+                    'houseNumber': Number(houseNumber) };
+                invoiceProps['job'] = { 'description': description, 'location': location, 'directedBy': directedBy };
+                invoiceProps['cameraman'] = cameraman;
+                invoiceProps['equipmentItems'] = equipmentItems;
+                this.invoiceService.updateInvoice(invoiceID, invoiceNumber, clientID, invoiceProps);
             }
-            const invoiceProps = {};
-            const { invoiceID, invoiceNumber, clientID, jobID, iban, firstName, lastName, email, city, zipcode, street, houseNumber, description, location, directedBy, cameraman, equipmentItems } = args;
-            invoiceProps['iban'] = iban;
-            invoiceProps['client'] = { 'clientFirstName': firstName,
-                'clientLastName': lastName,
-                'email': email,
-                'city': city,
-                'zipcode': zipcode,
-                'street': street,
-                'houseNumber': Number(houseNumber) };
-            invoiceProps['job'] = { 'description': description, 'location': location, 'directedBy': directedBy };
-            invoiceProps['cameraman'] = cameraman;
-            invoiceProps['equipmentItems'] = equipmentItems;
-            this.invoiceService.updateInvoice(invoiceID, invoiceNumber, clientID, invoiceProps);
+            catch (e) {
+                console.log(e);
+            }
         });
     }
     /**

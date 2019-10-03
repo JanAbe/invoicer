@@ -10,13 +10,14 @@ ipcRenderer.on('fetch-one-invoice-reply-channel', (_, html) => {
     }
 
     invoiceSection.insertAdjacentHTML('afterbegin', html);
-    listenForUpdateButtonPressed('#update-btn');
 });
 
+
+// om een of andere reden wordt deze handeling meerdere keren uitgevoerd
+// als er 1x op de update-knop wordt gedrukt.
 const listenForUpdateButtonPressed = (btnID) => {
     const updateBtn = document.querySelector(btnID);
     updateBtn.addEventListener('click', () => {
-        console.log('clicked');
         let vals = {};
         let equipmentItems = [];
         let cameraman = {};
@@ -70,3 +71,5 @@ const listenForUpdateButtonPressed = (btnID) => {
         ipcRenderer.send('update-invoice-channel', vals);
     });
 }
+
+listenForUpdateButtonPressed('#update-btn');

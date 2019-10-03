@@ -10,13 +10,11 @@ ipcRenderer.on('fetch-one-invoice-reply-channel', (_, html) => {
     }
 
     invoiceSection.insertAdjacentHTML('afterbegin', html);
-    listenForUpdateButtonPressed('#update-btn');
 });
 
 const listenForUpdateButtonPressed = (btnID) => {
     const updateBtn = document.querySelector(btnID);
     updateBtn.addEventListener('click', () => {
-        console.log('clicked');
         let vals = {};
         let equipmentItems = [];
         let cameraman = {};
@@ -70,3 +68,5 @@ const listenForUpdateButtonPressed = (btnID) => {
         ipcRenderer.send('update-invoice-channel', vals);
     });
 }
+
+listenForUpdateButtonPressed('#update-btn');

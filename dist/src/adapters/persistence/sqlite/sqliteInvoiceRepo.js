@@ -66,25 +66,27 @@ class SqliteInvoiceRepo {
         });
     }
     save(invoice, job) {
-        this._jobRepo.save(job);
-        const invoiceQuery = 'INSERT INTO Invoice (id, invoice_number, iban, creation_date, ref_job) VALUES (?, ?, ?, ?, ?);';
-        this._db.run(invoiceQuery, [
-            invoice.invoiceID.toString(),
-            invoice.invoiceNumber,
-            invoice.iban,
-            invoice.creationDate.toLocaleString('nl'),
-            invoice.jobID.toString()
-        ]);
+        return __awaiter(this, void 0, void 0, function* () {
+            this._jobRepo.save(job);
+            const invoiceQuery = 'INSERT INTO Invoice (id, invoice_number, iban, creation_date, ref_job) VALUES (?, ?, ?, ?, ?);';
+            yield this._db.run(invoiceQuery, [
+                invoice.invoiceID.toString(),
+                invoice.invoiceNumber,
+                invoice.iban,
+                invoice.creationDate.toLocaleString('nl'),
+                invoice.jobID.toString()
+            ]);
+        });
     }
     delete(invoiceID) {
-        const jobIDQuery = 'SELECT ref_job FROM Invoice WHERE id = ?;';
-        const jobIDPromise = this._db.get(jobIDQuery, [invoiceID.toString()]);
-        jobIDPromise.then((row) => {
+        return __awaiter(this, void 0, void 0, function* () {
+            const jobIDQuery = 'SELECT ref_job FROM Invoice WHERE id = ?;';
+            const row = yield this._db.get(jobIDQuery, [invoiceID.toString()]);
+            if (row === undefined) {
+                throw new Error(`No invoice with id: ${invoiceID.toString()}`);
+            }
             const deleteQuery = 'DELETE FROM Job WHERE id = ?;';
-            this._db.run(deleteQuery, [row.ref_job]);
-        })
-            .catch((err) => {
-            console.log(err);
+            yield this._db.run(deleteQuery, [row.ref_job]);
         });
     }
     update(invoiceID, invoice, job, client) {
@@ -100,8 +102,8 @@ class SqliteInvoiceRepo {
                 client.address.zipcode,
                 client.id.toString()
             ]);
-            this.delete(invoiceID);
-            this.save(invoice, job);
+            // await this.delete(invoiceID);
+            yield this.save(invoice, job);
         });
     }
 }

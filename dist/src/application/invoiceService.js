@@ -60,14 +60,41 @@ class InvoiceService {
             this._invoiceRepo.save(newInvoice, newJob);
         });
     }
+    /**
+     *
+     * @param invoiceID invoiceID of invoice to delete
+     * @param invoiceNumber old invoiceNumber, which is also the number that gets assigned to the newly updated invoice
+     * @param clientID
+     * @param invoiceProps
+     */
     updateInvoice(invoiceID, invoiceNumber, clientID, invoiceProps) {
         return __awaiter(this, void 0, void 0, function* () {
-            const { newClient, newJob, newInvoice } = yield this.transformInvoiceProps(invoiceProps);
-            const client = new client_1.Client(new clientID_1.ClientID(clientID), newClient.fullName, newClient.email, newClient.address);
-            const job = new job_1.Job(newJob.id, newJob.description, newJob.location, newJob.directedBy, client.id, newJob.cameraman, newJob.equipmentItems);
-            const invoice = new invoice_1.Invoice(newInvoice.invoiceID, newInvoice.invoiceNumber, job.id, newInvoice.iban, newInvoice.creationDate);
-            newInvoice.setInvoiceNumber(invoiceNumber);
-            this._invoiceRepo.update(new invoiceID_1.InvoiceID(invoiceID), invoice, job, client);
+            // const { newClient, newJob, newInvoice } = await this.transformInvoiceProps(invoiceProps);
+            // const client = new Client(new ClientID(clientID), newClient.fullName, newClient.email, newClient.address);
+            // const job = new Job(newJob.id, newJob.description, newJob.location, newJob.directedBy, client.id, newJob.cameraman, newJob.equipmentItems);
+            // const invoice = new Invoice(newInvoice.invoiceID, invoiceNumber, job.id!, newInvoice.iban, newInvoice.creationDate);
+            const { iban, client, job, cameraman, equipmentItems } = invoiceProps;
+            const { clientFirstName, clientLastName, email, city, street, zipcode, houseNumber } = client;
+            const { description, location, directedBy } = job;
+            const newClient = new client_1.Client(new clientID_1.ClientID(clientID), new fullName_1.FullName(clientFirstName, clientLastName), new email_1.Email(email), new address_1.Address(city, street, houseNumber, zipcode));
+            let newCameraman;
+            if (cameraman !== undefined) {
+                const { firstName, lastName, dayPrice, startDate, endDate } = cameraman;
+                newCameraman = new cameraman_1.Cameraman(firstName, lastName, dayPrice, new period_1.Period(new Date(startDate), new Date(endDate)));
+            }
+            let newEquipmentItems = [];
+            if (equipmentItems !== undefined) {
+                equipmentItems.forEach((e) => {
+                    const { equipmentItemName, equipmentItemDayPrice, equipmentItemStartDate, equipmentItemEndDate } = e;
+                    newEquipmentItems.push(new equipmentItem_1.EquipmentItem(equipmentItemName, equipmentItemDayPrice, new period_1.Period(new Date(equipmentItemStartDate), new Date(equipmentItemEndDate))));
+                });
+            }
+            const jobID = this._jobRepo.nextID();
+            const newJob = new job_1.Job(jobID, description, location, directedBy, new clientID_1.ClientID(clientID), newCameraman, newEquipmentItems);
+            const creationDate = new Date();
+            const newInvoice = new invoice_1.Invoice(this._invoiceRepo.nextID(), invoiceNumber, jobID, iban, creationDate);
+            this._invoiceRepo.delete(new invoiceID_1.InvoiceID(invoiceID));
+            this._invoiceRepo.update(new invoiceID_1.InvoiceID(invoiceID), newInvoice, newJob, newClient);
         });
     }
     fetchAllInvoices() {
