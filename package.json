@@ -23,27 +23,13 @@
   "license": "MIT",
   "config": {
     "forge": {
-      "packagerConfig": {},
+      "packagerConfig": {
+        "dir": "./src",
+        "packageManager": "npm"
+      },
       "makers": [
         {
-          "name": "@electron-forge/maker-squirrel",
-          "config": {
-            "name": "invoicer"
-          }
-        },
-        {
-          "name": "@electron-forge/maker-zip",
-          "platforms": [
-            "darwin"
-          ]
-        },
-        {
-          "name": "@electron-forge/maker-deb",
-          "config": {}
-        },
-        {
-          "name": "@electron-forge/maker-rpm",
-          "config": {}
+          "name": "@electron-forge/maker-zip"
         }
       ]
     }

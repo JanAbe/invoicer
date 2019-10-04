@@ -7,7 +7,8 @@ const nunjucks = require("nunjucks");
  */
 class HtmlService {
     static generateInvoiceTemplate(invoiceDTO, userDTO) {
-        nunjucks.configure('src/ui', { autoescape: true });
+        console.log(`${__dirname}/../ui`);
+        nunjucks.configure(`${__dirname}/../ui`, { autoescape: true });
         const html = nunjucks.render('invoice-template.html', {
             invoiceDTO: invoiceDTO,
             userDTO: userDTO,
@@ -15,7 +16,7 @@ class HtmlService {
         return html;
     }
     static generateAllInvoiceTemplates(invoiceDTOs) {
-        nunjucks.configure('src/ui', { autoescape: true });
+        nunjucks.configure(`${__dirname}/../ui`, { autoescape: true });
         const html = nunjucks.render('invoice-row-template.html', {
             invoiceDTOs: invoiceDTOs
         });

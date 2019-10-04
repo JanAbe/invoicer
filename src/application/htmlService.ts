@@ -9,18 +9,18 @@ import nunjucks = require('nunjucks');
 export class HtmlService {
 
     public static generateInvoiceTemplate(invoiceDTO: InvoiceDTO, userDTO: UserDTO): string {
-            nunjucks.configure('src/ui', { autoescape: true });
-            const html = nunjucks.render('invoice-template.html', 
-            { 
-                invoiceDTO: invoiceDTO,
-                userDTO: userDTO,
-            });
+        nunjucks.configure(`${__dirname}/../ui`, { autoescape: true });
+        const html = nunjucks.render('invoice-template.html', 
+        { 
+            invoiceDTO: invoiceDTO,
+            userDTO: userDTO,
+        });
 
         return html;
     }
 
     public static generateAllInvoiceTemplates(invoiceDTOs: InvoiceDTO[]): string {
-        nunjucks.configure('src/ui', { autoescape: true });
+        nunjucks.configure(`${__dirname}/../ui`, { autoescape: true });
         const html = nunjucks.render('invoice-row-template.html', { 
             invoiceDTOs: invoiceDTOs 
         });
@@ -29,7 +29,7 @@ export class HtmlService {
     }
 
     public static generateEditInvoiceTemplate(invoiceDTO: InvoiceDTO): string {
-        nunjucks.configure('src/ui', { autoescape: true });
+        nunjucks.configure(`${__dirname}/../ui`, { autoescape: true });
         const html = nunjucks.render('edit-invoice-template.html', {
             invoiceDTO: invoiceDTO
         });
